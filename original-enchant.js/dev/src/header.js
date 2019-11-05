@@ -1,20 +1,3 @@
-window.getTime = (function() {
-    var origin;
-    if (window.performance && window.performance.now) {
-        origin = Date.now();
-        return function() {
-            return origin + window.performance.now();
-        };
-    } else if (window.performance && window.performance.webkitNow) {
-        origin = Date.now();
-        return function() {
-            return origin + window.performance.webkitNow();
-        };
-    } else {
-        return Date.now;
-    }
-}());
-
 // define requestAnimationFrame
 window.requestAnimationFrame =
     window.requestAnimationFrame ||
