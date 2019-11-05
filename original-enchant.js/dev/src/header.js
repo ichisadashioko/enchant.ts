@@ -1,21 +1,3 @@
-// define requestAnimationFrame
-window.requestAnimationFrame =
-    window.requestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.msRequestAnimationFrame ||
-    (function() {
-        var lastTime = window.getTime();
-        var frame = 1000 / 60;
-        return function(func) {
-            var _id = setTimeout(function() {
-                lastTime = window.getTime();
-                func(lastTime);
-            }, Math.max(0, lastTime + frame - window.getTime()));
-            return _id;
-        };
-    }());
-
 /**
  [lang:ja]
  * グローバルにライブラリのクラスをエクスポートする.
