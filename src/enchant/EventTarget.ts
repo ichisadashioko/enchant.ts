@@ -3,7 +3,7 @@ namespace enchant {
      * A class for implementation of events similar to DOM Events.
      * However, it does not include the concept of phases.
      */
-    class EventTarget {
+    export class EventTarget {
         _offsetX: number;
         _offsetY: number;
         _listeners;

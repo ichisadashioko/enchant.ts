@@ -94,68 +94,23 @@
             this.scale = scale;
 
             /**
-             [lang:ja]
-             * フレームレート.
-             [/lang]
-             [lang:en]
              * The frame rate of the core.
-             [/lang]
-             [lang:de]
-             * Frame Rate des Spieles.
-             [/lang]
-             * @type Number
              */
             this.fps = 30;
             /**
-             [lang:ja]
-             * アプリの開始からのフレーム数.
-             [/lang]
-             [lang:en]
              * The number of frames processed since the core was started.
-             [/lang]
-             [lang:de]
-             * Anzahl der Frames seit dem Spielestart.
-             [/lang]
-             * @type Number
              */
             this.frame = 0;
             /**
-             [lang:ja]
-             * アプリが実行可能な状態かどうか.
-             [/lang]
-             [lang:en]
              * Indicates whether or not the core can be executed.
-             [/lang]
-             [lang:de]
-             * Zeigt an ob das Spiel ausgeführt werden kann.
-             [/lang]
-             * @type Boolean
              */
             this.ready = false;
             /**
-             [lang:ja]
-             * アプリが実行状態かどうか.
-             [/lang]
-             [lang:en]
              * Indicates whether or not the core is currently running.
-             [/lang]
-             [lang:de]
-             * Zeigt an ob das Spiel derzeit ausgeführt wird.
-             [/lang]
-             * @type Boolean
              */
             this.running = false;
             /**
-             [lang:ja]
-             * ロードされた画像をパスをキーとして保存するオブジェクト.
-             [/lang]
-             [lang:en]
              * Object which stores loaded assets using their paths as keys.
-             [/lang]
-             [lang:de]
-             * Geladene Objekte werden unter dem Pfad als Schlüssel in diesem Objekt abgelegt.
-             [/lang]
-             * @type Object
              */
             this.assets = {};
             var assets = this._assets = [];
@@ -443,15 +398,7 @@
             }
         },
         /**
-         [lang:ja]
-         * 画面の表示倍率.
-         [/lang]
-         [lang:en]
          * The scaling of the core rendering.
-         [/lang]
-         [lang:de]
-         * Skalierung der Spieldarstellung.
-         [/lang]
          * @type Number
          */
         scale: {
@@ -480,30 +427,6 @@
             }
         },
         /**
-         [lang:ja]
-         * ファイルのプリロードを行う.
-         *
-         * プリロードを行うよう設定されたファイルは {@link enchant.Core#start} が実行されるとき
-         * ロードが行われる. 全てのファイルのロードが完了したときはCoreオブジェクトからload
-         * イベントが発行され, Coreオブジェクトのassetsプロパティから画像ファイルの場合は
-         * Surfaceオブジェクトとして, 音声ファイルの場合はSoundオブジェクトとして,
-         * その他の場合は文字列としてアクセスできるようになる.
-         *
-         * なおこのSurfaceオブジェクトは {@link enchant.Surface.load} を使って作成されたものである
-         * ため直接画像操作を行うことはできない. enchant.Surface.loadの項を参照.
-         *
-         * @example
-         * core.preload('player.gif');
-         * core.onload = function() {
-         *     var sprite = new Sprite(32, 32);
-         *     sprite.image = core.assets['player.gif']; // パス名でアクセス
-         *     ...
-         * };
-         * core.start();
-         *
-         * @param {...String|String[]} assets プリロードするファイルのパス. 複数指定できる.
-         [/lang]
-         [lang:en]
          * File preloader.
          *
          * Loads the files specified in the parameters when
@@ -534,34 +457,6 @@
          *
          * @param {...String|String[]} assets Path of images to be preloaded.
          * Multiple settings possible.
-         [/lang]
-         [lang:de]
-         * Lässt Dateien im voraus laden.
-         *
-         * Diese Methode setzt die Dateien die im voraus geladen werden sollen. Wenn {@link enchant.Core#start}
-         * aufgerufen wird, findet das tatsächliche laden der Resource statt. Sollten alle Dateien vollständig
-         * geladen sein, wird ein {@link enchant.Event.LOAD} Ereignis auf dem Core Objekt ausgelöst.
-         * Abhängig von den Dateien die geladen werden sollen, werden unterschiedliche Objekte erstellt und in
-         * dem {@link enchant.Core#assets} Feld gespeichert.
-         * Falls ein Bild geladen wird, wird ein {@link enchant.Surface} Objekt erstellt. Wenn es eine Ton Datei ist,
-         * wird ein {@link enchant.Sound} Objekt erstellt. Ansonsten kann auf die Datei über einen String zugegriffen werden.
-         *
-         * Da die Surface Objekte mittels {@link enchant.Surface.load} erstellt werden ist zusätlich ist zu beachten, dass
-         * eine direkte Objektmanipulation nicht möglich ist.
-         * Für diesen Fall ist auf die {@link enchant.Surface.load} Dokumentation zu verweisen.
-         *
-         * @example
-         * core.preload('player.gif');
-         * core.onload = function() {
-         *     var sprite = new Sprite(32, 32);
-         *     sprite.image = core.assets['player.gif']; // zugriff mittels Dateipfades
-         *     ...
-         * };
-         * core.start();
-         *
-         * @param {...String|String[]} assets Pfade zu den Dateien die im voraus geladen werden sollen.
-         * Mehrfachangaben möglich.
-         [/lang]
          * @return {enchant.Core} this
          */
         preload: function(assets) {
