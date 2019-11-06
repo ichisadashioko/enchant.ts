@@ -5,103 +5,37 @@ enchant.Event = enchant.Class.create({
     /**
      * @name enchant.Event
      * @class
-     [lang:ja]
-     * DOM Event風味の独自イベント実装を行ったクラス.
-     * ただしフェーズの概念はなし.
-     * @param {String} type Eventのタイプ
-     [/lang]
-     [lang:en]
      * A class for an independent implementation of events similar to DOM Events.
      * Does not include phase concepts.
      * @param {String} type Event type.
-     [/lang]
-     [lang:de]
-     * Eine Klasse für eine unabhängige Implementierung von Ereignissen 
-     * (Events), ähnlich wie DOM Events.
-     * Jedoch wird das Phasenkonzept nicht unterstützt.
-     * @param {String} type Event Typ.
-     [/lang]
      * @constructs
      */
     initialize: function(type) {
         /**
-         [lang:ja]
-         * イベントのタイプ.
-         [/lang]
-         [lang:en]
          * The type of the event.
-         [/lang]
-         [lang:de]
-         * Typ des Ereignis.
-         [/lang]
-         * @type String
          */
         this.type = type;
         /**
-         [lang:ja]
-         * イベントのターゲット.
-         [/lang]
-         [lang:en]
          * The target of the event.
-         [/lang]
-         [lang:de]
-         * Ziel des Ereignis.
-         [/lang]
          * @type *
          */
         this.target = null;
         /**
-         [lang:ja]
-         * イベント発生位置のx座標.
-         [/lang]
-         [lang:en]
          * The x-coordinate of the event's occurrence.
-         [/lang]
-         [lang:de]
-         * X Koordinate des Auftretens des Ereignis.
-         [/lang]
-         * @type Number
          */
         this.x = 0;
         /**
-         [lang:ja]
-         * イベント発生位置のy座標.
-         [/lang]
-         [lang:en]
          * The y-coordinate of the event's occurrence.
-         [/lang]
-         [lang:de]
-         * Y Koordinate des Auftretens des Ereignis.
-         [/lang]
-         * @type Number
          */
         this.y = 0;
         /**
-         [lang:ja]
-         * イベントを発行したオブジェクトを基準とするイベント発生位置のx座標.
-         [/lang]
-         [lang:en]
          * The x-coordinate of the event's occurrence relative to the object
          * which issued the event.
-         [/lang]
-         [lang:de]
-         * X Koordinate des lokalen Koordinatensystems des Auftretens des Ereignis.
-         [/lang]
-         * @type Number
          */
         this.localX = 0;
         /**
-         [lang:ja]
-         * イベントを発行したオブジェクトを基準とするイベント発生位置のy座標.
-         [/lang]
-         [lang:en]
          * The y-coordinate of the event's occurrence relative to the object
          * which issued the event.
-         [/lang]
-         [lang:de]
-         * Y Koordinate des lokalen Koordinatensystems des Auftretens des Ereignis.
-         [/lang]
-         * @type Number
          */
         this.localY = 0;
     },

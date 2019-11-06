@@ -1,0 +1,5 @@
+namespace enchant {
+    class Surface {
+
+    }
+}

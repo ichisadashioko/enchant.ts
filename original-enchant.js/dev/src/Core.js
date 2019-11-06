@@ -7,17 +7,6 @@
         /**
          * @name enchant.Core
          * @class
-         [lang:ja]
-         * アプリケーションのメインループ, シーンを管理するクラス.
-         *
-         * インスタンスは一つしか存在することができず, すでにインスタンスが存在する状態で
-         * コンストラクタを実行した場合既存のものが上書きされる. 存在するインスタンスには
-         * {@link enchant.Core.instance} からアクセスできる.
-         *
-         * @param {Number} [width=320] 画面の横幅.
-         * @param {Number} [height=320] 画面の高さ.
-         [/lang]
-         [lang:en]
          * A class for controlling the core’s main loop and scenes.
          *
          * There can be only one instance at a time. When the
@@ -27,18 +16,6 @@
          *
          * @param {Number} [width=320] The width of the core viewport.
          * @param {Number} [height=320] The height of the core viewport.
-         [/lang]
-         [lang:de]
-         * Klasse, welche die Spielschleife und Szenen kontrolliert.
-         *
-         * Es kann immer nur eine Instanz geben und sollte der Konstruktor ausgeführt werden,
-         * obwohl bereits eine Instanz existiert, wird die vorherige Instanz überschrieben.
-         * Auf die aktuell existierende Instanz kann über die {@link enchant.Core.instance}
-         * Variable zugegriffen werden.
-         *
-         * @param {Number} [width=320] Die Breite des Spieles.
-         * @param {Number} [height=320] Die Höhe des Spieles.
-         [/lang]
          * @constructs
          * @extends enchant.EventTarget
          */
