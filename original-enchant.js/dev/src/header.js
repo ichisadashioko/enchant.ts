@@ -1,19 +1,4 @@
 /**
- [lang:ja]
- * グローバルにライブラリのクラスをエクスポートする.
- *
- * 引数に何も渡さない場合enchant.jsで定義されたクラス及びプラグインで定義されたクラス
- * 全てがエクスポートされる. 引数が一つ以上の場合はenchant.jsで定義されたクラスのみ
- * がデフォルトでエクスポートされ, プラグインのクラスをエクスポートしたい場合は明示的に
- * プラグインの識別子を引数として渡す必要がある.
- *
- * @example
- * enchant();     // 全てのクラスがエクスポートされる
- * enchant('');   // enchant.js本体のクラスのみがエクスポートされる
- * enchant('ui'); // enchant.js本体のクラスとui.enchant.jsのクラスがエクスポートされる
- *
- * @param {...String} [modules] エクスポートするモジュール. 複数指定できる.
- [/lang]
  [lang:en]
  * Export the library classes globally.
  *
@@ -28,21 +13,6 @@
  * enchant('ui'); // enchant.js classes and ui.enchant.js classes will be exported.
  *
  * @param {...String} [modules] Export module. Multiple designations possible.
- [/lang]
- [lang:de]
- * Globaler Export der Programmbibliotheken.
- *
- * Wenn keine Argument übergeben werden, werden alle Klassen die in enchant.js und in den Plugins
- * definiert sind exportiert. Falls mehr als ein Argument übergeben wurde, werden standardmäßig nur Klassen
- * die in enchant.js selbst definiert sind exporitert. Wenn auch Plugin Klassen exportiert werden sollen,
- * müssen die Plugin Bezeichner explizit als Argumente übergeben werden.
- *
- * @example
- * enchant();     // alle Klassen werden exportiert.
- * enchant('');   // nur Klassen die in enchant.js definiert sind werden exportiert.
- * enchant('ui'); // enchant.js Klassen und ui.enchant.js Klassen werden exportiert.
- *
- * @param {...String} [modules] Module die exportiert werden sollen.
  [/lang]
  * @function
  * @global

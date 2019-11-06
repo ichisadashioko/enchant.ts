@@ -1,18 +1,12 @@
 /**
  * @namespace
- [lang:en]
  * enchant.js environment variables.
- * Execution settings can be changed by modifying these before calling new Core().
- [/lang]
  */
-enchant.ENV = {
+export const ENV = {
     /**
-     [lang:en]
      * Identifier of the current browser.
-     [/lang]
-     * @type String
      */
-    BROWSER: (function(ua) {
+    BROWSER: (function (ua) {
         if (/Eagle/.test(ua)) {
             return 'eagle';
         } else if (/Opera/.test(ua)) {
@@ -33,25 +27,14 @@ enchant.ENV = {
             return '';
         }
     }(navigator.userAgent)),
+
     /**
-     [lang:en]
-     * The CSS vendor prefix of the current browser.
-     [/lang]
-     * @type String
+     * Determines if the current browser supports touch.
      */
-    VENDOR_PREFIX: (function() {
-        var ua = navigator.userAgent;
-        if (ua.indexOf('Opera') !== -1) {
-            return 'O';
-        } else if (/MSIE|Trident/.test(ua)) {
-            return 'ms';
-        } else if (ua.indexOf('WebKit') !== -1) {
-            return 'webkit';
-        } else if (navigator.product === 'Gecko') {
-            return 'Moz';
-        } else {
-            return '';
-        }
+    TOUCH_ENABLED: (function () {
+        var div = document.createElement('div');
+        div.setAttribute('ontouchstart', 'return');
+        return typeof div.ontouchstart === 'function';
     }()),
     /**
      [lang:ja]
@@ -63,7 +46,7 @@ enchant.ENV = {
      [/lang]
      * @type Boolean
      */
-    TOUCH_ENABLED: (function() {
+    TOUCH_ENABLED: (function () {
         var div = document.createElement('div');
         div.setAttribute('ontouchstart', 'return');
         return typeof div.ontouchstart === 'function';
@@ -78,7 +61,7 @@ enchant.ENV = {
      [/lang]
      * @type Boolean
      */
-    RETINA_DISPLAY: (function() {
+    RETINA_DISPLAY: (function () {
         if (navigator.userAgent.indexOf('iPhone') !== -1 && window.devicePixelRatio === 2) {
             var viewport = document.querySelector('meta[name="viewport"]');
             if (viewport == null) {
@@ -102,7 +85,7 @@ enchant.ENV = {
      [/lang]
      * @type Boolean
      */
-    USE_FLASH_SOUND: (function() {
+    USE_FLASH_SOUND: (function () {
         var ua = navigator.userAgent;
         var vendor = navigator.vendor || "";
         // non-local access, not on mobile mobile device, not on safari
@@ -214,7 +197,7 @@ enchant.ENV = {
      [/lang]
      * @type Boolean
      */
-    USE_WEBAUDIO: (function() {
+    USE_WEBAUDIO: (function () {
         return location.protocol !== 'file:';
     }()),
     /**
@@ -239,5 +222,7 @@ enchant.ENV = {
      [/lang]
      * @type Boolean
      */
-    COLOR_DETECTION_LEVEL: 2
-};
+    COLOR_DETECTION_LEVEL: 2,
+}
+
+
