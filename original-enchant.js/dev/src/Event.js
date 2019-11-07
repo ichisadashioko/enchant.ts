@@ -79,72 +79,30 @@ enchant.Event.ERROR = 'error';
 enchant.Event.CORE_RESIZE = 'coreresize';
 
 /**
- [lang:ja]
- * Coreのロード進行中に発生するイベント.
- * プリロードする画像が一枚ロードされる度に発行される. 発行するオブジェクト: {@link enchant.LoadingScene}
- [/lang]
- [lang:en]
  * An event dispatched while the core is loading.
  * Dispatched each time an image is preloaded.
  * Issued by: {@link enchant.LoadingScene}
- [/lang]
- [lang:de]
- * Ereignis, welches während des Ladens des Spieles auftritt.
- * Das Ereignis tritt jedesmal auf, wenn eine im voraus geladene Grafik geladen wurde.
- * Objekt des Auftretens: {@link enchant.LoadingScene}
- [/lang]
  * @type String
  */
 enchant.Event.PROGRESS = 'progress';
 
 /**
- [lang:ja]
- * フレーム開始時に発生するイベント.
- * 発行するオブジェクト: {@link enchant.Core}, {@link enchant.Node}
- [/lang]
- [lang:en]
  * An event which is occurring when a new frame is beeing processed.
  * Issued object: {@link enchant.Core}, {@link enchant.Node}
- [/lang]
- [lang:de]
- * Ereignis, welches auftritt wenn ein neuer Frame bearbeitet wird.
- * Objekt des Auftretens: {@link enchant.Core}, {@link enchant.Node}
- [/lang]
  * @type String
  */
 enchant.Event.ENTER_FRAME = 'enterframe';
 
 /**
- [lang:ja]
- * フレーム終了時に発生するイベント.
- * 発行するオブジェクト: {@link enchant.Core}
- [/lang]
- [lang:en]
  * An event dispatched at the end of processing a new frame.
  * Issued by: {@link enchant.Core}, {@link enchant.Node}
- [/lang]
- [lang:de]
- * Ereignis, welches auftritt wenn ein Frame beendet wird.
- * Objekt des Auftretens: {@link enchant.Core}
- [/lang]
  * @type String
  */
 enchant.Event.EXIT_FRAME = 'exitframe';
 
 /**
- [lang:ja]
- * Sceneが開始したとき発生するイベント.
- * 発行するオブジェクト: {@link enchant.Scene}
- [/lang]
- [lang:en]
  * An event dispatched when a Scene begins.
  * Issued by: {@link enchant.Scene}
- [/lang]
- [lang:de]
- * Ereignis, dass auftritt wenn eine neue Szene
- * ({@link enchant.Scene}) beginnt.
- * Objekt des Auftretens: {@link enchant.Scene}
- [/lang]
  * @type String
  */
 enchant.Event.ENTER = 'enter';
