@@ -47,6 +47,9 @@ namespace enchant {
         }
     }
 
+    /**
+     * An custom `enchant.Event` for resizing.
+     */
     export class OnResizeEvent extends enchant.Event {
         width: number;
         height: number;
