@@ -213,6 +213,27 @@ namespace enchant {
             }
         }
 
+        /**
+         * File preloader.
+         * 
+         * Loads the files specified in the parameters when
+         * `enchant.Core.start` is called.
+         * When all files are loaded, a `enchant.Event.LOAD`
+         * event is dispatched from the Core object. Depending
+         * on the type of each file, different objects will be
+         * created and stored in `enchant.Core.assets` variable.
+         * 
+         * When an image file is loaded, a `enchant.Surface` is
+         * created. If a sound file is loaded, an `enchant.Sound` 
+         * object is created. Any other file type will be accessible
+         * as a string.
+         * 
+         * In addition, because this `Surface` object is created with
+         * `enchant.Surface.load`, it is not possible to manipulate
+         * the image directly.
+         * 
+         * @param assets Path of images to be preloaded.
+         */
         preload(assets: string | string[] | Array<string>) {
             if (!(assets instanceof Array)) {
                 assets = Array.prototype.slice.call(arguments)
