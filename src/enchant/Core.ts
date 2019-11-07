@@ -10,9 +10,48 @@ namespace enchant {
         _pageX: number;
         _pageY: number;
         _element: HTMLElement;
+
+        /**
+         * The width of the core screen.
+         */
         _width: number;
+
+        get width(): number {
+            return this._width;
+        }
+
+        set width(w: number) {
+            this._width = w;
+            this._dispatchCoreResizeEvent();
+        }
+
+        /**
+         * The height of the core screen.
+         */
         _height: number;
+
+        get height(): number {
+            return this._height;
+        }
+
+        set height(h: number) {
+            this._height = h;
+            this._dispatchCoreResizeEvent();
+        }
+
+        /**
+         * The scaling of the core rendering.
+         */
         _scale: number;
+
+        get scale(): number {
+            return this._scale;
+        }
+
+        set scale(s: number) {
+            this._scale = s;
+            this._dispatchCoreResizeEvent();
+        }
 
         /**
          * The frame rate of the core.
@@ -152,14 +191,6 @@ namespace enchant {
             }(enchant))
         }
 
-        get scale(): number {
-            return this._scale;
-        }
-
-        set scale(s: number) {
-            this._scale = s;
-            this._dispatchCoreResizeEvent();
-        }
 
         _dispatchCoreResizeEvent() {
             let e = new enchant.OnResizeEvent('coreresize');
