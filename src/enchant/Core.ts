@@ -133,9 +133,13 @@ namespace enchant {
             this.running = false;
             this.assets = {}
             let assets = this._assets = [];
-            (function detectAssets(module: { assets: string | string[] }) {
-                if (module.assets) {
-                    enchant.Core.instance.preload(module.assets);
+
+            // @TODO refactor
+            (function detectAssets(module: object) {
+                // check whether the `module` has `assets` property.
+                // if true then `preload` them.
+                if (module['assets']) {
+                    enchant.Core.instance.preload(module['assets']);
                 }
 
                 for (var prop in module) {
@@ -162,6 +166,14 @@ namespace enchant {
 
         _oncoreresize(e) {
             this._element.style.width = Math.floor(this._width * this._scale) + 'px';
+        }
+
+        preload(assets: string | string[] | Array<string>) {
+            if (!(assets instanceof Array)) {
+                assets = Array.prototype.slice.call(arguments)
+            }
+            Array.prototype.push.apply(this._assets, assets);
+            return this;
         }
     }
 }
