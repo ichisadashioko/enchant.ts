@@ -15,10 +15,10 @@ namespace enchant {
         /**
          * Add a new event listener which will be executed when the event is dispatched.
          * @param type Type of the events.
-         * @param listener Event listener to be added.
+         * @param {Function(enchant.Event)} listener Event listener to be added.
          */
-        addEventListener(type: string, listener: enchant.Event) {
-            var listeners = this._listeners[type] as Array<enchant.Event>;
+        addEventListener(type: string, listener: Function) {
+            var listeners = this._listeners[type] as Array<Function>;
             if (listeners == null) {
                 this._listeners[type] = [listener];
             } else if (listeners.indexOf(listener) === -1) {
@@ -38,10 +38,10 @@ namespace enchant {
         /**
          * Delete an event listener.
          * @param type Type of the events.
-         * @param listener Event listener to be deleted.
+         * @param {Function(enchant.Event)} listener Event listener to be deleted.
          */
-        removeEventListener(type: string, listener: enchant.Event) {
-            var listeners = this._listeners[type] as Array<enchant.Event>;
+        removeEventListener(type: string, listener: Function) {
+            var listeners = this._listeners[type] as Array<Function>;
             if (listeners != null) {
                 var i = listeners.indexOf(listener);
                 if (i !== -1) {
@@ -74,7 +74,7 @@ namespace enchant {
             if (this['on' + e.type] != null) {
                 this['on' + e.type](e);
             }
-            var listeners = this._listeners[e.type] as Array<enchant.Event>;
+            var listeners = this._listeners[e.type] as Array<Function>;
             if (listeners != null) {
                 listeners = listeners.slice();
                 for (let i = 0, len = listeners.length; i < len; i++) {
