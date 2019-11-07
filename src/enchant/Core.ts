@@ -155,6 +155,7 @@ namespace enchant {
         get scale(): number {
             return this._scale;
         }
+
         set scale(s: number) {
             this._scale = s;
             this._dispatchCoreResizeEvent();
@@ -164,8 +165,17 @@ namespace enchant {
 
         }
 
-        _oncoreresize(e) {
+        _oncoreresize(e: enchant.Event) {
+            // @TODO Test the resize function as the original library did not resize at all.
             this._element.style.width = Math.floor(this._width * this._scale) + 'px';
+            this._element.style.height = Math.floor(this._height * this._scale) + 'px';
+
+            // notify all the scenes of the resize event
+            let scene;
+            for (let i = 0, l = this._scenes.length; i < l; i++) {
+                scene = this._scenes[i];
+                scene.dispatchEvent(e);
+            }
         }
 
         preload(assets: string | string[] | Array<string>) {
