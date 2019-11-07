@@ -47,22 +47,6 @@ enchant.Event = enchant.Class.create({
 });
 
 /**
- [lang:ja]
- * Coreのロード完了時に発生するイベント.
- *
- * 画像のプリロードを行う場合ロードが完了するのを待ってゲーム開始時の処理を行う必要がある.
- * 発行するオブジェクト: {@link enchant.Core}
- *
- * @example
- * var core = new Core(320, 320);
- * core.preload('player.gif');
- * core.onload = function() {
- *     ... // ゲーム開始時の処理を記述
- * };
- * core.start();
- *
- [/lang]
- [lang:en]
  * An event dispatched once the core has finished loading.
  *
  * When preloading images, it is necessary to wait until preloading is complete
@@ -76,55 +60,20 @@ enchant.Event = enchant.Class.create({
  *     ... // Describes initial core processing
  * };
  * core.start();
- *
- [/lang]
- [lang:de]
- * Ereignis, dass auftritt wenn das Laden des Spieles abgeschlossen wurde.
- *
- * Wenn Grafiken im voraus geladen werden ist es notwendig, auf dieses Ereignis zu warten bis mit
- * diesen gearbeitet werden kann. 
- * Objekt des Auftretens: {@link enchant.Core}
- *
- * @example
- * var core = new Core(320, 320);
- * core.preload('player.gif');
- * core.onload = function() {
- *     ... // initialisierung des Spieles 
- * };
- * core.start();
- *
- [/lang]
+ * 
  * @type String
  */
 enchant.Event.LOAD = 'load';
 
 /**
- [lang:ja]
- * エラーの発生をCoreに伝える際に発生するイベント.
- * 発行するオブジェクト: {@link enchant.Core}, {@link enchant.Surface}, {@link enchant.WebAudioSound}, {@link enchant.DOMSound}
- [/lang]
- [lang:en]
  * An event dispatched when an error occurs.
  * Issued by: {@link enchant.Core}, {@link enchant.Surface}, {@link enchant.WebAudioSound}, {@link enchant.DOMSound}
- [/lang]
- [lang:de]
- * Objekt des Auftretens: {@link enchant.Core}, {@link enchant.Surface}, {@link enchant.WebAudioSound}, {@link enchant.DOMSound}
- [/lang]
  */
 enchant.Event.ERROR = 'error';
 
 /**
- [lang:ja]
- * 表示サイズが変わったときに発生するイベント.
- * 発行するオブジェクト: {@link enchant.Core}, {@link enchant.Scene}
- [/lang]
- [lang:en]
  * An event dispatched when the display size is changed.
  * Issued by: {@link enchant.Core}, {@link enchant.Scene}
- [/lang]
- [lang:de]
- * Objekt des Auftretens: {@link enchant.Core}, {@link enchant.Scene}
- [/lang]
  @type String
  */
 enchant.Event.CORE_RESIZE = 'coreresize';

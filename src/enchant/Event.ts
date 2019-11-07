@@ -46,4 +46,10 @@ namespace enchant {
             this.y = this.localY = (pageY - core._pageY) / core.scale;
         }
     }
+
+    export class OnResizeEvent extends enchant.Event {
+        width: number;
+        height: number;
+        scale: number;
+    }
 }

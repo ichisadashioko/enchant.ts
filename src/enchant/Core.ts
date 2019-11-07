@@ -162,7 +162,11 @@ namespace enchant {
         }
 
         _dispatchCoreResizeEvent() {
-
+            let e = new enchant.OnResizeEvent('coreresize');
+            e.width = this._width;
+            e.height = this._height;
+            e.scale = this._scale;
+            this.dispactEvent(e);
         }
 
         _oncoreresize(e: enchant.Event) {
