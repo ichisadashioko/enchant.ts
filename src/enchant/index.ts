@@ -587,12 +587,41 @@ namespace enchant {
      * 
      * Not to be used directly.
      */
-    class Node extends EventTarget {
+    export class Node extends EventTarget {
         _dirty: boolean;
         _matrix: number[];
 
+        /**
+         * x-coordinate of the Node.
+         */
         _x: number;
+
+        get x(): number {
+            return this._x;
+        }
+
+        set x(x) {
+            if (this._x !== x) {
+                this._x = x;
+                this._dirty = true;
+            }
+        }
+
+        /**
+         * y-coordinate of the Node.
+         */
         _y: number;
+
+        get y(): number {
+            return this._y;
+        }
+
+        set y(y: number) {
+            if (this._y !== y) {
+                this._y = y;
+                this._dirty = true;
+            }
+        }
 
         /**
          * The age (frames) of this node which will be increased this node receives `enchant.Event.ENTER_FRAME` event.
@@ -648,6 +677,26 @@ namespace enchant {
             if (enchant.ENV.USE_ANIMATION) {
                 this.tl = new enchant.Timeline(this);
             }
+        }
+
+        /**
+         * Move the Node to the given target location.
+         * @param x Target x coordinates.
+         * @param y Target y coordinates.
+         */
+        moveTo(x: number, y: number) {
+            this.x = x;
+            this.y = y;
+        }
+
+        /**
+         * Move the Node relative to its current position.
+         * @param x x axis movement distance.
+         * @param y y axis movement distance.
+         */
+        moveBy(x: number, y: number) {
+            this.x += x;
+            this.y += y;
         }
     }
 
