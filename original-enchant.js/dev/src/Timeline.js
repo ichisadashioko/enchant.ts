@@ -5,16 +5,6 @@ enchant.Timeline = enchant.Class.create(enchant.EventTarget, {
     /**
      * @name enchant.Timeline
      * @class
-     [lang:ja]
-     * アニメーションを管理するためのクラス.
-     *
-     * 操作するノードひとつに対して, 必ずひとつのタイムラインが対応する.
-     * タイムラインクラスは, 自身に様々なアクションを追加するメソッドを持っており,
-     * これらを使うことで簡潔にアニメーションや様々な操作をすることができる.
-     * タイムラインクラスはフレームとタイムのアニメーションができる.
-     * @param {enchant.Node} node 操作の対象となるノード.
-     [/lang]
-     [lang:en]
      * Time-line class.
      * Class for managing the action.
      *
@@ -23,10 +13,6 @@ enchant.Timeline = enchant.Class.create(enchant.EventTarget, {
      * entities can be animated and various operations by using these briefly.
      * You can choose time based and frame based(default) animation.
      * @param {enchant.Node} node target node.
-     [/lang]
-     [lang:de]
-     * @param {enchant.Node} node
-     [/lang]
      * @constructs
      * @extends enchant.EventTarget
      */
@@ -151,9 +137,6 @@ enchant.Timeline = enchant.Class.create(enchant.EventTarget, {
      * @param {Number} elapsed 経過させる時間.
      [/lang]
      [lang:en]
-     * @param {Number} elapsed
-     [/lang]
-     [lang:de]
      * @param {Number} elapsed
      [/lang]
      */
