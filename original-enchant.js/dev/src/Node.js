@@ -5,19 +5,8 @@ enchant.Node = enchant.Class.create(enchant.EventTarget, {
     /**
      * @name enchant.Node
      * @class
-     [lang:ja]
-     * Sceneをルートとした表示オブジェクトツリーに属するオブジェクトの基底クラス.
-     * 直接使用することはない.
-     [/lang]
-     [lang:en]
      * Base class for objects in the display tree which is rooted at a Scene.
      * Not to be used directly.
-     [/lang]
-     [lang:de]
-     * Basisklasse für Objekte die im Darstellungsbaum, 
-     * dessen Wurzel eine Szene ist, enthalten sind.
-     * Sollte nicht direkt verwendet werden.
-     [/lang]
      * @constructs
      * @extends enchant.EventTarget
      */
@@ -34,44 +23,18 @@ enchant.Node = enchant.Class.create(enchant.EventTarget, {
         this._offsetY = 0;
 
         /**
-         [lang:ja]
-         * Nodeが画面に表示されてから経過したフレーム数.
-         * {@link enchant.Event.ENTER_FRAME} イベントを受け取る前にインクリメントされる.
-         * (ENTER_FRAME イベントのリスナが初めて実行される時に 1 となる.)
-         [/lang]
-         [lang:en]
          * The age (frames) of this node which will be increased before this node receives {@link enchant.Event.ENTER_FRAME} event.
-         [/lang]
-         [lang:de]
-         * Das Alter (Frames) dieses Nodes welches vor dem {@link enchant.Event.ENTER_FRAME} Ereignis erhöht wird.
-         [/lang]
          * @type Number
          */
         this.age = 0;
 
         /**
-         [lang:ja]
-         * Nodeの親Node.
-         [/lang]
-         [lang:en]
          * Parent Node of this Node.
-         [/lang]
-         [lang:de]
-         * Der Eltern-Node dieses Node.
-         [/lang]
          * @type enchant.Group
          */
         this.parentNode = null;
         /**
-         [lang:ja]
-         * Nodeが属しているScene.
-         [/lang]
-         [lang:en]
          * Scene to which Node belongs.
-         [/lang]
-         [lang:de]
-         * Die Szene, zu welcher dieser Node gehört.
-         [/lang]
          * @type enchant.Scene
          */
         this.scene = null;

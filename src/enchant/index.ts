@@ -577,11 +577,51 @@ namespace enchant {
         }
     }
 
-    export class Node extends EventTarget {
+    /**
+     * Base class for objects in the display tree which is rooted at a Scene.
+     * 
+     * Not to be used directly.
+     */
+    class Node extends EventTarget {
+        _dirty: boolean;
+        _matrix: number[];
 
+        _x: number;
+        _y: number;
+
+        /**
+         * The age (frames) of this node which will be increased this node receives `enchant.Event.ENTER_FRAME` event.
+         */
+        age: number;
+
+        /**
+         * Parent Node of this Node.
+         */
+        parentNode: Group;
+
+        /**
+         * Scene to which Node belongs.
+         */
+        scene: Scene;
+
+        constructor() {
+            super();
+
+            this._dirty = false;
+            this._matrix = [1, 0, 0, 1, 0, 0];
+
+            this._x = 0;
+            this._y = 0;
+            this._offsetX = 0;
+            this._offsetY = 0;
+
+            this.age = 0;
+            this.parentNode = null;
+            this.scene = null;
+        }
     }
 
-    export class Group extends enchant.Node {
+    export class Group extends Node {
 
     }
 
@@ -678,14 +718,14 @@ namespace enchant {
         currentScene: enchant.Scene;
 
         constructor({ width = 320, height = 320 }) {
-            super();
 
             if (window.document.body === null) {
                 // @TODO postpone initialization after `window.onload`
                 throw new Error('document.body is null. Please excute `new Core()` in window.onload.');
             }
 
-            enchant.EventTarget.call(this);
+            super();
+
             let initial = true;
             if (enchant.Core.instance) {
                 initial = false;
