@@ -835,7 +835,7 @@ var enchant;
             dest[1] = m12 * x + m22 * y + mdy;
         }
     }
-    Matrix.instance = new enchant.Matrix();
+    Matrix.instance = new Matrix();
     enchant.Matrix = Matrix;
     class Scene extends enchant.Group {
     }

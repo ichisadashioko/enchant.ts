@@ -1020,7 +1020,7 @@ namespace enchant {
     }
 
     export class Matrix {
-        static instance = new enchant.Matrix();
+        static instance = new Matrix();
 
         stack: number[][];
 
