@@ -467,9 +467,12 @@ namespace enchant {
          */
         localY: number;
 
-        width: number;
+        width?: number;
         height?: number;
         scale?: number;
+
+        timeline?: Timeline;
+        elapsed?: number;
 
         /**
          * A class for an independent implementation of events similar to DOM Events.
@@ -500,6 +503,8 @@ namespace enchant {
         _offsetX: number;
         _offsetY: number;
         _listeners;
+
+        frame?: number;
 
         constructor() {
             this._listeners = {}
@@ -658,7 +663,7 @@ namespace enchant {
      */
     export class Timeline extends EventTarget {
         node: Node;
-        queue: [];
+        queue: enchant.EventTarget[];
         paused: boolean;
         looped: boolean;
         isFrameBased: boolean;
