@@ -128,30 +128,12 @@
             }(enchant));
 
             /**
-             [lang:ja]
-             * 現在のScene. Sceneスタック中の一番上のScene.
-             [/lang]
-             [lang:en]
              * The Scene which is currently displayed. This Scene is on top of the Scene stack.
-             [/lang]
-             [lang:de]
-             * Die aktuell dargestellte Szene.
-             * Diese Szene befindet sich oben auf dem Stapelspeicher.
-             [/lang]
              * @type enchant.Scene
              */
             this.currentScene = null;
             /**
-             [lang:ja]
-             * ルートScene. Sceneスタック中の一番下のScene.
-             [/lang]
-             [lang:en]
              * The root Scene. The Scene at the bottom of the Scene stack.
-             [/lang]
-             [lang:de]
-             * Die Ursprungsszene.
-             * Diese Szene befindet sich unten auf dem Stapelspeicher.
-             [/lang]
              * @type enchant.Scene
              */
             this.rootScene = new enchant.Scene();

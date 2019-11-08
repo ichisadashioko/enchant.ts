@@ -81,6 +81,11 @@ namespace enchant {
         _assets: [];
         _scenes: [];
 
+        /**
+         * The `Scene` which is currently displayed. This `Scene` is on top of the `Scene` stack.
+         */
+        currentScene: enchant.Scene;
+
         constructor({ width = 320, height = 320 }) {
             super();
 
@@ -189,6 +194,8 @@ namespace enchant {
                     }
                 }
             }(enchant))
+
+            this.currentScene = null;
         }
 
 
