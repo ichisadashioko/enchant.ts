@@ -690,7 +690,7 @@ namespace enchant {
             });
 
             if (enchant.ENV.USE_ANIMATION) {
-                this.tl = new enchant.Timeline(this);
+                this.tl = new Timeline(this);
             }
         }
 
@@ -813,12 +813,12 @@ namespace enchant {
             if (this.queue.length > 0) {
                 let action = this.queue[0];
                 if (action.frame === 0) {
-                    let f = new enchant.Event('actionstart');
+                    let f = new Event('actionstart');
                     f.timeline = this;
                     action.dispatchEvent(f);
                 }
 
-                let e = new enchant.Event('actiontick');
+                let e = new Event('actiontick');
                 e.timeline = this;
                 e.elapsed = elapsed;
                 action.dispatchEvent(e);
@@ -992,13 +992,13 @@ namespace enchant {
             if ((i = this.childNodes.indexOf(node)) !== -1) {
                 this.childNodes.splice(i, 1);
                 node.parentNode = null;
-                let childRemoved = new enchant.Event('childremoved');
+                let childRemoved = new Event('childremoved');
                 childRemoved.node = node;
                 this.dispatchEvent(childRemoved);
-                node.dispatchEvent(new enchant.Event('removed'));
+                node.dispatchEvent(new Event('removed'));
                 if (this.scene) {
                     node.scene = null;
-                    let removedFromScene = new enchant.Event('removedfromscene');
+                    let removedFromScene = new Event('removedfromscene');
                     node.dispatchEvent(removedFromScene);
                 }
             }
@@ -1287,7 +1287,7 @@ namespace enchant {
 
 
         _dispatchCoreResizeEvent() {
-            let e = new enchant.Event('coreresize');
+            let e = new Event('coreresize');
             e.width = this._width;
             e.height = this._height;
             e.scale = this._scale;
