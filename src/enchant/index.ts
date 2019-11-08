@@ -474,6 +474,8 @@ namespace enchant {
         timeline?: Timeline;
         elapsed?: number;
 
+        node?: Node;
+
         /**
          * A class for an independent implementation of events similar to DOM Events.
          * Does not include phase concepts.
@@ -698,6 +700,38 @@ namespace enchant {
             this.x += x;
             this.y += y;
         }
+
+        _updateCoordinate() {
+            let node = this;
+            let tree = [node];
+            let parent = node.parentNode;
+            let scene = this.scene;
+            while (parent && node._dirty) {
+                tree.unshift(parent);
+                node = node.parentNode;
+                parent = node.parentNode;
+            }
+
+            let matrix = enchant.Matrix.instance;
+            let stack = matrix.stack;
+        }
+
+        remove() {
+            if (this.parentNode) {
+                this.parentNode.removeChild(this);
+            }
+
+            let group = this as unknown as Group;
+
+            if (group.childNodes) {
+                let childNodes = group.childNodes.slice();
+                for (let i = childNodes.length - 1; i >= 0; i--) {
+                    childNodes[i].remove();
+                }
+            }
+
+            this.clearEventListener();
+        }
     }
 
     /**
@@ -785,7 +819,169 @@ namespace enchant {
     }
 
     export class Group extends Node {
+        /**
+         * Child Nodes.
+         */
+        childNodes: Node[];
 
+        __dirty: boolean;
+
+        get _dirty(): boolean {
+            return this.__dirty;
+        }
+
+        set _dirty(dirty: boolean) {
+            // trigger setter of `dirty`
+            dirty = !!dirty;
+            this.__dirty = dirty;
+            if (dirty) {
+                for (let i = 0, l = this.childNodes.length; i < l; i++) {
+                    this.childNodes[i]._dirty = true;
+                }
+            }
+        }
+
+        /**
+         * Group rotation angle (degree).
+         */
+        _rotation: number;
+
+        get rotation(): number {
+            return this._rotation;
+        }
+
+        set rotation(rotation: number) {
+            if (this._rotation !== rotation) {
+                this._rotation = rotation;
+                this._dirty = true;
+            }
+        }
+
+        /**
+         * Scaling factor on the x axis of the Group.
+         */
+        _scaleX: number;
+
+        get scaleX(): number {
+            return this._scaleX;
+        }
+
+        set scaleX(scale: number) {
+            if (this._scaleX !== scale) {
+                this._scaleX = scale;
+                this._dirty = true;
+            }
+        }
+
+        /**
+         * Scaling factor on the y axis of the Group.
+         */
+        _scaleY: number;
+
+        get scaleY(): number {
+            return this._scaleY;
+        }
+
+        set scaleY(scale: number) {
+            if (this._scaleY !== scale) {
+                this._scaleY = scale;
+                this._dirty = true;
+            }
+        }
+
+        /**
+         * x-coordinate origin point of rotation, scaling
+         */
+        _originX: number;
+
+        get originX(): number {
+            return this._originX;
+        }
+
+        set originX(originX: number) {
+            if (this._originX !== originX) {
+                this._originX = originX;
+                this._dirty = true;
+            }
+        }
+
+        /**
+         * y-coordinate origin point of rotation, scaling
+         */
+        _originY: number;
+
+        get originY(): number {
+            return this._originY;
+        }
+
+        set originY(originY: number) {
+            if (this._originY !== originY) {
+                this._originY = originY;
+                this._dirty = true;
+            }
+        }
+
+        constructor() {
+            super();
+            this.childNodes = [];
+            this._rotation = 0;
+            this._scaleX = 1;
+            this._scaleY = 1;
+
+            this._originX = null;
+            this._originY = null;
+
+            this.__dirty = false;
+
+            let that = this;
+
+            [
+                enchant.Event.ADDED_TO_SCENE,
+                enchant.Event.REMOVED_FROM_SCENE,
+            ].forEach(function (event) {
+                that.addEventListener(event, function (e) {
+                    that.childNodes.forEach(function (child) {
+                        child.scene = that.scene;
+                        child.dispatchEvent(e);
+                    });
+                })
+            });
+        }
+
+        /**
+         * Remove a Node from the Group.
+         * @param node Node to be deleted.
+         */
+        removeChild(node: Node) {
+            let i;
+            if ((i = this.childNodes.indexOf(node)) !== -1) {
+                this.childNodes.splice(i, 1);
+                node.parentNode = null;
+                let childRemoved = new enchant.Event('childremoved');
+                childRemoved.node = node;
+                this.dispatchEvent(childRemoved);
+                node.dispatchEvent(new enchant.Event('removed'));
+                if (this.scene) {
+                    node.scene = null;
+                    let removedFromScene = new enchant.Event('removedfromscene');
+                    node.dispatchEvent(removedFromScene);
+                }
+            }
+        }
+
+        /**
+         * The Node which is the first child.
+         */
+        get firstChild(): Node | undefined {
+            return this.childNodes[0];
+        }
+
+        /**
+         * The Node which is the last child.
+         */
+        get lastChild(): Node | undefined {
+            return this.childNodes[this.childNodes.length - 1];
+        }
     }
 
     export class Scene extends enchant.Group {
