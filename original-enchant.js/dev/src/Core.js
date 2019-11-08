@@ -1007,13 +1007,6 @@
             this.currentScene.dispatchEvent(e);
         },
         /**
-         [lang:ja]
-         * キーバインドを設定する.
-         *
-         * @param {Number} key キーバインドを設定するキーコード.
-         * @param {String} button 割り当てるボタン.
-         [/lang]
-         [lang:en]
          * Bind a key code to an enchant.js button.
          *
          * Binds the given key code to the given enchant.js button
@@ -1021,13 +1014,6 @@
          *
          * @param {Number} key Key code for the button to be bound.
          * @param {String} button An enchant.js button.
-         [/lang]
-         [lang:de]
-         * Bindet eine Taste.
-         *
-         * @param {Number} key Der Tastencode der Taste die gebunden werden soll.
-         * @param {String} button Der enchant.js Knopf (left, right, up, down, a, b).
-         [/lang]
          * @return {enchant.Core} this
          */
         keybind: function(key, button) {
@@ -1037,20 +1023,9 @@
             return this;
         },
         /**
-         [lang:ja]
-         * キーバインドを削除する.
-         * @param {Number} key 削除するキーコード.
-         [/lang]
-         [lang:en]
          * Delete the key binding for the given key.
          *
          * @param {Number} key Key code whose binding is to be deleted.
-         [/lang]
-         [lang:de]
-         * Entbindet eine Taste.
-         *
-         * @param {Number} key Der Tastencode der entfernt werden soll.
-         [/lang]
          * @return {enchant.Core} this
          */
         keyunbind: function(key) {
@@ -1064,19 +1039,8 @@
             this.keyboardInputManager.changeState(button, bool);
         },
         /**
-         [lang:ja]
-         * Core#startが呼ばれてから経過した時間を取得する.
-         * @return {Number} 経過した時間 (秒)
-         [/lang]
-         [lang:en]
          * Get the core time (not actual) elapsed since {@link enchant.Core#start} was called.
          * @return {Number} Time elapsed (in seconds).
-         [/lang]
-         [lang:de]
-         * Liefert die vergange Spielzeit (keine reale) die seit dem Aufruf von {@link enchant.Core#start}
-         * vergangen ist.
-         * @return {Number} Die vergangene Zeit (Sekunden)
-         [/lang]
          */
         getElapsedTime: function() {
             return this.frame / this.fps;
@@ -1084,20 +1048,10 @@
     });
 
     /**
-     [lang:ja]
-     * 拡張子に対応したアセットのロード関数.
-     * ロード関数はファイルのパス, 拡張子, コールバックを引数に取り,
-     * 対応したクラスのインスタンスを返す必要がある.
-     * コールバックはEvent.LOADとEvent.ERRORでハンドルする.
-     [/lang]
-     [lang:en]
      * Functions for loading assets of the corresponding file type.
      * The loading functions must take the file path, extension and
      * callback function as arguments, then return the appropriate
      * class instance.
-     [/lang]
-     [lang:de]
-     [/lang]
      * @static
      * @private
      * @type Object
@@ -1119,17 +1073,8 @@
                     };
 
     /**
-     [lang:ja]
-     * ファイルパスを取り, 拡張子を返す.
-     * @param {String} path ファイルパス.
-     [/lang]
-     [lang:en]
      * Get the file extension from a path.
      * @param {String} path file path.
-     [/lang]
-     [lang:de]
-     * @param {String} path
-     [/lang]
      * @return {*}
      */
     enchant.Core.findExt = function(path) {
@@ -1146,15 +1091,7 @@
     };
 
     /**
-     [lang:ja]
-     * 現在のCoreインスタンス.
-     [/lang]
-     [lang:en]
      * The current Core instance.
-     [/lang]
-     [lang:de]
-     * Die aktuelle Instanz des Spieles.
-     [/lang]
      * @type enchant.Core
      * @static
      */
