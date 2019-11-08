@@ -1174,7 +1174,7 @@ namespace enchant {
          */
         currentScene: enchant.Scene;
 
-        constructor({ width = 320, height = 320 }) {
+        constructor(width?: number, height?: number) {
 
             if (window.document.body === null) {
                 // @TODO postpone initialization after `window.onload`
