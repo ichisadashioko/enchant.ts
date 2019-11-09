@@ -39,6 +39,21 @@ namespace enchant {
             }
         }(navigator.userAgent)),
 
+        VENDOR_PREFIX: (function () {
+            let ua = navigator.userAgent;
+            if (ua.indexOf('Opera') !== -1) {
+                return 'O';
+            } else if (/MSIE|Trident/.test(ua)) {
+                return 'ms';
+            } else if (ua.indexOf('WebKit') !== -1) {
+                return 'webkit';
+            } else if (navigator.product === 'Gecko') {
+                return 'Moz';
+            } else {
+                return '';
+            }
+        }()),
+
         /**
          * Determines if the current browser supports touch.
          */
@@ -595,15 +610,13 @@ namespace enchant {
         _dirty: boolean;
         _matrix: number[];
 
+        _x: number;
         /**
          * x-coordinate of the Node.
          */
-        _x: number;
-
         get x(): number {
             return this._x;
         }
-
         set x(x) {
             if (this._x !== x) {
                 this._x = x;
@@ -611,15 +624,13 @@ namespace enchant {
             }
         }
 
+        _y: number;
         /**
          * y-coordinate of the Node.
          */
-        _y: number;
-
         get y(): number {
             return this._y;
         }
-
         set y(y: number) {
             if (this._y !== y) {
                 this._y = y;
@@ -862,11 +873,9 @@ namespace enchant {
         childNodes: Node[];
 
         __dirty: boolean;
-
         get _dirty(): boolean {
             return this.__dirty;
         }
-
         set _dirty(dirty: boolean) {
             // trigger setter of `dirty`
             dirty = !!dirty;
@@ -878,15 +887,13 @@ namespace enchant {
             }
         }
 
+        _rotation: number;
         /**
          * Group rotation angle (degree).
          */
-        _rotation: number;
-
         get rotation(): number {
             return this._rotation;
         }
-
         set rotation(rotation: number) {
             if (this._rotation !== rotation) {
                 this._rotation = rotation;
@@ -894,15 +901,13 @@ namespace enchant {
             }
         }
 
+        _scaleX: number;
         /**
          * Scaling factor on the x axis of the Group.
          */
-        _scaleX: number;
-
         get scaleX(): number {
             return this._scaleX;
         }
-
         set scaleX(scale: number) {
             if (this._scaleX !== scale) {
                 this._scaleX = scale;
@@ -910,15 +915,13 @@ namespace enchant {
             }
         }
 
+        _scaleY: number;
         /**
          * Scaling factor on the y axis of the Group.
          */
-        _scaleY: number;
-
         get scaleY(): number {
             return this._scaleY;
         }
-
         set scaleY(scale: number) {
             if (this._scaleY !== scale) {
                 this._scaleY = scale;
@@ -926,15 +929,13 @@ namespace enchant {
             }
         }
 
+        _originX: number;
         /**
          * x-coordinate origin point of rotation, scaling
          */
-        _originX: number;
-
         get originX(): number {
             return this._originX;
         }
-
         set originX(originX: number) {
             if (this._originX !== originX) {
                 this._originX = originX;
@@ -942,15 +943,13 @@ namespace enchant {
             }
         }
 
+        _originY: number;
         /**
          * y-coordinate origin point of rotation, scaling
          */
-        _originY: number;
-
         get originY(): number {
             return this._originY;
         }
-
         set originY(originY: number) {
             if (this._originY !== originY) {
                 this._originY = originY;
@@ -1101,43 +1100,37 @@ namespace enchant {
         _pageY: number;
         _element: HTMLElement;
 
+        _width: number;
         /**
          * The width of the core screen.
          */
-        _width: number;
-
         get width(): number {
             return this._width;
         }
-
         set width(w: number) {
             this._width = w;
             this._dispatchCoreResizeEvent();
         }
 
+        _height: number;
         /**
          * The height of the core screen.
          */
-        _height: number;
-
         get height(): number {
             return this._height;
         }
-
         set height(h: number) {
             this._height = h;
             this._dispatchCoreResizeEvent();
         }
 
+        _scale: number;
         /**
          * The scaling of the core rendering.
          */
-        _scale: number;
-
         get scale(): number {
             return this._scale;
         }
-
         set scale(s: number) {
             this._scale = s;
             this._dispatchCoreResizeEvent();
@@ -1353,6 +1346,10 @@ namespace enchant {
             return Surface.load(src, callback, onerror);
         }
 
+        static _loadSound(src, ext, callback, onerror) {
+            return Sound.load(src, 'audio/' + ext, callback, onerror);
+        }
+
         static _loadFuncs = {
             // image
             'jpg': Core._loadImage,
@@ -1361,11 +1358,11 @@ namespace enchant {
             'png': Core._loadImage,
             'bmp': Core._loadImage,
             // sound
-            'mp3': null,
-            'aac': null,
-            'm4a': null,
-            'wav': null,
-            'ogg': null,
+            'mp3': Core._loadSound,
+            'aac': Core._loadSound,
+            'm4a': Core._loadSound,
+            'wav': Core._loadSound,
+            'ogg': Core._loadSound,
         }
 
         /**
@@ -1608,4 +1605,314 @@ namespace enchant {
             }
         }
     }
+
+    /**
+     * Class to wrap audio elements.
+     * 
+     * Safari, Chrome, Firefox, Opera, and IE all play MP3 files
+     * (Firefix and Opera play via Flash). WAVE files can be played on
+     * Safari, Chrome, Firefox, and Opera. When the browser is not
+     * compatible with the used codec the file will not play.
+     * 
+     * Instances are created not via constructor but via `enchant.DOMSound.load`.
+     */
+    export class DOMSound extends EventTarget {
+        /**
+         * Sound file duration (seconds).
+         */
+        duration: number;
+
+        /**
+         * Current playback position (seconds).
+         */
+        get currentTime(): number {
+            return this._element ? this._element.currentTime : 0;
+        }
+        set currentTime(time: number) {
+            if (this._element) {
+                this._element.currentTime = time;
+            }
+        }
+
+        /**
+         * Volume. 0 (muted) ~ 1 (full volume)
+         */
+        get volume(): number {
+            return this._element ? this._element.volume : 1;
+        }
+        set volume(volume: number) {
+            if (this._element) {
+                this._element.volume = volume;
+            }
+        }
+
+        _element: HTMLMediaElement;
+
+        constructor(element?: HTMLMediaElement, duration?: number) {
+            super();
+            this._element = element;
+            this.duration = duration;
+        }
+
+        /**
+         * Begin playing.
+         */
+        play() {
+            if (this._element) {
+                this._element.play();
+            }
+        }
+
+        /**
+         * Pause playback.
+         */
+        pause() {
+            if (this._element) {
+                this._element.pause();
+            }
+        }
+
+        /**
+         * Stop playing.
+         */
+        stop() {
+            this.pause();
+            this.currentTime = 0;
+        }
+
+        /**
+         * Create a copy of this Sound object.
+         */
+        clone() {
+            let elementClone = this._element.cloneNode(false) as HTMLMediaElement;
+            let clone = new DOMSound(elementClone, this.duration);
+            return clone;
+        }
+
+        static load(src: string, type: string, callback?: Function, onerror?: Function) {
+            if (type == null) {
+                let ext = Core.findExt(src);
+                if (ext) {
+                    type = 'audio/' + ext;
+                } else {
+                    type = '';
+                }
+            }
+            type = type.replace('mp3', 'mpeg').replace('m4a', 'mp4');
+            callback = callback || function () { };
+            onerror = onerror || function () { };
+
+            let sound = new DOMSound();
+            sound.addEventListener('load', callback);
+            sound.addEventListener('error', onerror);
+            let audio = new Audio();
+            if (!enchant.ENV.SOUND_ENABLED_ON_MOBILE_SAFARI
+                && enchant.ENV.VENDOR_PREFIX === 'webkit'
+                && enchant.ENV.TOUCH_ENABLED) {
+                window.setTimeout(function () {
+                    sound.dispatchEvent(new enchant.Event('load'));
+                }, 0);
+            } else {
+                if (audio.canPlayType(type)) {
+                    audio.addEventListener('canplaythrough', function canplay() {
+                        sound.duration = audio.duration;
+                        sound.dispatchEvent(new enchant.Event('load'));
+                        audio.removeEventListener('canplaythrough', canplay);
+                    }, false);
+                    audio.src = src;
+                    audio.load();
+                    audio.autoplay = false;
+                    audio.onerror = function () {
+                        let e = new enchant.Event(enchant.Event.ERROR);
+                        e.message = 'Cannot load an asset: ' + audio.src;
+                        enchant.Core.instance.dispatchEvent(e);
+                        sound.dispatchEvent(e);
+                    };
+
+                    sound._element = audio;
+                } else {
+                    window.setTimeout(function () {
+                        sound.dispatchEvent(new enchant.Event('load'));
+                    }, 0);
+                }
+            }
+            return sound;
+        }
+    }
+
+    /**
+     * Sound wrapper class for Web Audio API (supported on some webkit-based browsers)
+     */
+    export class WebAudioSound extends EventTarget {
+        static audioContext: AudioContext;
+        static destination: AudioDestinationNode;
+
+        context: AudioContext;
+        src: AudioBufferSourceNode;
+        buffer: AudioBuffer;
+
+        _volume: number;
+        _currentTime: number;
+        _state: number;
+        connectTarget: AudioDestinationNode;
+        _gain: GainNode;
+        _startTime: number;
+
+        constructor() {
+            if (!AudioContext) {
+                throw new Error('This browser does not support WebAudio API.');
+            }
+
+            super();
+            if (!WebAudioSound.audioContext) {
+                WebAudioSound.audioContext = new AudioContext();
+                WebAudioSound.destination = WebAudioSound.audioContext.destination;
+            }
+
+            this.context = WebAudioSound.audioContext;
+            this.src = this.context.createBufferSource();
+            this.buffer = null;
+            this._volume = 1;
+            this._currentTime = 0;
+            this._state = 0;
+            this.connectTarget = WebAudioSound.destination;
+        }
+
+        /**
+         * Begin playing.
+         * @param dup If true, Object plays new sound while keeps last sound.
+         */
+        play(dup?: boolean) {
+            if (this._state === 1 && !dup) {
+                this.src.disconnect();
+            }
+            if (this._state !== 2) {
+                this._currentTime = 0;
+            }
+            let offset = this._currentTime;
+            let actx = this.context;
+            this.src = actx.createBufferSource();
+            this._gain = actx.createGain();
+
+            this.src.buffer = this.buffer;
+            this._gain.gain.value = this._volume;
+
+            this.src.connect(this._gain);
+            this._gain.connect(this.connectTarget);
+            this.src.start(0, offset, this.buffer.duration - offset - 1.192e-7);
+            this._startTime = actx.currentTime - this._currentTime;
+            this._state = 1;
+        }
+
+        /**
+         * Pause playback
+         */
+        pause() {
+            let currentTime = this.currentTime;
+            if (currentTime === this.duration) {
+                return;
+            }
+            this.src.stop(0);
+            this._currentTime = currentTime
+            this._state = 2;
+        }
+
+        /**
+         * Stop playing.
+         */
+        stop() {
+            this.src.stop(0);
+            this._state = 0;
+        }
+
+        /**
+         * Create a copy of this Sound object.
+         */
+        clone() {
+            let sound = new WebAudioSound();
+            sound.buffer = this.buffer;
+            return sound;
+        }
+
+        /**
+         * Sound file duration (seconds).
+         */
+        get duration(): number {
+            if (this.buffer) {
+                return this.buffer.duration;
+            } else {
+                return 0;
+            }
+        }
+
+        /**
+         * Volume. 0 (muted) ~ 1 (full volume)
+         */
+        get volume(): number {
+            return this._volume;
+        }
+        set volume(volume: number) {
+            volume = Math.max(0, Math.min(1, volume));
+            this._volume = volume;
+            if (this.src) {
+                this._gain.gain.value = volume;
+            }
+        }
+
+        /**
+         * Current playback position (seconds).
+         */
+        get currentTime(): number {
+            return Math.max(0, Math.min(this.duration, this.src.context.currentTime - this._startTime));
+        }
+        set currentTime(time: number) {
+            this._currentTime = time;
+            if (this._state !== 2) {
+                this.play(false);
+            }
+        }
+
+        /**
+         * Loads an audio file and creates WebAudioSound object.
+         * @param src Path of the audio file to be loaded.
+         * @param type MIME type of the audio file.
+         * @param callback on load callback.
+         * @param onerror on error callback.
+         */
+        static load(src: string, type: string, callback?: Function, onerror?: Function) {
+            let canPlay = (new Audio()).canPlayType(type);
+            let sound = new WebAudioSound();
+            callback = callback || function () { };
+            onerror = onerror || function () { };
+            sound.addEventListener(enchant.Event.LOAD, callback);
+            sound.addEventListener(enchant.Event.ERROR, onerror);
+            function dispatchErrorEvent() {
+                let e = new enchant.Event(enchant.Event.ERROR);
+                e.message = 'Cannot load an asset: ' + src;
+                enchant.Core.instance.dispatchEvent(e);
+                sound.dispatchEvent(e);
+            }
+
+            let actx: AudioContext, xhr: XMLHttpRequest;
+            if (canPlay === 'maybe' || canPlay === 'probably') {
+                actx = enchant.WebAudioSound.audioContext;
+                xhr = new XMLHttpRequest();
+                xhr.open('GET', src, true);
+                xhr.responseType = 'arraybuffer';
+                xhr.onload = function () {
+                    actx.decodeAudioData(xhr.response, function (buffer) {
+                        sound.buffer = buffer;
+                        sound.dispatchEvent(new enchant.Event(enchant.Event.LOAD));
+                    }, dispatchErrorEvent);
+                };
+                xhr.onerror = dispatchErrorEvent;
+                xhr.send(null);
+            } else {
+                setTimeout(dispatchErrorEvent, 50);
+            }
+            return sound;
+        }
+    }
+
+    export const Sound = AudioContext && enchant.ENV.USE_WEBAUDIO ? WebAudioSound : DOMSound;
 }

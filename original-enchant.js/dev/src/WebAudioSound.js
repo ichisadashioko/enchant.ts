@@ -7,14 +7,7 @@ enchant.WebAudioSound = enchant.Class.create(enchant.EventTarget, {
     /**
      * @name enchant.WebAudioSound
      * @class
-     [lang:ja]
-     * WebAudioをラップしたクラス.
-     [/lang]
-     [lang:en]
      * Sound wrapper class for Web Audio API (supported on some webkit-based browsers)
-     [/lang]
-     [lang:de]
-     [/lang]
      * @constructs
      * @extends enchant.EventTarget
      */
@@ -36,18 +29,8 @@ enchant.WebAudioSound = enchant.Class.create(enchant.EventTarget, {
         this.connectTarget = enchant.WebAudioSound.destination;
     },
     /**
-     [lang:ja]
-     * 再生を開始する.
-     * @param {Boolean} [dup=false] trueならオブジェクトの現在の再生を残したまま新しく音声を再生する.
-     [/lang]
-     [lang:en]
      * Begin playing.
      * @param {Boolean} [dup=false] If true, Object plays new sound while keeps last sound.
-     [/lang]
-     [lang:de]
-     * Startet die Wiedergabe.
-     * @param {Boolean} [dup=false] Wenn true, Objekt spielt neuen Sound während im letzten Ton hält.
-     [/lang]
      */
     play: function(dup) {
         if (this._state === 1 && !dup) {
@@ -78,15 +61,7 @@ enchant.WebAudioSound = enchant.Class.create(enchant.EventTarget, {
         this._state = 1;
     },
     /**
-     [lang:ja]
-     * 再生を中断する.
-     [/lang]
-     [lang:en]
      * Pause playback.
-     [/lang]
-     [lang:de]
-     * Pausiert die Wiedergabe.
-     [/lang]
      */
     pause: function() {
         var currentTime = this.currentTime;
@@ -102,15 +77,7 @@ enchant.WebAudioSound = enchant.Class.create(enchant.EventTarget, {
         this._state = 2;
     },
     /**
-     [lang:ja]
-     * 再生を停止する.
-     [/lang]
-     [lang:en]
      * Stop playing.
-     [/lang]
-     [lang:de]
-     * Stoppt die Wiedergabe.
-     [/lang]
      */
     stop: function() {
         if (this.src.stop != null) {
@@ -121,18 +88,8 @@ enchant.WebAudioSound = enchant.Class.create(enchant.EventTarget, {
         this._state = 0;
     },
     /**
-     [lang:ja]
-     * Soundを複製する.
-     * @return {enchant.WebAudioSound} 複製されたSound.
-     [/lang]
-     [lang:en]
      * Create a copy of this Sound object.
      * @return {enchant.WebAudioSound} Copied Sound.
-     [/lang]
-     [lang:de]
-     * Erstellt eine Kopie dieses Soundobjektes.
-     * @return {enchant.WebAudioSound} Kopiertes Sound Objekt.
-     [/lang]
      */
     clone: function() {
         var sound = new enchant.WebAudioSound();
@@ -140,15 +97,7 @@ enchant.WebAudioSound = enchant.Class.create(enchant.EventTarget, {
         return sound;
     },
     /**
-     [lang:ja]
-     * Soundの再生時間 (秒).
-     [/lang]
-     [lang:en]
      * Sound file duration (seconds).
-     [/lang]
-     [lang:de]
-     * Die länge der Sounddatei in Sekunden.
-     [/lang]
      * @type Number
      */
     duration: {
@@ -161,15 +110,7 @@ enchant.WebAudioSound = enchant.Class.create(enchant.EventTarget, {
         }
     },
     /**
-     [lang:ja]
-     * ボリューム. 0 (無音) ～ 1 (フルボリューム).
-     [/lang]
-     [lang:en]
      * Volume. 0 (muted) ～ 1 (full volume).
-     [/lang]
-     [lang:de]
-     * Lautstärke. 0 (stumm) ～ 1 (volle Lautstärke).
-     [/lang]
      * @type Number
      */
     volume: {
@@ -185,15 +126,7 @@ enchant.WebAudioSound = enchant.Class.create(enchant.EventTarget, {
         }
     },
     /**
-     [lang:ja]
-     * 現在の再生位置 (秒).
-     [/lang]
-     [lang:en]
      * Current playback position (seconds).
-     [/lang]
-     [lang:de]
-     * Aktuelle Wiedergabeposition (seconds).
-     [/lang]
      * @type Number
      */
     currentTime: {
@@ -210,27 +143,11 @@ enchant.WebAudioSound = enchant.Class.create(enchant.EventTarget, {
 });
 
 /**
- [lang:ja]
- * 音声ファイルを読み込んでWebAudioSoundオブジェクトを作成する.
- * @param {String} src ロードする音声ファイルのパス.
- * @param {String} [type] 音声ファイルのMIME Type.
- * @param {Function} [callback] ロード完了時のコールバック.
- * @param {Function} [onerror] ロード失敗時のコールバック.
- [/lang]
- [lang:en]
  * Loads an audio file and creates WebAudioSound object.
  * @param {String} src Path of the audio file to be loaded.
  * @param {String} [type] MIME Type of the audio file.
  * @param {Function} [callback] on load callback.
  * @param {Function} [onerror] on error callback.
- [/lang]
- [lang:de]
- * Läd eine Audio Datei und erstellt ein WebAudioSound objekt.
- * @param {String} src Pfad zu der zu ladenden Audiodatei.
- * @param {String} [type] MIME Type der Audtiodatei.
- * @param {Function} [callback]
- * @param {Function} [onerror]
- [/lang]
  * @return {enchant.WebAudioSound} WebAudioSound
  * @static
  */

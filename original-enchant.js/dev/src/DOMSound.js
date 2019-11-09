@@ -5,17 +5,6 @@ enchant.DOMSound = enchant.Class.create(enchant.EventTarget, {
     /**
      * @name enchant.DOMSound
      * @class
-     [lang:ja]
-     * audio要素をラップしたクラス.
-     *
-     * MP3ファイルの再生はSafari, Chrome, Firefox, Opera, IEが対応
-     * (Firefox, OperaではFlashを経由して再生). WAVEファイルの再生は
-     * Safari, Chrome, Firefox, Operaが対応している. ブラウザが音声ファイル
-     * のコーデックに対応していない場合は再生されない.
-     *
-     * コンストラクタではなく {@link enchant.DOMSound.load} を通じてインスタンスを作成する.
-     [/lang]
-     [lang:en]
      * Class to wrap audio elements.
      *
      * Safari, Chrome, Firefox, Opera, and IE all play MP3 files
@@ -24,48 +13,20 @@ enchant.DOMSound = enchant.Class.create(enchant.EventTarget, {
      * the used codec the file will not play.
      *
      * Instances are created not via constructor but via {@link enchant.DOMSound.load}.
-     [/lang]
-     [lang:de]
-     * Klasse die eine Hüllenklasse (Wrapper) für Audio Elemente darstellt.
-     *
-     * Safari, Chrome, Firefox, Opera, und IE können alle MP3 Dateien abspielen
-     * (Firefox und Opera spielen diese mit Hilfe von Flash ab). WAVE Dateien können
-     * Safari, Chrome, Firefox, and Opera abspielen. Sollte der Browser nicht mit
-     * dem genutzten Codec kompatibel sein, wird die Datei nicht abgespielt.
-     *
-     * Instanzen dieser Klasse werden nicht mit Hilfe des Konstruktors, sondern mit
-     * {@link enchant.DOMSound.load} erstellt.
-     [/lang]
      * @constructs
      * @extends enchant.EventTarget
      */
     initialize: function() {
         enchant.EventTarget.call(this);
         /**
-         [lang:ja]
-         * Soundの再生時間 (秒).
-         [/lang]
-         [lang:en]
          * Sound file duration (seconds).
-         [/lang]
-         [lang:de]
-         * Die länge der Sounddatei in Sekunden.
-         [/lang]
          * @type Number
          */
         this.duration = 0;
         throw new Error("Illegal Constructor");
     },
     /**
-     [lang:ja]
-     * 再生を開始する.
-     [/lang]
-     [lang:en]
      * Begin playing.
-     [/lang]
-     [lang:de]
-     * Startet die Wiedergabe.
-     [/lang]
      */
     play: function() {
         if (this._element) {
@@ -73,15 +34,7 @@ enchant.DOMSound = enchant.Class.create(enchant.EventTarget, {
         }
     },
     /**
-     [lang:ja]
-     * 再生を中断する.
-     [/lang]
-     [lang:en]
      * Pause playback.
-     [/lang]
-     [lang:de]
-     * Pausiert die Wiedergabe.
-     [/lang]
      */
     pause: function() {
         if (this._element) {
@@ -89,33 +42,15 @@ enchant.DOMSound = enchant.Class.create(enchant.EventTarget, {
         }
     },
     /**
-     [lang:ja]
-     * 再生を停止する.
-     [/lang]
-     [lang:en]
      * Stop playing.
-     [/lang]
-     [lang:de]
-     * Stoppt die Wiedergabe.
-     [/lang]
      */
     stop: function() {
         this.pause();
         this.currentTime = 0;
     },
     /**
-     [lang:ja]
-     * Soundを複製する.
-     * @return {enchant.DOMSound} 複製されたSound.
-     [/lang]
-     [lang:en]
      * Create a copy of this Sound object.
      * @return {enchant.DOMSound} Copied Sound.
-     [/lang]
-     [lang:de]
-     * Erstellt eine Kopie dieses Soundobjektes.
-     * @return {enchant.DOMSound} Kopiertes Sound Objekt.
-     [/lang]
      */
     clone: function() {
         var clone;
@@ -133,15 +68,7 @@ enchant.DOMSound = enchant.Class.create(enchant.EventTarget, {
         return clone;
     },
     /**
-     [lang:ja]
-     * 現在の再生位置 (秒).
-     [/lang]
-     [lang:en]
      * Current playback position (seconds).
-     [/lang]
-     [lang:de]
-     * Aktuelle Wiedergabeposition (seconds).
-     [/lang]
      * @type Number
      */
     currentTime: {
@@ -155,15 +82,7 @@ enchant.DOMSound = enchant.Class.create(enchant.EventTarget, {
         }
     },
     /**
-     [lang:ja]
-     * ボリューム. 0 (無音) ～ 1 (フルボリューム).
-     [/lang]
-     [lang:en]
      * Volume. 0 (muted) ～ 1 (full volume).
-     [/lang]
-     [lang:de]
-     * Lautstärke. 0 (stumm) ～ 1 (volle Lautstärke).
-     [/lang]
      * @type Number
      */
     volume: {
@@ -179,27 +98,11 @@ enchant.DOMSound = enchant.Class.create(enchant.EventTarget, {
 });
 
 /**
- [lang:ja]
- * 音声ファイルを読み込んでDOMSoundオブジェクトを作成する.
- * @param {String} src ロードする音声ファイルのパス.
- * @param {String} [type] 音声ファイルのMIME Type.
- * @param {Function} [callback] ロード完了時のコールバック.
- * @param {Function} [onerror] ロード失敗時のコールバック.
- [/lang]
- [lang:en]
  * Loads an audio file and creates DOMSound object.
  * @param {String} src Path of the audio file to be loaded.
  * @param {String} [type] MIME Type of the audio file.
  * @param {Function} [callback] on load callback.
  * @param {Function} [onerror] on error callback.
- [/lang]
- [lang:de]
- * Läd eine Audio Datei und erstellt ein DOMSound objekt.
- * @param {String} src Pfad zu der zu ladenden Audiodatei.
- * @param {String} [type] MIME Type der Audtiodatei.
- * @param {Function} [callback]
- * @param {Function} [onerror]
- [/lang]
  * @return {enchant.DOMSound} DOMSound
  * @static
  */
