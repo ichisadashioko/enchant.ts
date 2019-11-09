@@ -38,9 +38,9 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 
 __sound support__
 
-- [ ] `DOMSound.js`
-- [ ] `WebAudioSound.js`
-- [ ] `Sound.js`
+- [x] `DOMSound.js`
+- [x] `WebAudioSound.js`
+- [x] `Sound.js`
 
 __animation feature__
 
