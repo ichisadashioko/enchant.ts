@@ -5,7 +5,8 @@
     "type": "git"
   },
   "scripts": {},
-  "devDependencies": {
-    "webpack": "^4.41.2"
+  "dependencies": {
+    "source-map": "^0.7.3",
+    "typescript": "^3.7.2"
   }
 }

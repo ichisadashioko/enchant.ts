@@ -33,7 +33,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [ ] `LoadingScene.js`
 - [ ] `CanvasScene.js`
 - [ ] `DOMScene.js`
-- [ ] `Surface.js`
+- [x] `Surface.js`
 - [ ] `Deferred.js`
 
 __sound support__
