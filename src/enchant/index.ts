@@ -1083,13 +1083,19 @@ namespace enchant {
         }
     }
 
-    export class Scene extends enchant.Group {
+    export class Scene extends Group {
 
     }
 
-    export const STAGE_ID = 'enchant-stage';
-
-    export class Core extends enchant.EventTarget {
+    /**
+     * A class for controlling the core's main loop and scenes.
+     * 
+     * There can be only one instance at a time. 
+     * When the constructor is executed while an instance exists, 
+     * the existing instance will be overwritten. 
+     * The existing instance can be accessed from `enchant.Core.instance`.
+     */
+    export class Core extends EventTarget {
         static instance: Core;
 
         _calledTime: number;
@@ -1196,13 +1202,15 @@ namespace enchant {
             width = width || 320;
             height = height || 320;
 
-            let stage = document.getElementById(enchant.STAGE_ID);
+            const stageId = 'enchant-stage';
+
+            let stage = document.getElementById(stageId);
 
             // @TODO compute scale for every frame for dynamic resizing.
             let scale: number, sWidth: number, sHeight: number;
             if (!stage) {
                 stage = document.createElement('div');
-                stage.id = enchant.STAGE_ID;
+                stage.id = stageId;
                 stage.style.position = 'absolute';
 
                 if (document.body.firstChild) {
