@@ -5,83 +5,36 @@ enchant.BinaryInputManager = enchant.Class.create(enchant.InputManager, {
     /**
      * @name enchant.BinaryInputManager
      * @class
-     [lang:ja]
-     * 入力を管理するためのクラス.
-     * @param {*} flagStore 入力のフラグを保持させるオブジェクト.
-     * @param {String} activeEventNameSuffix イベント名の接尾辞.
-     * @param {String} inactiveEventNameSuffix イベント名の接尾辞.
-     * @param {*} [source=this] イベントに付加される入力のソース.
-     [/lang]
-     [lang:en]
      * Class for managing input.
      * @param {*} flagStore object that store input flag.
      * @param {String} activeEventNameSuffix event name suffix.
      * @param {String} inactiveEventNameSuffix event name suffix.
      * @param {*} [source=this] source that will be added to event object.
-     [/lang]
-     [lang:de]
-     * @param {*} flagStore
-     * @param {String} activeEventNameSuffix
-     * @param {String} inactiveEventNameSuffix
-     * @param {*} [source=this] source
-     [/lang]
      * @constructs
      * @extends enchant.InputManager
      */
     initialize: function(flagStore, activeEventNameSuffix, inactiveEventNameSuffix, source) {
         enchant.InputManager.call(this, flagStore, source);
         /**
-         [lang:ja]
-         * アクティブな入力の数.
-         [/lang]
-         [lang:en]
          * The number of active inputs.
-         [/lang]
-         [lang:de]
-         [/lang]
          * @type Number
          */
         this.activeInputsNum = 0;
         /**
-         [lang:ja]
-         * BinaryInputManagerが発行するイベント名の接尾辞.
-         [/lang]
-         [lang:en]
          * event name suffix that dispatched by BinaryInputManager.
-         [/lang]
-         [lang:de]
-         [/lang]
          * @type String
          */
         this.activeEventNameSuffix = activeEventNameSuffix;
         /**
-         [lang:ja]
-         * BinaryInputManagerが発行するイベント名の接尾辞.
-         [/lang]
-         [lang:en]
          * event name suffix that dispatched by BinaryInputManager.
-         [/lang]
-         [lang:de]
-         [/lang]
          * @type String
          */
         this.inactiveEventNameSuffix = inactiveEventNameSuffix;
     },
     /**
-     [lang:ja]
-     * 特定の入力に名前をつける.
-     * @param {enchant.BinaryInputSource} inputSource {@link enchant.InputSource}のインスタンス.
-     * @param {String} name 入力につける名前.
-     [/lang]
-     [lang:en]
      * Name specified input.
      * @param {enchant.BinaryInputSource} inputSource input source.
      * @param {String} name input name.
-     [/lang]
-     [lang:de]
-     * @param {enchant.BinaryInputSource} inputSource
-     * @param {String} name
-     [/lang]
      * @see enchant.InputManager#bind
      */
     bind: function(binaryInputSource, name) {

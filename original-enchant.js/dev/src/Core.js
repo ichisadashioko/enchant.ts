@@ -139,28 +139,13 @@
             this.rootScene = new enchant.Scene();
             this.pushScene(this.rootScene);
             /**
-             [lang:ja]
-             * ローディング時に表示されるScene.
-             [/lang]
-             [lang:en]
              * The Scene to be displayed during loading.
-             [/lang]
-             [lang:de]
-             * Die Szene, welche während des Ladevorgangs dargestellt wird.
-             [/lang]
              * @type enchant.Scene
              */
             this.loadingScene = new enchant.LoadingScene();
 
             /**
-             [lang:ja]
-             * 一度でも {@link enchant.Core#start} が呼ばれたことがあるかどうか.
-             [/lang]
-             [/lang:ja]
              * Indicates whether or not {@link enchant.Core#start} has been called.
-             [/lang]
-             [lang:de]
-             [/lang]
              * @type Boolean
              * @private
              */
@@ -836,17 +821,6 @@
         },
 
         /**
-         [lang:ja]
-         * 新しいSceneに移行する.
-         *
-         * Sceneはスタック状に管理されており, 表示順序もスタックに積み上げられた順に従う.
-         * enchant.Core#pushSceneを行うとSceneをスタックの一番上に積むことができる. スタックの
-         * 一番上のSceneに対してはフレームの更新が行われる.
-         *
-         * @param {enchant.Scene} scene 移行する新しいScene.
-         * @return {enchant.Scene} 新しいScene.
-         [/lang]
-         [lang:en]
          * Switches to a new Scene.
          *
          * Scenes are controlled using a stack, with the top scene on
@@ -857,19 +831,6 @@
          *
          * @param {enchant.Scene} scene The new scene to display.
          * @return {enchant.Scene} The new Scene.
-         [/lang]
-         [lang:de]
-         * Wechselt zu einer neuen Szene.
-         *
-         * Szenen werden durch einen Stapelspeicher kontrolliert und die Darstellungsreihenfolge
-         * folgt ebenfalls der Ordnung des Stapelspeichers.
-         * Wenn die {@link enchant.Core#pushScene} Methode ausgeführt wird, wird die Szene auf dem
-         * Stapelspeicher oben abgelegt. Der Frame wird immer in der Szene ganz oben auf dem Stapelspeicher
-         * aktualisiert.
-         *
-         * @param {enchant.Scene} scene Die neue Szene zu der gewechselt werden soll.
-         * @return {enchant.Scene} Die neue Szene.
-         [/lang]
          */
         pushScene: function(scene) {
             this._element.appendChild(scene._element);

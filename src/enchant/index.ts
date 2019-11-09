@@ -492,6 +492,11 @@ namespace enchant {
         node?: Node;
 
         message?: string;
+        next?: any;
+
+        // InputSource
+        data?: boolean;
+        source?: InputSource;
 
         /**
          * A class for an independent implementation of events similar to DOM Events.
@@ -682,7 +687,7 @@ namespace enchant {
         assets: object;
 
         _assets: [];
-        _scenes: [];
+        _scenes: Scene[];
 
         /**
          * The `Scene` which is currently displayed. This `Scene` is on top of the `Scene` stack.
@@ -693,6 +698,16 @@ namespace enchant {
          * The root Scene. The Scene at the bottom of the Scene stack.
          */
         rootScene: Scene;
+
+        /**
+         * The Scene to be displayed during loading.
+         */
+        loadingScene: LoadingScene;
+
+        /**
+         * Indicates whether or not `echant.Core.start` has been called.
+         */
+        _activated: boolean;
 
         /**
          * Object that saves the current input state for the core.
@@ -828,6 +843,27 @@ namespace enchant {
             this._keybind = this.keyboardInputManager._binds;
         }
 
+        /**
+         * Switches to a new Scene.
+         * 
+         * Scenes are controlled using a stack, 
+         * with the top scene on the stack being the one displayed.
+         * 
+         * When `enchant.Core.pushScene` is executed, 
+         * the Scene is placed on top of the stack. 
+         * Frames will be only updated for the Scene which is on the top of the stack.
+         * 
+         * @param scene The new scene to display.
+         */
+        pushScene(scene: Scene) {
+            this._element.appendChild(scene._element);
+            if (this.currentScene) {
+                this.currentScene.dispatchEvent(new enchant.Event('exit'));
+            }
+            this.currentScene = scene;
+            this.currentScene.dispatchEvent(new enchant.Event('enter'));
+            return this._scenes.push(scene);
+        }
 
         _dispatchCoreResizeEvent() {
             let e = new Event('coreresize');
@@ -932,23 +968,150 @@ namespace enchant {
         }
     }
 
-    export class Game {
+    /**
+     * enchant.Game is moved to `enchant.Core` from v0.6
+     * @deprecated
+     */
+    export const Game = Core;
 
+    /**
+     * Class for managing input.
+     */
+    export class InputManager extends EventTarget {
+
+        /**
+         * Array that store event target.
+         */
+        broadcastTarget: EventTarget[];
+
+        /**
+         * Object that store input state.
+         */
+        valueStore: object;
+
+        /**
+         * source that will be added to event object.
+         */
+        source: object;
+
+        _binds: object;
+        _stateHandler: any;
+
+        constructor(valueStore, source?) {
+            super()
+            this.broadcastTarget = [];
+            this.valueStore = valueStore;
+            this.source = source || this;
+            this._binds = {};
+
+            this._stateHandler = function (e) {
+                let id = e.source.identifier;
+                let name = this._binds[id];
+                this.changeState(name, e.data);
+            }.bind(this);
+        }
+
+        bind(inputSource: InputSource, name: string){
+            inputSource.addEventListener(enchant.Event.INPUT_STATE_CHANGED, this._stateHandler);
+        }
     }
 
-    export class InputManager {
+    /**
+     * Class that wrap input.
+     */
+    export class InputSource extends EventTarget {
+        identifier: string;
+        constructor(identifier: string) {
+            super();
+            this.identifier = identifier;
+        }
 
+        notifyStateChange(data: boolean) {
+            let e = new enchant.Event(enchant.Event.INPUT_STATE_CHANGED);
+            e.data = data;
+            e.source = this;
+            this.dispatchEvent(e);
+        }
     }
 
-    export class InputSource {
+    /**
+     * Class for managing input.
+     */
+    export class BinaryInputManager extends InputManager {
+        /**
+         * The number of active inputs.
+         */
+        activeInputsNum: number;
 
-    }
+        /**
+         * event name suffix that dispatched by BinaryInputManager.
+         */
+        activeEventNameSuffix: string;
 
-    export class BinaryInputManager {
+        /**
+         * event name suffix that dispatched by BinaryInputManager.
+         */
+        inactiveEventNameSuffix: string;
 
+        constructor(flagStore, activeEventNameSuffix: string, inactiveEventNameSuffix: string, source) {
+            super(flagStore, source);
+            this.activeInputsNum = 0;
+            this.activeEventNameSuffix = activeEventNameSuffix;
+            this.inactiveEventNameSuffix = inactiveEventNameSuffix;
+        }
+
+        bind(binaryInputSource: BinaryInputSource, name: string) {
+
+        }
     }
 
     export class BinaryInputSource {
+
+    }
+
+    /**
+     * Class that manage keyboard input.
+     */
+    export class KeyboardInputManager extends BinaryInputManager {
+        constructor(domElement: HTMLElement, flagStore) {
+            super(flagStore, 'buttondown', 'buttonup');
+            this._attachDOMEvent(domElement, 'keydown', true);
+            this._attachDOMEvent(domElement, 'keyup', false);
+        }
+
+        /**
+         * Call `enchant.BinaryInputManager.bind` with `BinaryInputSource` equivalent of key code.
+         * @param keyCode key code
+         * @param name input name
+         */
+        keybind(keyCode: number, name: string) {
+            this.bind(enchant.KeyboardInputSource.getByKeyCode('' + keyCode), name);
+        }
+
+        /**
+         * Call `enchant.BinaryInputManager.unbind` with `BinaryInputSource` equivalent of key code.
+         * @param keyCode key code
+         */
+        keyunbind(keyCode: number) {
+            this.unbind(enchant.KeyboardInputSource.getByKeyCode('' + keyCode));
+        }
+
+        _attachDOMEvent(domElement: HTMLElement, eventType: string, state: boolean) {
+            domElement.addEventListener(eventType, function (e: KeyboardEvent) {
+                let core = enchant.Core.instance;
+                if (!core || !core.running) {
+                    return;
+                }
+                let code = e.keyCode;
+                let source = enchant.KeyboardInputSource._instances[code];
+                if (source) {
+                    source.notifyStateChange(state);
+                }
+            }, true)
+        }
+    }
+
+    export class KeyboardInputSource {
 
     }
 
@@ -1267,6 +1430,25 @@ namespace enchant {
             });
         }
 
+        addChild(node: Node) {
+            if (node.parentNode) {
+                node.parentNode.removeChild(node);
+            }
+
+            this.childNodes.push(node);
+            node.parentNode = this;
+            let childAdded = new enchant.Event('childadded');
+            childAdded.node = node;
+            childAdded.next = null;
+            this.dispatchEvent(childAdded);
+            node.dispatchEvent(new enchant.Event('added'));
+            if (this.scene) {
+                node.scene = this.scene;
+                let addedToScene = new enchant.Event('addedtoscene');
+                node.dispatchEvent(addedToScene);
+            }
+        }
+
         /**
          * Remove a Node from the Group.
          * @param node Node to be deleted.
@@ -1386,8 +1568,106 @@ namespace enchant {
 
     }
 
+    /**
+     * Class that becomes the root of the display object tree.
+     * 
+     * Child `Entity` objects are distributed to the Scene layer according to the drawing method.
+     * The DOM of each Scene layer has an `enchant.DOMLayer` 
+     * and an `enchant.CanvasLayer` and is drawn using the Canvas.
+     * 
+     * Scenes are drawn in the order that they are added.
+     * 
+     * @example
+     * var scene = new Scene();
+     * scene.addChild(player);
+     * scene.addChild(enemy);
+     * core.pushScene(scene);
+     */
     export class Scene extends Group {
+        _backgroundColor;
+        _element: HTMLElement;
+        _layers: object;
+        _layerPriority: [];
 
+        constructor() {
+            super();
+
+            let core = Core.instance;
+
+            // All nodes (entities, groups, scenes) have reference to the scene that it belongs to.
+            this.scene = this;
+
+            this._backgroundColor = null;
+
+            // Create div tag which prossesses its layers
+            this._element = document.createElement('div');
+            this._element.style.position = 'absolute';
+            this._element.style.overflow = 'hidden';
+            this._element.style.transformOrigin = '0 0';
+
+            this._layers = {};
+            this._layerPriority = [];
+
+            this.addEventListener(Event.CHILD_ADDED, this._onchildadded);
+            this.addEventListener(Event.CHILD_REMOVED, this._onchildremoved);
+            this.addEventListener(Event.ENTER, this._onenter);
+            this.addEventListener(Event.EXIT, this._onexit);
+
+            this.addEventListener(Event.CORE_RESIZE, this._oncoreresize);
+
+            this._oncoreresize(core);
+        }
+
+        _dispatchExitframe() {
+            let layer;
+            for (let prop in this._layers) {
+                layer = this._layers[prop];
+                layer.dispatchEvent(new enchant.Event(Event.EXIT_FRAME));
+            }
+        }
+
+        _oncoreresize(e) {
+
+        }
+
+        _onchildadded(e) {
+            let child = e.node;
+            let next = e.next;
+            let target: string, i: number;
+            if (child._element) {
+                target = 'Dom';
+                i = 1;
+            } else {
+                target = 'Canvas';
+                i = 0;
+            }
+            if (!this._layers[target]) {
+                this.addLayer(target, i);
+            }
+            child._layer = this._layers[target];
+            this._layers[target].insertBefore(child, next);
+            child.parentNode = this;
+        }
+
+        _onchildremoved(e) {
+            let child = e.node;
+            child._layer.removeChild(child);
+            child._layer = null;
+        }
+
+        _onenter() {
+            for (let type in this._layers) {
+                this._layers[type]._startRendering();
+            }
+            enchant.Core.instance.addEventListener('exitframe', this._dispatchExitframe);
+        }
+
+        _onexit() {
+            for (let type in this._layers) {
+                this._layers[type]._stopRendering();
+            }
+            enchant.Core.instance.removeEventListener('exitframe', this._dispatchExitframe);
+        }
     }
 
     export class LoadingScene {

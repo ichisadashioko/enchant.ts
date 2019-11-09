@@ -10,7 +10,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [x] `Event.js`
 - [x] `EventTarget.js`
 - [ ] `Core.js`
-- [ ] `Game.js`
+- [x] `Game.js`
 - [ ] `InputManager.js`
 - [ ] `InputSource.js`
 - [ ] `BinaryInputManager.js`

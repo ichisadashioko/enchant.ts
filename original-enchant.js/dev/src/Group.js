@@ -93,18 +93,8 @@ enchant.Group = enchant.Class.create(enchant.Node, {
             }, this);
     },
     /**
-     [lang:ja]
-     * GroupにNodeを追加する.
-     * @param {enchant.Node} node 追加するNode.
-     [/lang]
-     [lang:en]
      * Adds a Node to the Group.
      * @param {enchant.Node} node Node to be added.
-     [/lang]
-     [lang:de]
-     * Fügt einen Node zu der Gruppe hinzu.
-     * @param {enchant.Node} node Node der hinzugeügt werden soll.
-     [/lang]
      */
     addChild: function(node) {
         if (node.parentNode) {

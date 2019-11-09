@@ -5,20 +5,9 @@ enchant.InputManager = enchant.Class.create(enchant.EventTarget, {
     /**
      * @name enchant.InputManager
      * @class
-     [lang:ja]
-     * 入力を管理するためのクラス.
-     * @param {*} valueStore 入力の状態を保持させるオブジェクト.
-     * @param {*} [source=this] イベントに付加される入力のソース.
-     [/lang]
-     [lang:en]
      * Class for managing input.
      * @param {*} valueStore object that store input state.
      * @param {*} [source=this] source that will be added to event object.
-     [/lang]
-     [lang:de]
-     * @param {*} valueStore
-     * @param {*} [source=this]
-     [/lang]
      * @constructs
      * @extends enchant.EventTarget
      */
@@ -26,32 +15,17 @@ enchant.InputManager = enchant.Class.create(enchant.EventTarget, {
         enchant.EventTarget.call(this);
 
         /**
-         [lang:ja]
-         * 入力の変化を通知する対象を保持する配列.
-         [/lang]
-         [lang:en]
          * Array that store event target.
-         [/lang]
          * @type enchant.EventTarget[]
          */
         this.broadcastTarget = [];
         /**
-         [lang:ja]
-         * 入力の状態を保持する連想配列.
-         [/lang]
-         [lang:en]
          * Object that store input state.
-         [/lang]
          * @type Object
          */
         this.valueStore = valueStore;
         /**
-         [lang:ja]
-         * イベントに付加される入力のソース.
-         [/lang]
-         [lang:en]
          * source that will be added to event object.
-         [/lang]
          * @type Object
          */
         this.source = source || this;
@@ -65,22 +39,10 @@ enchant.InputManager = enchant.Class.create(enchant.EventTarget, {
         }.bind(this);
     },
     /**
-     [lang:ja]
-     * 特定の入力に名前をつける.
-     * 入力はフラグとイベントで監視できるようになる.
-     * @param {enchant.InputSource} inputSource {@link enchant.InputSource} のインスタンス.
-     * @param {String} name 入力につける名前.
-     [/lang]
-     [lang:en]
      * Name specified input.
      * Input can be watched by flag or event.
      * @param {enchant.InputSource} inputSource input source.
      * @param {String} name input name.
-     [/lang]
-     [lang:de]
-     * @param {enchant.InputSource} inputSource
-     * @param {String} name
-     [/lang]
      */
     bind: function(inputSource, name) {
         inputSource.addEventListener(enchant.Event.INPUT_STATE_CHANGED, this._stateHandler);
