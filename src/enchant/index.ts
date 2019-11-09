@@ -602,6 +602,357 @@ namespace enchant {
     }
 
     /**
+     * A class for controlling the core's main loop and scenes.
+     * 
+     * There can be only one instance at a time. 
+     * When the constructor is executed while an instance exists, 
+     * the existing instance will be overwritten. 
+     * The existing instance can be accessed from `enchant.Core.instance`.
+     */
+    export class Core extends EventTarget {
+        static instance: Core;
+
+        _calledTime: number;
+        _mousedownID: number;
+        _surfaceID: number;
+        _soundID: number;
+        _pageX: number;
+        _pageY: number;
+        _element: HTMLElement;
+
+        _width: number;
+        /**
+         * The width of the core screen.
+         */
+        get width(): number {
+            return this._width;
+        }
+        set width(w: number) {
+            this._width = w;
+            this._dispatchCoreResizeEvent();
+        }
+
+        _height: number;
+        /**
+         * The height of the core screen.
+         */
+        get height(): number {
+            return this._height;
+        }
+        set height(h: number) {
+            this._height = h;
+            this._dispatchCoreResizeEvent();
+        }
+
+        _scale: number;
+        /**
+         * The scaling of the core rendering.
+         */
+        get scale(): number {
+            return this._scale;
+        }
+        set scale(s: number) {
+            this._scale = s;
+            this._dispatchCoreResizeEvent();
+        }
+
+        /**
+         * The frame rate of the core.
+         */
+        fps: number;
+
+        /**
+         * The number of frames processed since the core was started.
+         */
+        frame: number;
+
+        /**
+         * Indicates whether or not the core can be executed.
+         */
+        ready: boolean;
+
+        /**
+         * Indicates whether or not the core is currently running.
+         */
+        running: boolean;
+
+        /**
+         * Object which stores loaded assets using their paths as keys.
+         */
+        assets: object;
+
+        _assets: [];
+        _scenes: [];
+
+        /**
+         * The `Scene` which is currently displayed. This `Scene` is on top of the `Scene` stack.
+         */
+        currentScene: Scene;
+
+        /**
+         * The root Scene. The Scene at the bottom of the Scene stack.
+         */
+        rootScene: Scene;
+
+        /**
+         * Object that saves the current input state for the core.
+         */
+        input: object;
+
+        keyboardInputManager: KeyboardInputManager;
+        _keybind;
+
+        constructor(width?: number, height?: number) {
+
+            if (window.document.body === null) {
+                // @TODO postpone initialization after `window.onload`
+                throw new Error('document.body is null. Please excute `new Core()` in window.onload.');
+            }
+
+            super();
+
+            let initial = true;
+            if (enchant.Core.instance) {
+                initial = false;
+                enchant.Core.instance.stop();
+            }
+
+            enchant.Core.instance = this;
+
+            this._calledTime = 0;
+            this._mousedownID = 0;
+            this._surfaceID = 0;
+            this._soundID = 0;
+
+            this._scenes = [];
+
+            width = width || 320;
+            height = height || 320;
+
+            const stageId = 'enchant-stage';
+
+            let stage = document.getElementById(stageId);
+
+            // @TODO compute scale for every frame for dynamic resizing.
+            let scale: number, sWidth: number, sHeight: number;
+            if (!stage) {
+                stage = document.createElement('div');
+                stage.id = stageId;
+                stage.style.position = 'absolute';
+
+                if (document.body.firstChild) {
+                    document.body.insertBefore(stage, document.body.firstChild);
+                } else {
+                    document.body.appendChild(stage);
+                }
+
+                scale = Math.min(
+                    window.innerWidth / width,
+                    window.innerHeight / height,
+                );
+
+                this._pageX = stage.getBoundingClientRect().left;
+                this._pageY = stage.getBoundingClientRect().top;
+            } else {
+                let style = window.getComputedStyle(stage);
+                sWidth = parseInt(style.width, 10);
+                sHeight = parseInt(style.height, 10);
+                if (sWidth && sHeight) {
+                    scale = Math.min(
+                        sWidth / width,
+                        sHeight / height,
+                    );
+                } else {
+                    scale = 1;
+                }
+
+                while (stage.firstChild) {
+                    stage.removeChild(stage.firstChild);
+                }
+
+                stage.style.position = 'relative';
+
+                let bounding = stage.getBoundingClientRect();
+                this._pageX = Math.round(window.scrollX || window.pageXOffset + bounding.left);
+                this._pageY = Math.round(window.scrollY || window.pageYOffset + bounding.top);
+            }
+
+            stage.style.fontSize = '12px';
+            stage.style.webkitTextSizeAdjust = 'none';
+            stage.style.webkitTapHighlightColor = 'rgba(0, 0, 0, 0)';
+            this._element = stage;
+
+            this.addEventListener('coreresize', this._oncoreresize);
+
+            this._width = width;
+            this._height = height;
+            this.scale = scale;
+
+            this.fps = 30;
+            this.frame = 0;
+            this.ready = false;
+            this.running = false;
+            this.assets = {}
+            let assets = this._assets = [];
+
+            // @TODO refactor
+            (function detectAssets(module: object) {
+                // check whether the `module` has `assets` property.
+                // if true then `preload` them.
+                if (module['assets']) {
+                    enchant.Core.instance.preload(module['assets']);
+                }
+
+                for (var prop in module) {
+                    if (module.hasOwnProperty(prop)) {
+                        if (typeof module[prop] === 'object' && module[prop] !== null && Object.getPrototypeOf(module[prop]) === Object.prototype) {
+                            detectAssets(module[prop]);
+                        }
+                    }
+                }
+            }(enchant))
+
+            this.currentScene = null;
+            this.rootScene = new Scene();
+            this.pushScene(this.rootScene);
+            this.loadingScene = new LoadingScene();
+            this._activated = false;
+
+            this._offsetX = 0;
+            this._offsetY = 0;
+
+            this.input = {};
+
+            this.keyboardInputManager = new KeyboardInputManager(window.document, this.input);
+            this.keyboardInputManager.addBoardcastTarget(this);
+            this._keybind = this.keyboardInputManager._binds;
+        }
+
+
+        _dispatchCoreResizeEvent() {
+            let e = new Event('coreresize');
+            e.width = this._width;
+            e.height = this._height;
+            e.scale = this._scale;
+            this.dispatchEvent(e);
+        }
+
+        _oncoreresize(e: enchant.Event) {
+            // @TODO Test the resize function as the original library did not resize at all.
+            this._element.style.width = Math.floor(this._width * this._scale) + 'px';
+            this._element.style.height = Math.floor(this._height * this._scale) + 'px';
+
+            // notify all the scenes of the resize event
+            let scene;
+            for (let i = 0, l = this._scenes.length; i < l; i++) {
+                scene = this._scenes[i];
+                scene.dispatchEvent(e);
+            }
+        }
+
+        /**
+         * File preloader.
+         * 
+         * Loads the files specified in the parameters when
+         * `enchant.Core.start` is called.
+         * When all files are loaded, a `enchant.Event.LOAD`
+         * event is dispatched from the Core object. Depending
+         * on the type of each file, different objects will be
+         * created and stored in `enchant.Core.assets` variable.
+         * 
+         * When an image file is loaded, a `enchant.Surface` is
+         * created. If a sound file is loaded, an `enchant.Sound` 
+         * object is created. Any other file type will be accessible
+         * as a string.
+         * 
+         * In addition, because this `Surface` object is created with
+         * `enchant.Surface.load`, it is not possible to manipulate
+         * the image directly.
+         * 
+         * @param assets Path of images to be preloaded.
+         */
+        preload(assets: string | string[] | Array<string>) {
+            if (!(assets instanceof Array)) {
+                assets = Array.prototype.slice.call(arguments)
+            }
+            Array.prototype.push.apply(this._assets, assets);
+            return this;
+        }
+
+        /**
+         * Stops the core.
+         * 
+         * The frame will not be updated, and player input will not be accepted anymore.
+         * Core can be restarted using {@link enchant.Core.resume}
+         */
+        stop() {
+            this.ready = false;
+            this.running = false;
+        }
+
+        static _loadImage(src, ext, callback, onerror) {
+            return Surface.load(src, callback, onerror);
+        }
+
+        static _loadSound(src, ext, callback, onerror) {
+            return Sound.load(src, 'audio/' + ext, callback, onerror);
+        }
+
+        static _loadFuncs = {
+            // image
+            'jpg': Core._loadImage,
+            'jpeg': Core._loadImage,
+            'gif': Core._loadImage,
+            'png': Core._loadImage,
+            'bmp': Core._loadImage,
+            // sound
+            'mp3': Core._loadSound,
+            'aac': Core._loadSound,
+            'm4a': Core._loadSound,
+            'wav': Core._loadSound,
+            'ogg': Core._loadSound,
+        }
+
+        /**
+         * Get the file extension from a path.
+         * @param path file path.
+         */
+        static findExt(path: string) {
+            let matched = path.match(/\.\w+$/);
+            if (matched && matched.length > 0) {
+                return matched[0].slice(1).toLowerCase();
+            }
+
+            // for data URI
+            if (path.indexOf('data:') === 0) {
+                return path.split(/[\/;]/)[1].toLowerCase();
+            }
+
+            return null;
+        }
+    }
+
+    export class Game {
+
+    }
+
+    export class InputManager {
+
+    }
+
+    export class InputSource {
+
+    }
+
+    export class BinaryInputManager {
+
+    }
+
+    export class BinaryInputSource {
+
+    }
+
+    /**
      * Base class for objects in the display tree which is rooted at a Scene.
      * 
      * Not to be used directly.
@@ -782,87 +1133,19 @@ namespace enchant {
         }
     }
 
-    /**
-     * Time-line class.
-     * 
-     * Class for managing the action.
-     * 
-     * For one node to manipulate the timeline of one must correspond.
-     * Time-line class has a method to add a variety of actions to itself,
-     * entities can be animated and various operations by using these briefly.
-     * You can choose time based and frame based (default) animation.
-     */
-    export class Timeline extends EventTarget {
-        node: Node;
-        queue: enchant.EventTarget[];
-        paused: boolean;
-        looped: boolean;
-        isFrameBased: boolean;
-        _parallel;
-        _activated: boolean;
+    export class Entity {
 
-        /**
-         * @param node target node.
-         */
-        constructor(node: Node) {
-            super();
+    }
 
-            this.node = node;
-            this.queue = [];
-            this.paused = false;
-            this.looped = false;
-            this.isFrameBased = true;
-            this._parallel = null;
-            this._activated = false;
+    export class Sprite {
 
-            this.addEventListener(enchant.Event.ENTER_FRAME, this._onenterframe);
-        }
+    }
 
-        /**
-         * 
-         * @param elapsed 
-         */
-        tick(elapsed: number) {
-            if (this.queue.length > 0) {
-                let action = this.queue[0];
-                if (action.frame === 0) {
-                    let f = new Event('actionstart');
-                    f.timeline = this;
-                    action.dispatchEvent(f);
-                }
+    export class Label {
 
-                let e = new Event('actiontick');
-                e.timeline = this;
-                e.elapsed = elapsed;
-                action.dispatchEvent(e);
-            }
-        }
+    }
 
-        _onenterframe(e) {
-            if (this.paused) {
-                return;
-            }
-
-            this.tick(this.isFrameBased ? 1 : e.elapsed);
-        }
-
-        _nodeEventListener(e) {
-            this.dispatchEvent(e);
-        }
-
-        _deactivateTimeline() {
-            if (this._activated) {
-                this._activated = false;
-                this.node.removeEventListener('enterframe', this._nodeEventListener);
-            }
-        }
-
-        _activateTimeline() {
-            if (!this._activated && !this.paused) {
-                this.node.addEventListener('enterframe', this._nodeEventListener);
-                this._activated = true;
-            }
-        }
+    export class Map {
 
     }
 
@@ -1083,313 +1366,40 @@ namespace enchant {
         }
     }
 
+    export class DetectColorManager {
+
+    }
+
+    export class DomManager {
+
+    }
+
+    export class DomLayer {
+
+    }
+
+    export class CanvasLayer {
+
+    }
+
+    export class CanvasRenderer {
+
+    }
+
     export class Scene extends Group {
 
     }
 
-    /**
-     * A class for controlling the core's main loop and scenes.
-     * 
-     * There can be only one instance at a time. 
-     * When the constructor is executed while an instance exists, 
-     * the existing instance will be overwritten. 
-     * The existing instance can be accessed from `enchant.Core.instance`.
-     */
-    export class Core extends EventTarget {
-        static instance: Core;
+    export class LoadingScene {
 
-        _calledTime: number;
-        _mousedownID: number;
-        _surfaceID: number;
-        _soundID: number;
-        _pageX: number;
-        _pageY: number;
-        _element: HTMLElement;
+    }
 
-        _width: number;
-        /**
-         * The width of the core screen.
-         */
-        get width(): number {
-            return this._width;
-        }
-        set width(w: number) {
-            this._width = w;
-            this._dispatchCoreResizeEvent();
-        }
+    export class CanvasScene {
 
-        _height: number;
-        /**
-         * The height of the core screen.
-         */
-        get height(): number {
-            return this._height;
-        }
-        set height(h: number) {
-            this._height = h;
-            this._dispatchCoreResizeEvent();
-        }
+    }
 
-        _scale: number;
-        /**
-         * The scaling of the core rendering.
-         */
-        get scale(): number {
-            return this._scale;
-        }
-        set scale(s: number) {
-            this._scale = s;
-            this._dispatchCoreResizeEvent();
-        }
+    export class DOMScene {
 
-        /**
-         * The frame rate of the core.
-         */
-        fps: number;
-
-        /**
-         * The number of frames processed since the core was started.
-         */
-        frame: number;
-
-        /**
-         * Indicates whether or not the core can be executed.
-         */
-        ready: boolean;
-
-        /**
-         * Indicates whether or not the core is currently running.
-         */
-        running: boolean;
-
-        /**
-         * Object which stores loaded assets using their paths as keys.
-         */
-        assets: object;
-
-        _assets: [];
-        _scenes: [];
-
-        /**
-         * The `Scene` which is currently displayed. This `Scene` is on top of the `Scene` stack.
-         */
-        currentScene: enchant.Scene;
-
-        constructor(width?: number, height?: number) {
-
-            if (window.document.body === null) {
-                // @TODO postpone initialization after `window.onload`
-                throw new Error('document.body is null. Please excute `new Core()` in window.onload.');
-            }
-
-            super();
-
-            let initial = true;
-            if (enchant.Core.instance) {
-                initial = false;
-                enchant.Core.instance.stop();
-            }
-
-            enchant.Core.instance = this;
-
-            this._calledTime = 0;
-            this._mousedownID = 0;
-            this._surfaceID = 0;
-            this._soundID = 0;
-
-            this._scenes = [];
-
-            width = width || 320;
-            height = height || 320;
-
-            const stageId = 'enchant-stage';
-
-            let stage = document.getElementById(stageId);
-
-            // @TODO compute scale for every frame for dynamic resizing.
-            let scale: number, sWidth: number, sHeight: number;
-            if (!stage) {
-                stage = document.createElement('div');
-                stage.id = stageId;
-                stage.style.position = 'absolute';
-
-                if (document.body.firstChild) {
-                    document.body.insertBefore(stage, document.body.firstChild);
-                } else {
-                    document.body.appendChild(stage);
-                }
-
-                scale = Math.min(
-                    window.innerWidth / width,
-                    window.innerHeight / height,
-                );
-
-                this._pageX = stage.getBoundingClientRect().left;
-                this._pageY = stage.getBoundingClientRect().top;
-            } else {
-                let style = window.getComputedStyle(stage);
-                sWidth = parseInt(style.width, 10);
-                sHeight = parseInt(style.height, 10);
-                if (sWidth && sHeight) {
-                    scale = Math.min(
-                        sWidth / width,
-                        sHeight / height,
-                    );
-                } else {
-                    scale = 1;
-                }
-
-                while (stage.firstChild) {
-                    stage.removeChild(stage.firstChild);
-                }
-
-                stage.style.position = 'relative';
-
-                let bounding = stage.getBoundingClientRect();
-                this._pageX = Math.round(window.scrollX || window.pageXOffset + bounding.left);
-                this._pageY = Math.round(window.scrollY || window.pageYOffset + bounding.top);
-            }
-
-            stage.style.fontSize = '12px';
-            stage.style.webkitTextSizeAdjust = 'none';
-            stage.style.webkitTapHighlightColor = 'rgba(0, 0, 0, 0)';
-            this._element = stage;
-
-            this.addEventListener('coreresize', this._oncoreresize);
-
-            this._width = width;
-            this._height = height;
-            this.scale = scale;
-
-            this.fps = 30;
-            this.frame = 0;
-            this.ready = false;
-            this.running = false;
-            this.assets = {}
-            let assets = this._assets = [];
-
-            // @TODO refactor
-            (function detectAssets(module: object) {
-                // check whether the `module` has `assets` property.
-                // if true then `preload` them.
-                if (module['assets']) {
-                    enchant.Core.instance.preload(module['assets']);
-                }
-
-                for (var prop in module) {
-                    if (module.hasOwnProperty(prop)) {
-                        if (typeof module[prop] === 'object' && module[prop] !== null && Object.getPrototypeOf(module[prop]) === Object.prototype) {
-                            detectAssets(module[prop]);
-                        }
-                    }
-                }
-            }(enchant))
-
-            this.currentScene = null;
-        }
-
-
-        _dispatchCoreResizeEvent() {
-            let e = new Event('coreresize');
-            e.width = this._width;
-            e.height = this._height;
-            e.scale = this._scale;
-            this.dispatchEvent(e);
-        }
-
-        _oncoreresize(e: enchant.Event) {
-            // @TODO Test the resize function as the original library did not resize at all.
-            this._element.style.width = Math.floor(this._width * this._scale) + 'px';
-            this._element.style.height = Math.floor(this._height * this._scale) + 'px';
-
-            // notify all the scenes of the resize event
-            let scene;
-            for (let i = 0, l = this._scenes.length; i < l; i++) {
-                scene = this._scenes[i];
-                scene.dispatchEvent(e);
-            }
-        }
-
-        /**
-         * File preloader.
-         * 
-         * Loads the files specified in the parameters when
-         * `enchant.Core.start` is called.
-         * When all files are loaded, a `enchant.Event.LOAD`
-         * event is dispatched from the Core object. Depending
-         * on the type of each file, different objects will be
-         * created and stored in `enchant.Core.assets` variable.
-         * 
-         * When an image file is loaded, a `enchant.Surface` is
-         * created. If a sound file is loaded, an `enchant.Sound` 
-         * object is created. Any other file type will be accessible
-         * as a string.
-         * 
-         * In addition, because this `Surface` object is created with
-         * `enchant.Surface.load`, it is not possible to manipulate
-         * the image directly.
-         * 
-         * @param assets Path of images to be preloaded.
-         */
-        preload(assets: string | string[] | Array<string>) {
-            if (!(assets instanceof Array)) {
-                assets = Array.prototype.slice.call(arguments)
-            }
-            Array.prototype.push.apply(this._assets, assets);
-            return this;
-        }
-
-        /**
-         * Stops the core.
-         * 
-         * The frame will not be updated, and player input will not be accepted anymore.
-         * Core can be restarted using {@link enchant.Core.resume}
-         */
-        stop() {
-            this.ready = false;
-            this.running = false;
-        }
-
-        static _loadImage(src, ext, callback, onerror) {
-            return Surface.load(src, callback, onerror);
-        }
-
-        static _loadSound(src, ext, callback, onerror) {
-            return Sound.load(src, 'audio/' + ext, callback, onerror);
-        }
-
-        static _loadFuncs = {
-            // image
-            'jpg': Core._loadImage,
-            'jpeg': Core._loadImage,
-            'gif': Core._loadImage,
-            'png': Core._loadImage,
-            'bmp': Core._loadImage,
-            // sound
-            'mp3': Core._loadSound,
-            'aac': Core._loadSound,
-            'm4a': Core._loadSound,
-            'wav': Core._loadSound,
-            'ogg': Core._loadSound,
-        }
-
-        /**
-         * Get the file extension from a path.
-         * @param path file path.
-         */
-        static findExt(path: string) {
-            let matched = path.match(/\.\w+$/);
-            if (matched && matched.length > 0) {
-                return matched[0].slice(1).toLowerCase();
-            }
-
-            // for data URI
-            if (path.indexOf('data:') === 0) {
-                return path.split(/[\/;]/)[1].toLowerCase();
-            }
-
-            return null;
-        }
     }
 
     /**
@@ -1612,6 +1622,10 @@ namespace enchant {
                 return this.clone().toDataURL();
             }
         }
+    }
+
+    export class Deferred {
+
     }
 
     /**
@@ -1923,4 +1937,108 @@ namespace enchant {
     }
 
     export const Sound = AudioContext && enchant.ENV.USE_WEBAUDIO ? WebAudioSound : DOMSound;
+
+    export class Easing {
+
+    }
+
+    export class ActionEventTarget {
+
+    }
+
+    /**
+     * Time-line class.
+     * 
+     * Class for managing the action.
+     * 
+     * For one node to manipulate the timeline of one must correspond.
+     * Time-line class has a method to add a variety of actions to itself,
+     * entities can be animated and various operations by using these briefly.
+     * You can choose time based and frame based (default) animation.
+     */
+    export class Timeline extends EventTarget {
+        node: Node;
+        queue: enchant.EventTarget[];
+        paused: boolean;
+        looped: boolean;
+        isFrameBased: boolean;
+        _parallel;
+        _activated: boolean;
+
+        /**
+         * @param node target node.
+         */
+        constructor(node: Node) {
+            super();
+
+            this.node = node;
+            this.queue = [];
+            this.paused = false;
+            this.looped = false;
+            this.isFrameBased = true;
+            this._parallel = null;
+            this._activated = false;
+
+            this.addEventListener(enchant.Event.ENTER_FRAME, this._onenterframe);
+        }
+
+        /**
+         * 
+         * @param elapsed 
+         */
+        tick(elapsed: number) {
+            if (this.queue.length > 0) {
+                let action = this.queue[0];
+                if (action.frame === 0) {
+                    let f = new Event('actionstart');
+                    f.timeline = this;
+                    action.dispatchEvent(f);
+                }
+
+                let e = new Event('actiontick');
+                e.timeline = this;
+                e.elapsed = elapsed;
+                action.dispatchEvent(e);
+            }
+        }
+
+        _onenterframe(e) {
+            if (this.paused) {
+                return;
+            }
+
+            this.tick(this.isFrameBased ? 1 : e.elapsed);
+        }
+
+        _nodeEventListener(e) {
+            this.dispatchEvent(e);
+        }
+
+        _deactivateTimeline() {
+            if (this._activated) {
+                this._activated = false;
+                this.node.removeEventListener('enterframe', this._nodeEventListener);
+            }
+        }
+
+        _activateTimeline() {
+            if (!this._activated && !this.paused) {
+                this.node.addEventListener('enterframe', this._nodeEventListener);
+                this._activated = true;
+            }
+        }
+
+    }
+
+    export class Action {
+
+    }
+
+    export class ParallelAction {
+
+    }
+
+    export class Tween {
+
+    }
 }

@@ -170,15 +170,7 @@
             this._offsetY = 0;
 
             /**
-             [lang:ja]
-             * アプリに対する入力状態を保存するオブジェクト.
-             [/lang]
-             [lang:en]
              * Object that saves the current input state for the core.
-             [/lang]
-             [lang:de]
-             * Objekt, welches den aktuellen Eingabestatus des Spieles speichert.
-             [/lang]
              * @type Object
              */
             this.input = {};
