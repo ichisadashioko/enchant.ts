@@ -11,9 +11,9 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [x] `EventTarget.js`
 - [ ] `Core.js`
   - [ ] `initialize`
-  - [ ] `_dispatchCoreResizeEvent`
-  - [ ] `_oncoreresize`
-  - [ ] `preload`
+  - [x] `_dispatchCoreResizeEvent`
+  - [x] `_oncoreresize`
+  - [x] `preload`
   - [ ] `load`
   - [ ] `start`
   - [ ] `_requestPreload`
@@ -23,7 +23,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [ ] `_callTick`
   - [ ] `_tick`
   - [ ] `getTime`
-  - [ ] `stop`
+  - [x] `stop`
   - [ ] `pause`
   - [ ] `resume`
   - [x] `pushScene`
@@ -35,7 +35,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [ ] `keyunbind`
   - [ ] `changeButtonState`
   - [ ] `getElapsedTime`
-  - [ ] `findExt`
+  - [x] `findExt`
 - [x] `Game.js`
 - [x] `InputManager.js`
   - [x] `initialize`
@@ -63,6 +63,15 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [ ] `CanvasLayer.js`
 - [ ] `CanvasRenderer.js`
 - [ ] `Scene.js`
+  - [x] `initialize`
+  - [ ] `remove`
+  - [ ] `_oncoreresize`
+  - [ ] `addLayer`
+  - [ ] `_determineEventTarget`
+  - [x] `_onchildadded`
+  - [x] `_onchildremoved`
+  - [x] `_onenter`
+  - [x] `_onexit`
 - [ ] `LoadingScene.js`
 - [ ] `CanvasScene.js`
 - [ ] `DOMScene.js`

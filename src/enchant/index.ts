@@ -810,7 +810,10 @@ namespace enchant {
             this.assets = {}
             let assets = this._assets = [];
 
-            // @TODO refactor
+            // Load module assets e.g.
+            // `ui.enchant.js` requires ['apad.png', 'pad.png', 'font0.png', 'icon0.png']
+            // this methods will walk through all the module properties and their properties
+            // to find the `assets` and `preload` them.
             (function detectAssets(module: object) {
                 // check whether the `module` has `assets` property.
                 // if true then `preload` them.
@@ -838,50 +841,9 @@ namespace enchant {
 
             this.input = {};
 
-            this.keyboardInputManager = new KeyboardInputManager(window.document, this.input);
-            this.keyboardInputManager.addBoardcastTarget(this);
+            this.keyboardInputManager = new KeyboardInputManager(window.document.body, this.input);
+            this.keyboardInputManager.addBroadcastTarget(this);
             this._keybind = this.keyboardInputManager._binds;
-        }
-
-        /**
-         * Switches to a new Scene.
-         * 
-         * Scenes are controlled using a stack, 
-         * with the top scene on the stack being the one displayed.
-         * 
-         * When `enchant.Core.pushScene` is executed, 
-         * the Scene is placed on top of the stack. 
-         * Frames will be only updated for the Scene which is on the top of the stack.
-         * 
-         * @param scene The new scene to display.
-         */
-        pushScene(scene: Scene) {
-            this._element.appendChild(scene._element);
-            if (this.currentScene) {
-                this.currentScene.dispatchEvent(new enchant.Event('exit'));
-            }
-            this.currentScene = scene;
-            this.currentScene.dispatchEvent(new enchant.Event('enter'));
-            return this._scenes.push(scene);
-        }
-
-        /**
-         * Ends the current Scene and returns to the previous Scene.
-         * 
-         * Scenes are controlled using a stack, with the top scene on the stack being the one displayed.
-         * When `enchant.Core.popScene` is executed, the Scene at the top of the stack is removed and returned.
-         * 
-         * @return Removed Scene.
-         */
-        popScene(): Scene {
-            if (this.currentScene === this.rootScene) {
-                return this.currentScene;
-            }
-            this._element.removeChild(this.currentScene._element);
-            this.currentScene.dispatchEvent(new enchant.Event('exit'));
-            this.currentScene = this._scenes[this._scenes.length - 2];
-            this.currentScene.dispatchEvent(new enchant.Event('enter'));
-            return this._scenes.pop();
         }
 
         _dispatchCoreResizeEvent() {
@@ -926,7 +888,7 @@ namespace enchant {
          * 
          * @param assets Path of images to be preloaded.
          */
-        preload(assets: string | string[] | Array<string>) {
+        preload(assets: string | string[]) {
             if (!(assets instanceof Array)) {
                 assets = Array.prototype.slice.call(arguments)
             }
@@ -943,6 +905,47 @@ namespace enchant {
         stop() {
             this.ready = false;
             this.running = false;
+        }
+
+        /**
+         * Switches to a new Scene.
+         * 
+         * Scenes are controlled using a stack, 
+         * with the top scene on the stack being the one displayed.
+         * 
+         * When `enchant.Core.pushScene` is executed, 
+         * the Scene is placed on top of the stack. 
+         * Frames will be only updated for the Scene which is on the top of the stack.
+         * 
+         * @param scene The new scene to display.
+         */
+        pushScene(scene: Scene) {
+            this._element.appendChild(scene._element);
+            if (this.currentScene) {
+                this.currentScene.dispatchEvent(new enchant.Event('exit'));
+            }
+            this.currentScene = scene;
+            this.currentScene.dispatchEvent(new enchant.Event('enter'));
+            return this._scenes.push(scene);
+        }
+
+        /**
+         * Ends the current Scene and returns to the previous Scene.
+         * 
+         * Scenes are controlled using a stack, with the top scene on the stack being the one displayed.
+         * When `enchant.Core.popScene` is executed, the Scene at the top of the stack is removed and returned.
+         * 
+         * @return Removed Scene.
+         */
+        popScene(): Scene {
+            if (this.currentScene === this.rootScene) {
+                return this.currentScene;
+            }
+            this._element.removeChild(this.currentScene._element);
+            this.currentScene.dispatchEvent(new enchant.Event('exit'));
+            this.currentScene = this._scenes[this._scenes.length - 2];
+            this.currentScene.dispatchEvent(new enchant.Event('enter'));
+            return this._scenes.pop();
         }
 
         static _loadImage(src, ext, callback, onerror) {
@@ -1683,7 +1686,6 @@ namespace enchant {
 
             // All nodes (entities, groups, scenes) have reference to the scene that it belongs to.
             this.scene = this;
-
             this._backgroundColor = null;
 
             // Create div tag which prossesses its layers
@@ -1717,7 +1719,7 @@ namespace enchant {
 
         }
 
-        _onchildadded(e) {
+        _onchildadded(e: Event) {
             let child = e.node;
             let next = e.next;
             let target: string, i: number;
@@ -1736,7 +1738,7 @@ namespace enchant {
             child.parentNode = this;
         }
 
-        _onchildremoved(e) {
+        _onchildremoved(e: Event) {
             let child = e.node;
             child._layer.removeChild(child);
             child._layer = null;
