@@ -56,6 +56,18 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [ ] `Label.js`
 - [ ] `Map.js`
 - [x] `Group.js`
+  - [x] `initialize`
+  - [x] `addChild`
+  - [x] `insertBefore`
+  - [x] `removeChild`
+  - [x] `firstChild`
+  - [x] `lastChild`
+  - [x] `rotation`
+  - [x] `scaleX`
+  - [x] `scaleY`
+  - [x] `originX`
+  - [x] `originY`
+  - [x] `_dirty`
 - [x] `Matrix.js`
 - [ ] `DetectColorManager.js`
 - [ ] `DomManager.js`
@@ -64,8 +76,8 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [ ] `CanvasRenderer.js`
 - [ ] `Scene.js`
   - [x] `initialize`
-  - [ ] `remove`
-  - [ ] `_oncoreresize`
+  - [x] `remove`
+  - [x] `_oncoreresize`
   - [ ] `addLayer`
   - [ ] `_determineEventTarget`
   - [x] `_onchildadded`

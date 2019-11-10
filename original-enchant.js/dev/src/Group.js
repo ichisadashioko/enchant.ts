@@ -5,23 +5,6 @@ enchant.Group = enchant.Class.create(enchant.Node, {
     /**
      * @name enchant.Group
      * @class
-     [lang:ja]
-     * 複数の {@link enchant.Node} を子に持つことができるクラス.
-     *
-     * @example
-     * var stage = new Group();
-     * stage.addChild(player);
-     * stage.addChild(enemy);
-     * stage.addChild(map);
-     * stage.addEventListener('enterframe', function() {
-     *     // playerの座標に従って全体をスクロールする
-     *     if (this.x > 64 - player.x) {
-     *         this.x = 64 - player.x;
-     *     }
-     * });
-     *
-     [/lang]
-     [lang:en]
      * A class that can hold multiple {@link enchant.Node}.
      *
      * @example
@@ -36,37 +19,12 @@ enchant.Group = enchant.Class.create(enchant.Node, {
      *     }
      * });
      *
-     [/lang]
-     [lang:de]
-     * Eine Klasse die mehrere {@link enchant.Node} beinhalten kann.
-     *
-     * @example
-     * var stage = new Group();
-     * stage.addChild(player);
-     * stage.addChild(enemy);
-     * stage.addChild(map);
-     * stage.addEventListener('enterframe', function() {
-     *     // Bewegt den gesamten Frame je nach der aktuelle Spielerposition.
-     *     if (this.x > 64 - player.x) {
-     *         this.x = 64 - player.x;
-     *     }
-     * });
-     *
-     [/lang]
      * @constructs
      * @extends enchant.Node
      */
     initialize: function() {
         /**
-         [lang:ja]
-         * 子のNode.
-         [/lang]
-         [lang:en]
          * Child Nodes.
-         [/lang]
-         [lang:de]
-         * Kind-Nodes.
-         [/lang]
          * @type enchant.Node[]
          */
         this.childNodes = [];
@@ -114,21 +72,9 @@ enchant.Group = enchant.Class.create(enchant.Node, {
         }
     },
     /**
-     [lang:ja]
-     * GroupにNodeを挿入する.
-     * @param {enchant.Node} node 挿入するNode.
-     * @param {enchant.Node} reference 挿入位置の前にあるNode.
-     [/lang]
-     [lang:en]
      * Incorporates Node into Group.
      * @param {enchant.Node} node Node to be incorporated.
      * @param {enchant.Node} reference Node in position before insertion.
-     [/lang]
-     [lang:de]
-     * Fügt einen Node vor einen anderen Node zu dieser Gruppe hinzu.
-     * @param {enchant.Node} node Der Node der hinzugefügt werden soll.
-     * @param {enchant.Node} reference Der Node der sich vor dem einzufügendem Node befindet.
-     [/lang]
      */
     insertBefore: function(node, reference) {
         if (node.parentNode) {
@@ -153,18 +99,8 @@ enchant.Group = enchant.Class.create(enchant.Node, {
         }
     },
     /**
-     [lang:ja]
-     * GroupからNodeを削除する.
-     * @param {enchant.Node} node 削除するNode.
-     [/lang]
-     [lang:en]
      * Remove a Node from the Group.
      * @param {enchant.Node} node Node to be deleted.
-     [/lang]
-     [lang:de]
-     * Entfernt einen Node aus der Gruppe.
-     * @param {enchant.Node} node Der Node der entfernt werden soll.
-     [/lang]
      */
     removeChild: function(node) {
         var i;
@@ -183,15 +119,7 @@ enchant.Group = enchant.Class.create(enchant.Node, {
         }
     },
     /**
-     [lang:ja]
-     * 最初の子Node.
-     [/lang]
-     [lang:en]
      * The Node which is the first child.
-     [/lang]
-     [lang:de]
-     * Der Node, welcher das erste Kind der Gruppe darstellt.
-     [/lang]
      * @type enchant.Node
      */
     firstChild: {
@@ -200,15 +128,7 @@ enchant.Group = enchant.Class.create(enchant.Node, {
         }
     },
     /**
-     [lang:ja]
-     * 最後の子Node.
-     [/lang]
-     [lang:en]
      * The Node which is the last child.
-     [/lang]
-     [lang:de]
-     * Der Node, welcher das letzte Kind der Gruppe darstellt.
-     [/lang]
      * @type enchant.Node
      */
     lastChild: {
@@ -217,15 +137,7 @@ enchant.Group = enchant.Class.create(enchant.Node, {
         }
     },
     /**
-    [lang:ja]
-    * Groupの回転角 (度数法).
-    [/lang]
-    [lang:en]
     * Group rotation angle (degree).
-    [/lang]
-    [lang:de]
-    * Rotationswinkel der Gruppe (Grad).
-    [/lang]
     * @type Number
     */
     rotation: {
@@ -240,15 +152,7 @@ enchant.Group = enchant.Class.create(enchant.Node, {
         }
     },
     /**
-    [lang:ja]
-    * Groupのx軸方向の倍率.
-    [/lang]
-    [lang:en]
     * Scaling factor on the x axis of the Group.
-    [/lang]
-    [lang:de]
-    * Skalierungsfaktor auf der x-Achse der Gruppe.
-    [/lang]
     * @type Number
     * @see enchant.Group#originX
     * @see enchant.Group#originY
@@ -265,15 +169,7 @@ enchant.Group = enchant.Class.create(enchant.Node, {
         }
     },
     /**
-    [lang:ja]
-    * Groupのy軸方向の倍率.
-    [/lang]
-    [lang:en]
     * Scaling factor on the y axis of the Group.
-    [/lang]
-    [lang:de]
-    * Skalierungsfaktor auf der y-Achse der Gruppe.
-    [/lang]
     * @type Number
     * @see enchant.Group#originX
     * @see enchant.Group#originY
@@ -290,15 +186,7 @@ enchant.Group = enchant.Class.create(enchant.Node, {
         }
     },
     /**
-    [lang:ja]
-    * 回転・拡大縮小の基準点のX座標
-    [/lang]
-    [lang:en]
     * origin point of rotation, scaling
-    [/lang]
-    [lang:de]
-    * Ausgangspunkt für Rotation und Skalierung.
-    [/lang]
     * @type Number
     */
     originX: {
@@ -313,15 +201,7 @@ enchant.Group = enchant.Class.create(enchant.Node, {
         }
     },
     /**
-    [lang:ja]
-    * 回転・拡大縮小の基準点のX座標
-    [/lang]
-    [lang:en]
     * origin point of rotation, scaling
-    [/lang]
-    [lang:de]
-    * Ausgangspunkt für Rotation und Skalierung.
-    [/lang]
     * @type Number
     */
     originY: {

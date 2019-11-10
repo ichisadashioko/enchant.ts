@@ -1262,15 +1262,17 @@ namespace enchant {
         /**
          * properties for `enchant.Matrix`
          */
-        width: undefined | number;
-        height: undefined | number;
-        _rotation: undefined | number;
-        _scaleX: undefined | number;
-        _scaleY: undefined | number;
-        _originX: undefined | number;
-        _originY: undefined | number;
-        _width: undefined | number;
-        _height: undefined | number;
+        width?: number;
+        height?: number;
+        _rotation?: number;
+        _scaleX?: number;
+        _scaleY?: number;
+        _originX?: number;
+        _originY?: number;
+        _width?: number;
+        _height?: number;
+
+        _element?: any;
 
         constructor() {
             super();
@@ -1386,22 +1388,37 @@ namespace enchant {
         }
     }
 
-    export class Entity {
+    export class Entity extends Node {
 
     }
 
-    export class Sprite {
+    export class Sprite extends Entity {
 
     }
 
-    export class Label {
+    export class Label extends Entity {
 
     }
 
-    export class Map {
+    export class Map extends Entity {
 
     }
 
+    /**
+     * A class that can hold multiple `enchant.Node`.
+     * 
+     * @example
+     * var stage = new Group();
+     * stage.addChild(player);
+     * stage.addChild(enemy);
+     * stage.addChild(map);
+     * stage.addEventListener('enterframe', function() {
+     *     // Moves the entire frame in according to the player's coordinates.
+     *     if (this.x > 64 - player.x) {
+     *         this.x = 64 - player.x;
+     *     }
+     * });
+     */
     export class Group extends Node {
         /**
          * Child Nodes.
@@ -1520,6 +1537,10 @@ namespace enchant {
             });
         }
 
+        /**
+         * Adds a Node to the Group.
+         * @param node Node to be added.
+         */
         addChild(node: Node) {
             if (node.parentNode) {
                 node.parentNode.removeChild(node);
@@ -1536,6 +1557,34 @@ namespace enchant {
                 node.scene = this.scene;
                 let addedToScene = new enchant.Event('addedtoscene');
                 node.dispatchEvent(addedToScene);
+            }
+        }
+
+        /**
+         * Incorporates Node into Group.
+         * @param node Node to be incorporated.
+         * @param reference Node in position before insertion.
+         */
+        insertBefore(node: Node, reference: Node) {
+            if (node.parentNode) {
+                node.parentNode.removeChild(node);
+            }
+            let i = this.childNodes.indexOf(reference);
+            if (i !== -1) {
+                this.childNodes.splice(i, 0, node);
+                node.parentNode = this;
+                let childAdded = new enchant.Event('childadded');
+                childAdded.node = node;
+                childAdded.next = reference;
+                this.dispatchEvent(childAdded);
+                node.dispatchEvent(new enchant.Event('added'));
+                if (this.scene) {
+                    node.scene = this.scene;
+                    let addedToScene = new enchant.Event('addedtoscene');
+                    node.dispatchEvent(addedToScene);
+                }
+            } else {
+                this.addChild(node);
             }
         }
 
@@ -1658,6 +1707,10 @@ namespace enchant {
 
     }
 
+    interface ISceneLayer {
+        [type: string]: Node;
+    }
+
     /**
      * Class that becomes the root of the display object tree.
      * 
@@ -1674,10 +1727,17 @@ namespace enchant {
      * core.pushScene(scene);
      */
     export class Scene extends Group {
-        _backgroundColor;
         _element: HTMLElement;
-        _layers: object;
+        _layers: ISceneLayer;
         _layerPriority: [];
+
+        _backgroundColor: string;
+        get backgroundColor(): string {
+            return this._backgroundColor;
+        }
+        set backgroundColor(color: string) {
+            this._backgroundColor = this._element.style.backgroundColor = color;
+        }
 
         constructor() {
             super();
@@ -1715,8 +1775,74 @@ namespace enchant {
             }
         }
 
-        _oncoreresize(e) {
+        set x(x: number) {
+            this._x = x;
+            for (let type in this._layers) {
+                this._layers[type].x = x;
+            }
+        }
 
+        set y(y: number) {
+            this._y = y;
+            for (let type in this._layers) {
+                this._layers[type].y = y;
+            }
+        }
+
+        set width(width: number) {
+            this._width = width;
+            for (let type in this._layers) {
+                this._layers[type].width = width;
+            }
+        }
+
+        set height(height: number) {
+            this._height = height;
+            for (let type in this._layers) {
+                this._layers[type].height = height;
+            }
+        }
+
+        set rotation(rotation: number) {
+            this._rotation = rotation;
+            for (let type in this._layers) {
+                this._layers[type].rotation = rotation;
+            }
+        }
+
+        set scaleX(scale: number) {
+            this._scaleX = scale;
+            for (let type in this._layers) {
+                this._layers[type].scaleX = scale;
+            }
+        }
+
+        set scaleY(scale: number) {
+            this._scaleY = scale;
+            for (let type in this._layers) {
+                this._layers[type].scaleY = scale;
+            }
+        }
+
+        remove() {
+            this.clearEventListener();
+            while (this.childNodes.length > 0) {
+                this.childNodes[0].remove();
+            }
+
+            return enchant.Core.instance.removeScene(this);
+        }
+
+        _oncoreresize(e: { width: number, height: number, scale: number }) {
+            this._element.style.width = e.width + 'px';
+            this.width = e.width;
+            this._element.style.height = e.height + 'px';
+            this.height = e.height;
+            this._element.style.transform = `scale(${e.scale})`;
+
+            for (let type in this._layers) {
+                this._layers[type].dispatchEvent(e);
+            }
         }
 
         _onchildadded(e: Event) {
