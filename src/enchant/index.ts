@@ -495,7 +495,7 @@ namespace enchant {
         next?: any;
 
         // InputSource
-        data?: boolean;
+        data?: any;
         source?: InputSource;
 
         /**
@@ -1020,13 +1020,24 @@ namespace enchant {
      * Class that wrap input.
      */
     export class InputSource extends EventTarget {
+        /**
+         * identifier of InputSource.
+         */
         identifier: string;
+
+        /**
+         * @param identifier identifier of InputSource
+         */
         constructor(identifier: string) {
             super();
             this.identifier = identifier;
         }
 
-        notifyStateChange(data: boolean) {
+        /**
+         * Notify state change by event.
+         * @param data state
+         */
+        notifyStateChange(data: any) {
             let e = new enchant.Event(enchant.Event.INPUT_STATE_CHANGED);
             e.data = data;
             e.source = this;
