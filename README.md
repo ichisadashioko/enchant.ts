@@ -11,7 +11,14 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [x] `EventTarget.js`
 - [ ] `Core.js`
 - [x] `Game.js`
-- [ ] `InputManager.js`
+- [x] `InputManager.js`
+  - [x] `initialize`
+  - [x] `bind`
+  - [x] `unbind`
+  - [x] `addBroadcastTarget`
+  - [x] `removeBroadcastTarget`
+  - [x] `broadcastEvent`
+  - [x] `changeState`
 - [x] `InputSource.js`
 - [ ] `BinaryInputManager.js`
 - [ ] `BinaryInputSource.js`
@@ -56,8 +63,8 @@ __animation feature__
 We love contributions.
 
 - How to get started?
-    - Create issues to ask questions about what you want to ask about the project.
-    - Take a look at [Gruntfile.coffee](./original-enchant.js/Gruntfile.coffee) for list of modules and convert them to TypeScript.
+  - Create issues to ask questions about what you want to ask about the project.
+  - Take a look at [Gruntfile.coffee](./original-enchant.js/Gruntfile.coffee) for list of modules and convert them to TypeScript.
 
 ## Development guide
 

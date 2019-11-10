@@ -49,34 +49,16 @@ enchant.InputManager = enchant.Class.create(enchant.EventTarget, {
         this._binds[inputSource.identifier] = name;
     },
     /**
-     [lang:ja]
-     * 入力のバインドを解除する.
-     * @param {enchant.InputSource} inputSource {@link enchant.InputSource} のインスタンス.
-     [/lang]
-     [lang:en]
      * Remove binded name.
      * @param {enchant.InputSource} inputSource input source.
-     [/lang]
-     [lang:de]
-     * @param {enchant.InputSource} inputSource
-     [/lang]
      */
     unbind: function(inputSource) {
         inputSource.removeEventListener(enchant.Event.INPUT_STATE_CHANGED, this._stateHandler);
         delete this._binds[inputSource.identifier];
     },
     /**
-     [lang:ja]
-     * 入力の変化を通知する対象を追加する.
-     * @param {enchant.EventTarget} eventTarget イベントの通知を設定したい対象.
-     [/lang]
-     [lang:en]
      * Add event target.
      * @param {enchant.EventTarget} eventTarget broadcast target.
-     [/lang]
-     [lang:de]
-     * @param {enchant.EventTarget} eventTarget
-     [/lang]
      */
     addBroadcastTarget: function(eventTarget) {
         var i = this.broadcastTarget.indexOf(eventTarget);
@@ -85,17 +67,8 @@ enchant.InputManager = enchant.Class.create(enchant.EventTarget, {
         }
     },
     /**
-     [lang:ja]
-     * 入力の変化を通知する対象を削除する.
-     * @param {enchant.EventTarget} eventTarget イベントの通知を削除したい対象.
-     [/lang]
-     [lang:en]
      * Remove event target.
      * @param {enchant.EventTarget} eventTarget broadcast target.
-     [/lang]
-     [lang:de]
-     * @param {enchant.EventTarget} eventTarget
-     [/lang]
      */
     removeBroadcastTarget: function(eventTarget) {
         var i = this.broadcastTarget.indexOf(eventTarget);
@@ -104,17 +77,8 @@ enchant.InputManager = enchant.Class.create(enchant.EventTarget, {
         }
     },
     /**
-     [lang:ja]
-     * イベントを {@link enchant.InputManager#broadcastTarget} に発行する.
-     * @param {enchant.Event} e イベント.
-     [/lang]
-     [lang:en]
      * Dispatch event to {@link enchant.InputManager#broadcastTarget}.
      * @param {enchant.Event} e event.
-     [/lang]
-     [lang:de]
-     * @param {enchant.Event} e
-     [/lang]
      */
     broadcastEvent: function(e) {
         var target = this.broadcastTarget;
@@ -123,20 +87,9 @@ enchant.InputManager = enchant.Class.create(enchant.EventTarget, {
         }
     },
     /**
-     [lang:ja]
-     * 入力の状態を変更する.
-     * @param {String} name 入力の名前.
-     * @param {*} data 入力の状態.
-     [/lang]
-     [lang:en]
      * Change state of input.
      * @param {String} name input name.
      * @param {*} data input state.
-     [/lang]
-     [lang:de]
-     * @param {String} name
-     * @param {*} data
-     [/lang]
      */
     changeState: function(name, data) {
     }
