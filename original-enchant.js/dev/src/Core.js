@@ -842,15 +842,6 @@
             return this._scenes.push(scene);
         },
         /**
-         [lang:ja]
-         * 現在のSceneを終了させ前のSceneに戻る.
-         *
-         * Sceneはスタック状に管理されており, 表示順序もスタックに積み上げられた順に従う.
-         * enchant.Core#popSceneを行うとスタックの一番上のSceneを取り出すことができる.
-         *
-         * @return {enchant.Scene} 終了させたScene.
-         [/lang]
-         [lang:en]
          * Ends the current Scene and returns to the previous Scene.
          *
          * Scenes are controlled using a stack, with the top scene on
@@ -859,17 +850,6 @@
          * the top of the stack is removed and returned.
          *
          * @return {enchant.Scene} Removed Scene.
-         [/lang]
-         [lang:de]
-         * Beendet die aktuelle Szene und wechselt zu der vorherigen Szene.
-         *
-         * Szenen werden durch einen Stapelspeicher kontrolliert und die Darstellungsreihenfolge
-         * folgt ebenfalls der Ordnung des Stapelspeichers.
-         * Wenn die {@link enchant.Core#popScene} Methode ausgeführt wird, wird die Szene oben auf dem
-         * Stapelspeicher entfernt und liefert diese als Rückgabewert.
-         *
-         * @return {enchant.Scene} Die Szene, die beendet wurde.
-         [/lang]
          */
         popScene: function() {
             if (this.currentScene === this.rootScene) {

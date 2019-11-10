@@ -865,6 +865,25 @@ namespace enchant {
             return this._scenes.push(scene);
         }
 
+        /**
+         * Ends the current Scene and returns to the previous Scene.
+         * 
+         * Scenes are controlled using a stack, with the top scene on the stack being the one displayed.
+         * When `enchant.Core.popScene` is executed, the Scene at the top of the stack is removed and returned.
+         * 
+         * @return Removed Scene.
+         */
+        popScene(): Scene {
+            if (this.currentScene === this.rootScene) {
+                return this.currentScene;
+            }
+            this._element.removeChild(this.currentScene._element);
+            this.currentScene.dispatchEvent(new enchant.Event('exit'));
+            this.currentScene = this._scenes[this._scenes.length - 2];
+            this.currentScene.dispatchEvent(new enchant.Event('enter'));
+            return this._scenes.pop();
+        }
+
         _dispatchCoreResizeEvent() {
             let e = new Event('coreresize');
             e.width = this._width;

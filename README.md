@@ -10,6 +10,32 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [x] `Event.js`
 - [x] `EventTarget.js`
 - [ ] `Core.js`
+  - [ ] `initialize`
+  - [ ] `_dispatchCoreResizeEvent`
+  - [ ] `_oncoreresize`
+  - [ ] `preload`
+  - [ ] `load`
+  - [ ] `start`
+  - [ ] `_requestPreload`
+  - [ ] `_createTouchToStartScene`
+  - [ ] `debug`
+  - [ ] `_requestNextFrame`
+  - [ ] `_callTick`
+  - [ ] `_tick`
+  - [ ] `getTime`
+  - [ ] `stop`
+  - [ ] `pause`
+  - [ ] `resume`
+  - [x] `pushScene`
+  - [x] `popScene`
+  - [ ] `replaceScene`
+  - [ ] `removeScene`
+  - [ ] `_buttonListener`
+  - [ ] `keybind`
+  - [ ] `keyunbind`
+  - [ ] `changeButtonState`
+  - [ ] `getElapsedTime`
+  - [ ] `findExt`
 - [x] `Game.js`
 - [x] `InputManager.js`
   - [x] `initialize`
