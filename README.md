@@ -22,10 +22,10 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [ ] `_requestNextFrame`
   - [ ] `_callTick`
   - [ ] `_tick`
-  - [ ] `getTime`
+  - [x] `getTime`
   - [x] `stop`
-  - [ ] `pause`
-  - [ ] `resume`
+  - [x] `pause`
+  - [x] `resume`
   - [x] `pushScene`
   - [x] `popScene`
   - [ ] `replaceScene`
@@ -46,10 +46,17 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `broadcastEvent`
   - [x] `changeState`
 - [x] `InputSource.js`
-- [ ] `BinaryInputManager.js`
-- [ ] `BinaryInputSource.js`
+- [x] `BinaryInputManager.js`
+  - [x] `bind`
+  - [x] `unbind`
+  - [x] `changeState`
+  - [x] `_down`
+  - [x] `_up`
+- [x] `BinaryInputSource.js`
 - [ ] `KeyboardInputManager.js`
-- [ ] `KeyboardInputSource.js`
+- [x] `KeyboardInputSource.js`
+  - [x] `initialize`
+  - [x] `getByKeyCode`
 - [x] `Node.js`
 - [ ] `Entity.js`
 - [ ] `Sprite.js`

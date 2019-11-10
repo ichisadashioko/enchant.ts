@@ -716,6 +716,7 @@ namespace enchant {
 
         keyboardInputManager: KeyboardInputManager;
         _keybind;
+        currentTime: number;
 
         constructor(width?: number, height?: number) {
 
@@ -896,6 +897,33 @@ namespace enchant {
             return this;
         }
 
+        load(src: string, alias?: string, callback?: Function, onerror?: Function) {
+            let assetName: string;
+            if (typeof arguments[1] === 'string') {
+                assetName = alias;
+                callback = callback || function () { };
+                onerror = onerror || function () { };
+            } else {
+                assetName = src;
+                let tempCallback = callback;
+                callback = arguments[1] || function () { };
+                onerror = tempCallback || function () { };
+            }
+
+            let ext = Core.findExt(src);
+
+            return enchant.Deferred.next(function () {
+                let d = new enchant.Deferred();
+                let _callback = function (e) {
+                    d.call(e);
+                    callback.call(this, e);
+                }
+            })
+        }
+        getTime(): number {
+            return enchant.getTime();
+        }
+
         /**
          * Stops the core.
          * 
@@ -905,6 +933,26 @@ namespace enchant {
         stop() {
             this.ready = false;
             this.running = false;
+        }
+
+        /**
+         * Stops the core.
+         * 
+         * The frame will not be updated, add player input will not be accepted anymore.
+         * Core can be started again using `enchant.Core.resume`.
+         */
+        pause() {
+            this.ready = false;
+        }
+
+        resume() {
+            if (this.ready) {
+                return;
+            }
+            this.currentTime = this.getTime();
+            this.ready = true;
+            this.running = true;
+            this._requestNextFrame(0);
         }
 
         /**
@@ -1150,13 +1198,73 @@ namespace enchant {
             this.inactiveEventNameSuffix = inactiveEventNameSuffix;
         }
 
+        /**
+         * Name specified input.
+         * @param binaryInputSource input source
+         * @param name input name
+         */
         bind(binaryInputSource: BinaryInputSource, name: string) {
+            super.bind(binaryInputSource, name);
+            this.valueStore[name] = false;
+        }
 
+        /**
+         * Remove binded name.
+         * @param binaryInputSource input source
+         */
+        unbind(binaryInputSource: BinaryInputSource) {
+            let name = this._binds[binaryInputSource.identifier];
+            super.unbind(binaryInputSource);
+            delete this.valueStore[name];
+        }
+
+        /**
+         * Change state of input.
+         * @param name input name
+         * @param bool input state
+         */
+        changeState(name: string, bool: boolean) {
+            if (bool) {
+                this._down(name);
+            } else {
+                this._up(name);
+            }
+        }
+
+        _down(name: string) {
+            let inputEvent: Event;
+            if (!this.valueStore[name]) {
+                this.valueStore[name] = true;
+                inputEvent = new enchant.Event((this.activeInputsNum++) ? 'inputchange' : 'inputstart');
+                inputEvent.source = this.source;
+                this.broadcastEvent(inputEvent);
+            }
+            let downEvent = new enchant.Event(name + this.activeEventNameSuffix);
+            downEvent.source = this.source;
+            this.broadcastEvent(downEvent);
+        }
+
+        _up(name: string) {
+            let inputEvent: Event;
+            if (this.valueStore[name]) {
+                this.valueStore[name] = false;
+                inputEvent = new enchant.Event((--this.activeInputsNum) ? 'inputchange' : 'inputend');
+                inputEvent.source = this.source;
+                this.broadcastEvent(inputEvent);
+            }
+            let upEvent = new enchant.Event(name + this.inactiveEventNameSuffix);
+            upEvent.source = this.source;
+            this.broadcastEvent(upEvent);
         }
     }
 
-    export class BinaryInputSource {
-
+    /**
+     * Class that wrap binary input.
+     */
+    export class BinaryInputSource extends InputSource {
+        constructor(identifier: string) {
+            super(identifier);
+        }
     }
 
     /**
@@ -1201,8 +1309,19 @@ namespace enchant {
         }
     }
 
-    export class KeyboardInputSource {
+    export class KeyboardInputSource extends BinaryInputSource {
+        static _instances = {};
 
+        static getByKeyCode(keyCode: string) {
+            if (!this._instances[keyCode]) {
+                this._instances[keyCode] = new enchant.KeyboardInputSource(keyCode);
+            }
+            return this._instances[keyCode];
+        }
+
+        constructor(keyCode: string) {
+            super(keyCode);
+        }
     }
 
     /**
@@ -1259,9 +1378,8 @@ namespace enchant {
 
         tl?: Timeline;
 
-        /**
-         * properties for `enchant.Matrix`
-         */
+        // properties for `enchant.Matrix`
+        // TODO BUG
         width?: number;
         height?: number;
         _rotation?: number;
@@ -1273,6 +1391,20 @@ namespace enchant {
         _height?: number;
 
         _element?: any;
+
+        // setter for `enchant.Core._dispatchExitframe`
+        // TODO BUG
+        set rotation(rotation: number) {
+            this._rotation = rotation;
+        }
+        set scaleX(scale: number) {
+            this._scaleX = scale;
+        }
+        set scaleY(scale: number) {
+            this._scaleY = scale;
+        }
+
+        // workaround for `Scene._onchildadded`
 
         constructor() {
             super();
@@ -1687,34 +1819,41 @@ namespace enchant {
         }
     }
 
-    export class DetectColorManager {
+    export class DetectColorManager { }
 
+    export class DomManager { }
+
+    export class DomLayer { }
+
+    /**
+     * Class that uses the HTML Canvas for rendering.
+     * The rendering of children will be replaced by the Canvas rendering.
+     */
+    export class CanvasLayer extends Group {
+        constructor() {
+            super();
+            let core = enchant.Core.instance;
+
+            this._cvsCache = {
+                matrix: [1, 0, 0, 1, 0, 0],
+                detectColor: '#000000',
+            }
+
+            this._cvsCache.layer = this;
+        }
     }
 
-    export class DomManager {
+    export class CanvasRenderer { }
 
-    }
-
-    export class DomLayer {
-
-    }
-
-    export class CanvasLayer {
-
-    }
-
-    export class CanvasRenderer {
-
-    }
-
-    interface ISceneLayer {
+    interface NodeMap {
         [type: string]: Node;
     }
 
     /**
      * Class that becomes the root of the display object tree.
      * 
-     * Child `Entity` objects are distributed to the Scene layer according to the drawing method.
+     * Child `Entity` objects are distributed to the Scene layer 
+     * according to the drawing method.
      * The DOM of each Scene layer has an `enchant.DOMLayer` 
      * and an `enchant.CanvasLayer` and is drawn using the Canvas.
      * 
@@ -1727,8 +1866,9 @@ namespace enchant {
      * core.pushScene(scene);
      */
     export class Scene extends Group {
+
         _element: HTMLElement;
-        _layers: ISceneLayer;
+        _layers: NodeMap;
         _layerPriority: [];
 
         _backgroundColor: string;
@@ -1744,7 +1884,8 @@ namespace enchant {
 
             let core = Core.instance;
 
-            // All nodes (entities, groups, scenes) have reference to the scene that it belongs to.
+            // All nodes (entities, groups, scenes) have reference to 
+            // the scene that it belongs to.
             this.scene = this;
             this._backgroundColor = null;
 
@@ -1833,7 +1974,7 @@ namespace enchant {
             return enchant.Core.instance.removeScene(this);
         }
 
-        _oncoreresize(e: { width: number, height: number, scale: number }) {
+        _oncoreresize(e: Event) {
             this._element.style.width = e.width + 'px';
             this.width = e.width;
             this._element.style.height = e.height + 'px';

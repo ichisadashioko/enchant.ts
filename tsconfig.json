@@ -2,9 +2,12 @@
     "compilerOptions": {
         "target": "esnext",
         "outDir": "build",
+        "sourceMap": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
     },
-    "include": [
-        "src",
+    "files": [
+        "src/enchant/index.ts"
     ],
     "typeAcquisition": {
         "enable": true,

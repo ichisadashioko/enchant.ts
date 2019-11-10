@@ -42,17 +42,8 @@ enchant.BinaryInputManager = enchant.Class.create(enchant.InputManager, {
         this.valueStore[name] = false;
     },
     /**
-     [lang:ja]
-     * 入力のバインドを解除する.
-     * @param {enchant.BinaryInputSource} inputSource {@link enchant.InputSource}のインスタンス.
-     [/lang]
-     [lang:en]
      * Remove binded name.
      * @param {enchant.BinaryInputSource} inputSource input source.
-     [/lang]
-     [lang:de]
-     * @param {enchant.BinaryInputSource} inputSource
-     [/lang]
      * @see enchant.InputManager#unbind
      */
     unbind: function(binaryInputSource) {
@@ -61,20 +52,9 @@ enchant.BinaryInputManager = enchant.Class.create(enchant.InputManager, {
         delete this.valueStore[name];
     },
     /**
-     [lang:ja]
-     * 入力の状態を変更する.
-     * @param {String} name 入力の名前.
-     * @param {Boolean} bool 入力の状態.
-     [/lang]
-     [lang:en]
      * Change state of input.
      * @param {String} name input name.
      * @param {Boolean} bool input state.
-     [/lang]
-     [lang:de]
-     * @param {String} name
-     * @param {Boolean} bool
-     [/lang]
      */
     changeState: function(name, bool) {
         if (bool) {

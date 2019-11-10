@@ -437,16 +437,6 @@
             return this;
         },
         /**
-         [lang:ja]
-         * ファイルのロードを行う.
-         *
-         * @param {String} src ロードするファイルのパス.
-         * @param {String} [alias] ロードするファイルに設定したい名前.
-         * @param {Function} [callback] ファイルのロードが完了したときに呼び出される関数.
-         * @param {Function} [onerror] ファイルのロードに失敗したときに呼び出される関数.
-         * @return {enchant.Deferred} ファイル読み込み後に起動するDeferredオブジェクト.
-         [/lang]
-         [lang:en]
          * Loads a file.
          *
          * @param {String} src File path of the resource to be loaded.
@@ -454,16 +444,6 @@
          * @param {Function} [callback] Function to be called if the file loads successfully.
          * @param {Function} [onerror] Function to be called if the file fails to load.
          * @return {enchant.Deferred}
-         [/lang]
-         [lang:de]
-         * Laden von Dateien.
-         *
-         * @param {String} src Pfad zu der Datei die geladen werden soll.
-         * @param {String} [alias]
-         * @param {Function} [callback] Funktion die ausgeführt wird wenn das laden abgeschlossen wurde.
-         * @param {Function} [onerror]
-         * @return {enchant.Deferred}
-         [/lang]
          */
         load: function(src, alias, callback, onerror) {
             var assetName;
@@ -751,64 +731,26 @@
             return window.getTime();
         },
         /**
-         [lang:ja]
-         * アプリを停止する.
-         *
-         * フレームは更新されず, ユーザの入力も受け付けなくなる.
-         * {@link enchant.Core#resume} で再開できる.
-         [/lang]
-         [lang:en]
          * Stops the core.
          *
          * The frame will not be updated, and player input will not be accepted anymore.
          * Core can be restarted using {@link enchant.Core#resume}.
-         [/lang]
-         [lang:de]
-         * Stoppt das Spiel.
-         *
-         * Der Frame wird nicht mehr aktualisiert und Spielereingaben werden nicht
-         * mehr akzeptiert. Das spiel kann mit der {@link enchant.Core#resume} Methode
-         * erneut gestartet werden.
-         [/lang]
          */
         stop: function() {
             this.ready = false;
             this.running = false;
         },
         /**
-         [lang:ja]
-         * アプリを一時停止する.
-         *
-         * フレームは更新されず, ユーザの入力は受け付ける.
-         * {@link enchant.Core#resume} で再開できる.
-         [/lang]
-         [lang:en]
          * Stops the core.
          *
          * The frame will not be updated, and player input will not be accepted anymore.
          * Core can be started again using {@link enchant.Core#resume}.
-         [/lang]
-         [lang:de]
-         * Stoppt das Spiel.
-         *
-         * Der Frame wird nicht mehr aktualisiert und Spielereingaben werden nicht
-         * mehr akzeptiert. Das spiel kann mit der {@link enchant.Core#resume} Methode
-         * erneut gestartet werden.
-         [/lang]
          */
         pause: function() {
             this.ready = false;
         },
         /**
-         [lang:ja]
-         * アプリを再開する.
-         [/lang]
-         [lang:en]
          * Resumes core operations.
-         [/lang]
-         [lang:de]
-         * Setzt die Ausführung des Spieles fort.
-         [/lang]
          */
         resume: function() {
             if (this.ready) {
