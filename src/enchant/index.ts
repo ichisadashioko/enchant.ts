@@ -1830,6 +1830,11 @@ namespace enchant {
      * The rendering of children will be replaced by the Canvas rendering.
      */
     export class CanvasLayer extends Group {
+        _cvsCache: {
+            matrix: Array<Number>;
+            detectColor: string;
+            layer: CanvasLayer
+        }
         constructor() {
             super();
             let core = enchant.Core.instance;
@@ -1837,9 +1842,8 @@ namespace enchant {
             this._cvsCache = {
                 matrix: [1, 0, 0, 1, 0, 0],
                 detectColor: '#000000',
-            }
-
-            this._cvsCache.layer = this;
+                layer: this
+            };
         }
     }
 
