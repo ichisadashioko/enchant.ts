@@ -897,6 +897,13 @@ namespace enchant {
             return this;
         }
 
+        /**
+         * Loads a file.
+         * @param src File path of the resource to be loaded.
+         * @param alias Name you want to designate for the resource to be loaded.
+         * @param callback Function to be called if the resource to be loaded.
+         * @param onerror Function to be called if the file fails to load.
+         */
         load(src: string, alias?: string, callback?: Function, onerror?: Function) {
             let assetName: string;
             if (typeof arguments[1] === 'string') {
@@ -2265,14 +2272,98 @@ namespace enchant {
     }
 
     export class Deferred {
+        _succ: Function
+        _fail: Function
+        _next: Deferred
+        _id
+        _tail: Deferred
 
+        constructor() {
+            this._tail = this;
+        }
+
+        next(func: Function) {
+            let q = new enchant.Deferred();
+            q._succ = func;
+            return this._add(q)
+        }
+
+        error(func: Function) {
+            let q = new enchant.Deferred();
+            q._fail = func;
+            return this._add(q);
+        }
+
+        _add(queue: Deferred) {
+            // TODO check for assigning `this._tail` after `this._tail._next`
+            this._tail._next = queue;
+            this._tail = queue;
+            return this;
+        }
+
+        call(arg) {
+            let received;
+            let queue: Deferred = this;
+
+            while (queue && !queue._succ) {
+                queue = queue._next;
+            }
+            if (!(queue instanceof enchant.Deferred)) {
+                return;
+            }
+
+            try {
+                received = queue._succ(arg);
+            } catch (e) {
+                return queue.fail(e);
+            }
+
+            if (received instanceof enchant.Deferred) {
+                enchant.Deferred._insert(queue, received);
+            } else if (queue._next instanceof enchant.Deferred) {
+                queue._next.call(received);
+            }
+        }
+
+        fail(arg) {
+            let result, err, queue: Deferred = this;
+
+            while (queue && !queue._fail) {
+                queue = queue._next;
+            }
+
+            if (queue instanceof enchant.Deferred) {
+                result = queue._fail(arg);
+                queue.call(result);
+            } else if (arg instanceof Error) {
+                throw arg;
+            } else {
+                err = new Error('failed in Deferred');
+                err.arg = arg;
+                throw err;
+            }
+        }
+
+        static _insert(queue: Deferred, ins: Deferred) {
+            if (queue._next instanceof enchant.Deferred) {
+                ins._tail._next = queue._next;
+            }
+
+            queue._next = ins;
+        }
+
+        static next(func: Function) {
+            let q = new enchant.Deferred().next(func);
+            q._id = setTimeout(function () { q.call(); }, 0);
+            return q;
+        }
     }
 
     /**
      * Class to wrap audio elements.
      * 
      * Safari, Chrome, Firefox, Opera, and IE all play MP3 files
-     * (Firefix and Opera play via Flash). WAVE files can be played on
+     * (Firefox and Opera play via Flash). WAVE files can be played on
      * Safari, Chrome, Firefox, and Opera. When the browser is not
      * compatible with the used codec the file will not play.
      * 
