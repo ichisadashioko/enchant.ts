@@ -654,16 +654,8 @@
             }
         },
         /**
-         [lang:ja]
-         * 次のフレームの実行を要求する.
-         * @param {Number} delay requestAnimationFrameを呼び出すまでの遅延時間.
-         [/lang]
-         [lang:en]
          * Requests the next frame.
          * @param {Number} delay Amount of time to delay before calling requestAnimationFrame.
-         [/lang]
-         [lang:de]
-         [/lang]
          * @private
          */
         _requestNextFrame: function(delay) {
@@ -682,17 +674,8 @@
             }
         },
         /**
-         [lang:ja]
-         * Core#_tickを呼び出す.
-         * @param {Number} time 呼び出し時の時間.
-         [/lang]
-         [lang:en]
          * Calls {@link enchant.Core#_tick}.
          * @param {Number} time
-         [/lang]
-         [lang:de]
-         * @param {Number} time
-         [/lang]
          * @private
          */
         _callTick: function(time) {
