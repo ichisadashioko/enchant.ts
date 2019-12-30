@@ -2301,7 +2301,7 @@ namespace enchant {
             return this;
         }
 
-        call(arg) {
+        call(arg?) {
             let received;
             let queue: Deferred = this;
 
@@ -2356,6 +2356,37 @@ namespace enchant {
             let q = new enchant.Deferred().next(func);
             q._id = setTimeout(function () { q.call(); }, 0);
             return q;
+        }
+
+        static parallel(arg) {
+            let q = new enchant.Deferred();
+            q._id = setTimeout(function () { q.call(); }, 0);
+            let progress = 0;
+            let ret = (arg instanceof Array) ? [] : {};
+            let p = new enchant.Deferred();
+            for (let prop in arg) {
+                if (arg.hasOwnProperty(prop)) {
+                    progress++;
+                    (function (queue, name) {
+                        queue.next(function (arg) {
+                            progress--;
+                            ret[name] = arg;
+                            if (progress <= 0) {
+                                p.call(ret);
+                            }
+                        }).onerror(function (err) { p.fail(err); });
+
+                        if (typeof queue._id === 'number') {
+                            clearTimeout(queue._id);
+                        }
+                        queue._id = setTimeout(function () { queue.call(); }, 0);
+                    }(arg[prop], prop));
+                }
+            }
+            if (!progress) {
+                p._id = setTimeout(function () { p.call(ret); }, 0);
+            }
+            return q.next(function () { return p; });
         }
     }
 
