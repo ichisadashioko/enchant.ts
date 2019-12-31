@@ -1265,7 +1265,7 @@ namespace enchant {
          */
         inactiveEventNameSuffix: string;
 
-        constructor(flagStore, activeEventNameSuffix: string, inactiveEventNameSuffix: string, source) {
+        constructor(flagStore, activeEventNameSuffix: string, inactiveEventNameSuffix: string, source?) {
             super(flagStore, source);
             this.activeInputsNum = 0;
             this.activeEventNameSuffix = activeEventNameSuffix;
