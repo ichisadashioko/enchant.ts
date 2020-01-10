@@ -933,8 +933,49 @@ namespace enchant {
             })
         }
 
-        getTime(): number {
-            return enchant.getTime();
+        start(deferred: enchant.Deferred) {
+            let onloadTimeSetter = function () {
+                this.frame = 0;
+                this.removeEventListener('load', onloadTimeSetter);
+            }
+            // #2020-01-10 15:15
+        }
+
+        /**
+         * Call `enchant.Core._tick`
+         * @param time 
+         */
+        _callTick(time: number) {
+            enchant.Core.instance._tick(time);
+        }
+
+        _tick(time: number) {
+            let e = new enchant.Event('enterframe');
+            let now = enchant.getTime();
+            let elapsed = e.elapsed = now - this.currentTime;
+            this.currentTime = now;
+
+            this._actualFps = elapsed > 0 ? (1000 / elapsed) : 0;
+
+            let nodes = this.currentScene.childNodes.slice();
+            while (nodes.length) {
+                let node = nodes.pop();
+                node.age++;
+                node.dispatchEvent(e);
+                if (node.childNodes) {
+                    nodes.push(node.childNodes);
+                }
+            }
+
+            this.currentScene.age++;
+            this.currentScene.dispatchEvent(e);
+            this.dispatchEvent(e);
+
+            this.dispatchEvent(new enchant.Event('exitframe'));
+            this.frame++;
+            now = enchant.getTime();
+
+            this._requestNextFrame(1000 / this.fps - (now - this._calledTime));
         }
 
         /**
@@ -962,7 +1003,7 @@ namespace enchant {
             if (this.ready) {
                 return;
             }
-            this.currentTime = this.getTime();
+            this.currentTime = enchant.getTime();
             this.ready = true;
             this.running = true;
             this._requestNextFrame(0);
@@ -1068,6 +1109,59 @@ namespace enchant {
             this.currentScene = this._scenes[this._scenes.length - 2];
             this.currentScene.dispatchEvent(new enchant.Event('enter'));
             return this._scenes.pop();
+        }
+
+        /**
+         * Overwrite the current Scene with a new Scene.
+         * 
+         * Execute `enchant.Core.popScene` and `enchant.Core.pushScene` one after another to replace the current scene with the new scene.
+         * @param scene The new scene with which to replace the current scene.
+         */
+        replaceScene(scene: enchant.Scene) {
+            this.popScene();
+            return this.pushScene(scene);
+        }
+
+        /**
+         * Remove a Scene from the Scene stack.
+         * 
+         * If the scene passed in as a parameter is not the current scene, the stack will be searched for the given scene. If the given scene does not exist anywhere in the stack, this method returns null.
+         * @param scene Scene to be removed.
+         * @returns The deleted Scene.
+         */
+        removeScene(scene: enchant.Scene) {
+            if (this.currentScene === scene) {
+                return this.popScene();
+            } else {
+                let i = this._scences.indexOf(scene);
+                if (i !== -1) {
+                    this._scenes.splice(i, 1);
+                    this._element.removeChild(scene._element);
+                    return scene;
+                } else {
+                    return null;
+                }
+            }
+        }
+
+        /**
+         * Request the next frame.
+         * @param delay Amount of time to delay before calling `requestAnimationFrame`.
+         */
+        _requestNextFrame(delay: number) {
+            if (!this.ready) {
+                return;
+            }
+            if (this.fps >= 60 || delay <= 16) {
+                this._calledTime = enchant.getTime();
+                window.requestAnimationFrame(this._callTick);
+            } else {
+                setTimeout(function () {
+                    let core = enchant.Core.instance;
+                    core._calledTime = enchant.getTime();
+                    window.requestAnimationFrame(core._callTick);
+                }, Math.max(0, delay));
+            }
         }
 
         static _loadImage(src, ext, callback, onerror) {
@@ -2052,7 +2146,7 @@ namespace enchant {
             return enchant.Core.instance.removeScene(this);
         }
 
-        _oncoreresize(e: Event) {
+        _oncoreresize(e: enchant.Core) {
             this._element.style.width = e.width + 'px';
             this.width = e.width;
             this._element.style.height = e.height + 'px';

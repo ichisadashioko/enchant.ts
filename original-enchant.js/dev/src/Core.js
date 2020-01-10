@@ -501,15 +501,6 @@
             });
         },
         /**
-         [lang:ja]
-         * アプリを起動する.
-         *
-         * enchant.Core#fpsで設定されたフレームレートに従って {@link enchant.Core#currentScene} の
-         * フレームの更新が行われるようになる. プリロードする画像が存在する場合はロードが
-         * 始まりローディング画面が表示される.
-         * @return {enchant.Deferred} ローディング画面終了後に起動するDeferredオブジェクト.
-         [/lang]
-         [lang:en]
          * Start the core.
          *
          * Sets the framerate of the {@link enchant.Core#currentScene}
@@ -517,15 +508,6 @@
          * there are images to preload, loading will begin and the
          * loading screen will be displayed.
          * @return {enchant.Deferred}
-         [/lang]
-         [lang:de]
-         * Starte das Spiel
-         *
-         * Je nach der Frame Rate definiert in {@link enchant.Core#fps}, wird der Frame in der
-         * {@link enchant.Core#currentScene} aktualisiert. Sollten Dateien die im voraus geladen werden
-         * sollen vorhanden sein, beginnt das laden dieser Dateien und der Ladebildschirm wird dargestellt.
-         * @return {enchant.Deferred}
-         [/lang]
          */
         start: function(deferred) {
             var onloadTimeSetter = function() {
@@ -787,15 +769,6 @@
             return this._scenes.pop();
         },
         /**
-         [lang:ja]
-         * 現在のSceneを別のSceneにおきかえる.
-         *
-         * {@link enchant.Core#popScene}, {@link enchant.Core#pushScene}を同時に行う.
-         *
-         * @param {enchant.Scene} scene おきかえるScene.
-         * @return {enchant.Scene} 新しいScene.
-         [/lang]
-         [lang:en]
          * Overwrites the current Scene with a new Scene.
          *
          * Executes {@link enchant.Core#popScene} and {@link enchant.Core#pushScene}
@@ -803,31 +776,12 @@
          *
          * @param {enchant.Scene} scene The new scene with which to replace the current scene.
          * @return {enchant.Scene} The new Scene.
-         [/lang]
-         [lang:de]
-         * Ersetzt die aktuelle Szene durch eine neue Szene.
-         *
-         * {@link enchant.Core#popScene}, {@link enchant.Core#pushScene} werden nacheinander
-         * ausgeführt um die aktuelle Szene durch die neue zu ersetzen.
-         *
-         * @param {enchant.Scene} scene Die neue Szene, welche die aktuelle Szene ersetzen wird.
-         * @return {enchant.Scene} Die neue Szene.
-         [/lang]
          */
         replaceScene: function(scene) {
             this.popScene();
             return this.pushScene(scene);
         },
         /**
-         [lang:ja]
-         * Sceneを削除する.
-         *
-         * Sceneスタック中からSceneを削除する.
-         *
-         * @param {enchant.Scene} scene 削除するScene.
-         * @return {enchant.Scene} 削除したScene.
-         [/lang]
-         [lang:en]
          * Removes a Scene from the Scene stack.
          *
          * If the scene passed in as a parameter is not the current
@@ -837,15 +791,6 @@
          *
          * @param {enchant.Scene} scene Scene to be removed.
          * @return {enchant.Scene} The deleted Scene.
-         [/lang]
-         [lang:de]
-         * Entfernt eine Szene.
-         *
-         * Entfernt eine Szene aus dem Szenen-Stapelspeicher.
-         *
-         * @param {enchant.Scene} scene Die Szene die entfernt werden soll.
-         * @return {enchant.Scene} Die entfernte Szene.
-         [/lang]
          */
         removeScene: function(scene) {
             if (this.currentScene === scene) {
