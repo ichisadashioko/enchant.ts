@@ -1010,67 +1010,6 @@ namespace enchant {
         }
 
         /**
-         * Requests the next frame.
-         * @param delay Amount of time to delay before calling requestAnimationFrame.
-         */
-        _requestNextFrame(delay) {
-            if (!this.ready) {
-                return;
-            }
-            if (this.fps >= 60 || delay < 16) {
-                this._calledTime = getTime();
-                window.requestAnimationFrame(this._callTick);
-            } else {
-                setTimeout(function () {
-                    let core = enchant.Core.instance;
-                    core._calledTime = getTime();
-                    window.requestAnimationFrame(core._callTick);
-                }, Math.max(0, delay));
-            }
-        }
-
-        /**
-         * Calls `enchant.Core._tick`.
-         * @param time 
-         */
-        _callTick(time) {
-            enchant.Core.instance._tick(time);
-        }
-
-        _tick(time) {
-            let e = new enchant.Event('enterframe');
-            let now = getTime();
-            let elapsed = e.elapsed = now - this.currentTime;
-            this.currentTime = now;
-
-            this._actualFps = elapsed > 0 ? (1000 / elapsed) : 0;
-
-            let nodes = this.currentScene.childNodes.slice();
-            let push = Array.prototype.push;
-            while (nodes.length) {
-                let node = nodes.pop();
-                node.age++;
-                node.dispatchEvent(e);
-
-                // TODO move childNodes property to Node
-                let group = node as Group;
-                if (group.childNodes) {
-                    push.apply(nodes, group.childNodes);
-                }
-            }
-
-            this.currentScene.age++;
-            this.currentScene.dispatchEvent(e);
-            this.dispatchEvent(e);
-
-            this.dispatchEvent(new enchant.Event('exitframe'));
-            this.frame++;
-            now = getTime();
-
-            this._requestNextFrame(1000 / this.fps - (now - this._calledTime));
-        }
-
-        /**
          * Switches to a new Scene.
          * 
          * Scenes are controlled using a stack, 
