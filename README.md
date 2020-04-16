@@ -4,10 +4,81 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 
 ## Checklist
 
-- [x] `header.js`
-- [x] `Class.js`
-- [x] `Env.js`
-- [x] `Event.js`
+- [ ] `header.js`
+  - [ ] `Object.defineProperty`
+  - [ ] `Object.defineProperties`
+  - [ ] `Object.create`
+  - [ ] `Object.getPrototypeOf`
+  - [ ] `Function.prototype.bind`
+  - [x] `getTime`
+  - [ ] `window.requestAnimationFrame`
+  - [ ] `enchant`
+- [ ] `Class.js`
+  - [ ] `Class`
+  - [ ] `create`
+  - [ ] `getInheritanceTree`
+- [ ] `Env.js`
+  - [ ] `ENV`
+    - [ ] `VERSION`
+    - [ ] `BROWSER`
+    - [ ] `VENDOR_PREFIX`
+    - [ ] `TOUCH_ENABLED`
+    - [ ] `RETINA_DISPLAY`
+    - [ ] `USE_FLASH_SOUND`
+    - [ ] `USE_DEFAULT_EVENT_TAGS`
+    - [ ] `CANVAS_DRAWING_METHODS`
+    - [ ] `KEY_BIND_TABLE`
+    - [ ] `PREVENT_DEFAULT_KEY_CODES`
+    - [ ] `SOUND_ENABLED_ON_MOBILE_SAFARI`
+    - [ ] `USE_TOUCH_TO_START_SCENE`
+    - [ ] `USE_WEB_AUDIO`
+    - [ ] `USE_ANIMATION`
+    - [ ] `COLOR_DETECTION_LEVEL`
+- [ ] `Event.js`
+  - [ ] `initialize`
+  - [ ] `_initPosition`
+  - [ ] `LOAD`
+  - [ ] `ERROR`
+  - [ ] `CORE_RESIZE`
+  - [ ] `PROGRESS`
+  - [ ] `ENTER_FRAME`
+  - [ ] `EXIT_FRAME`
+  - [ ] `ENTER`
+  - [ ] `EXIT`
+  - [ ] `CHILD_ADDED`
+  - [ ] `ADDED`
+  - [ ] `ADDED_TO_SCENE`
+  - [ ] `CHILD_REMOVE`
+  - [ ] `REMOVED`
+  - [ ] `REMOVED_FROM_SCENE`
+  - [ ] `TOUCH_START`
+  - [ ] `TOUCH_MOVE`
+  - [ ] `TOUCH_END`
+  - [ ] `RENDER`
+  - [ ] `INPUT_START`
+  - [ ] `INPUT_CHANGE`
+  - [ ] `INPUT_END`
+  - [ ] `INPUT_STATE_CHANGED`
+  - [ ] `LEFT_BUTTON_DOWN`
+  - [ ] `LEFT_BUTTON_UP`
+  - [ ] `RIGHT_BUTTON_DOWN`
+  - [ ] `RIGHT_BUTTON_UP`
+  - [ ] `UP_BUTTON_DOWN`
+  - [ ] `UP_BUTTON_UP`
+  - [ ] `DOWN_BUTTON_DOWN`
+  - [ ] `DOWN_BUTTON_UP`
+  - [ ] `A_BUTTON_DOWN`
+  - [ ] `A_BUTTON_UP`
+  - [ ] `B_BUTTON_DOWN`
+  - [ ] `B_BUTTON_UP`
+  - [ ] `ADDED_TO_TIMELINE`
+  - [ ] `REMOVED_FROM_TIMELINE`
+  - [ ] `ACTION_START`
+  - [ ] `ACTION_END`
+  - [ ] `ACTION_TICK`
+  - [ ] `ACTION_ADDED`
+  - [ ] `ACTION_REMOVED`
+  - [ ] `ANIMATION_END`
 - [x] `EventTarget.js`
 - [ ] `Core.js`
   - [ ] `initialize`
@@ -80,6 +151,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [ ] `DomManager.js`
 - [ ] `DomLayer.js`
 - [ ] `CanvasLayer.js`
+  - [ ] `_stopRendering`
 - [ ] `CanvasRenderer.js`
 - [ ] `Scene.js`
   - [x] `initialize`
@@ -114,8 +186,6 @@ __animation feature__
 
 ## Contribution
 
-We love contributions.
-
 - How to get started?
   - Create issues to ask questions about what you want to ask about the project.
   - Take a look at [Gruntfile.coffee](./original-enchant.js/Gruntfile.coffee) for list of modules and convert them to TypeScript.
@@ -125,7 +195,7 @@ We love contributions.
 - VSCode (optional)
 - Install Node.JS, Yarn, and Python (optional).
 - Run `yarn` to install dependencies.
-- Run `yarn add -g typescript` to install `TypeScript`.
+- Run `yarn add -g typescript` or `npm i -g typescript` to install `TypeScript` globally in order to use the `tsc` command. Otherwise, you have to put your command in `package.json`'s `scripts` and use `npm run ...`.
 - Run `tsc` to compile `src/index.ts` to `build/index.js`.
 - Run a web server at root project (e.g. `python3 -m http.server 8080`).
 - Browser to `build` to try `build/index.js` (e.g. [http://localhost:8080/build](http://localhost:8080/build)).
