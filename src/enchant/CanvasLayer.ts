@@ -14,6 +14,8 @@ export class CanvasLayer extends Group {
     _element: HTMLCanvasElement
     _detect: HTMLCanvasElement
     _lastDetected: number
+    context: CanvasRenderingContext2D
+    _dctx: CanvasRenderingContext2D
 
     constructor() {
         super()
@@ -36,5 +38,9 @@ export class CanvasLayer extends Group {
         this._detect = document.createElement('canvas')
         this._detect.style.position = 'absolute'
         this._lastDetected = 0
+
+        this.context = this._element.getContext('2d')
+        this._dctx = this._detect.getContext('2d')
+        this._setImageSmoothingEnable()
     }
 }
