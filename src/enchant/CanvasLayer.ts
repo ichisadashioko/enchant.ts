@@ -43,4 +43,9 @@ export class CanvasLayer extends Group {
         this._dctx = this._detect.getContext('2d')
         this._setImageSmoothingEnable()
     }
+
+    _setImageSmoothingEnable() {
+        // I have no idea why this is set to `false`
+        this._dctx.imageSmoothingEnabled = false
+    }
 }

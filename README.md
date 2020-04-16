@@ -152,8 +152,8 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [ ] `DomLayer.js`
 - [ ] `CanvasLayer.js`
   - [ ] `initialize`
-  - [ ] `_setImageSmoothingEnable`
   - [ ] `_stopRendering`
+  - [x] `_setImageSmoothingEnable`
 - [ ] `CanvasRenderer.js`
 - [ ] `Scene.js`
   - [x] `initialize`
