@@ -6,9 +6,6 @@
         "removeComments": true,
         "preserveConstEnums": true,
     },
-    "files": [
-        "src/enchant/index.ts"
-    ],
     "typeAcquisition": {
         "enable": true,
     },
