@@ -148,6 +148,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `_dirty`
 - [x] `Matrix.js`
 - [ ] `DetectColorManager.js`
+  - [ ] `initialize`
 - [ ] `DomManager.js`
 - [ ] `DomLayer.js`
 - [ ] `CanvasLayer.js`

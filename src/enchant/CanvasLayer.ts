@@ -1,5 +1,6 @@
 import Group from './Group'
 import Core from './Core'
+import DetectColorManager from './DetectColorManager'
 
 /**
  * Class that uses the HTML Canvas for rendering.
@@ -42,6 +43,8 @@ export class CanvasLayer extends Group {
         this.context = this._element.getContext('2d')
         this._dctx = this._detect.getContext('2d')
         this._setImageSmoothingEnable()
+
+        this._colorManager = new DetectColorManager(16 256)
     }
 
     _setImageSmoothingEnable() {
