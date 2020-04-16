@@ -1,6 +1,7 @@
 import Group from './Group'
 import Core from './Core'
 import DetectColorManager from './DetectColorManager'
+import Event from './Event'
 
 /**
  * Class that uses the HTML Canvas for rendering.
@@ -17,6 +18,9 @@ export class CanvasLayer extends Group {
     _lastDetected: number
     context: CanvasRenderingContext2D
     _dctx: CanvasRenderingContext2D
+    _colorManager: DetectColorManager
+    width: number
+    height: number
 
     constructor() {
         super()
@@ -44,7 +48,38 @@ export class CanvasLayer extends Group {
         this._dctx = this._detect.getContext('2d')
         this._setImageSmoothingEnable()
 
-        this._colorManager = new DetectColorManager(16 256)
+        this._colorManager = new DetectColorManager(16, 256)
+
+        this.width = core.width
+        this.height = core.height
+
+        let touch = [
+            Event.TOUCH_START,
+            Event.TOUCH_MOVE,
+            Event.TOUCH_END,
+        ]
+
+        let that = this
+        touch.forEach(function (type) {
+            that.addEventListener(type, function (e) {
+                if (that._scene) {
+                    // things started to getting nonsense here. I will
+                    // stop here for now
+                    that._scene.dispatchEvent(e)
+                }
+            })
+        })
+
+        let __onchildadded = function (e) {
+            let child = e.node
+            let self = e.target
+            let layer
+            if (self instanceof CanvasLayer) {
+                layer = self._scene._layers.Canvas
+            } else {
+                layer = self.scene._layers.Canvas
+            }
+        }
     }
 
     _setImageSmoothingEnable() {

@@ -1,3 +1,4 @@
+import Node from './Node'
 
 /**
  * A class that can hold multiple `enchant.Node`.

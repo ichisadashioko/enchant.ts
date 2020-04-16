@@ -1,3 +1,4 @@
+import EventTarget from './EventTarget'
 
 /**
  * Base class for objects in the display tree which is rooted at a Scene.
