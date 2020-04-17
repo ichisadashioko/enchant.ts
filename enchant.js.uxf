@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>35</x>
+      <y>14</y>
+      <w>224</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>EventTarget
+--
+- initialize()
+- addEventListener(type, listener)
+- removeEventListener(type, listener)
+- clearEventListener(type)
+- dispatchEvent(e)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>35</x>
+      <y>147</y>
+      <w>224</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Node
+--
+- x: number
+- y: number
+--
+- initialize()
+- moveTo(x, y)
+- moveBy(x, y)
+- _updateCoordinate()
+- remove()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>140</x>
+      <y>105</y>
+      <w>70</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>35</x>
+      <y>287</y>
+      <w>420</w>
+      <h>357</h>
+    </coordinates>
+    <panel_attributes>Entity
+--
+- width: number
+- height: number
+- backgroundColor: string
+- debugColor: string
+- opacity: number
+- visible: boolean
+- touchEnabled: boolean
+- scaleX: number
+- scaleY: number
+- rotation: number
+- originX: number
+- originY: number
+--
+- initialize()
+- intersect(other): boolean
+- _intersectOne(other): boolean
+- intersectStrict(other): boolean
+- _intersectStrictOne(other): boolean
+- within(other, distance: number): boolean
+- scale(x: number, y: number)
+- rotate(deg: number)
+- enableCollection()
+- disableCollection()
+- clearEventListener()
+- _addSelfToCollection()
+- _removeSelfFromCollection()
+- getBoundingRect(): {left: number, top: number, width: number, height: number}
+- getOrientedBoundingRect(): {left: number, top: number, width: number, height: number}
+- getContructor(): Object.getPrototypeOf(this).constructor</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>140</x>
+      <y>245</y>
+      <w>70</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>35</x>
+      <y>679</y>
+      <w>224</w>
+      <h>161</h>
+    </coordinates>
+    <panel_attributes>Label
+--
+- width: number
+- height: number
+- text: string
+- textAlign: string
+- font: string
+- color: string
+--
+- initialize(text: string)
+- cvsRender(ctx)
+- domRender(element)
+- detectRender(ctx)
+- updateBoundArea()
+- getMetrics(text?: string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>140</x>
+      <y>637</y>
+      <w>70</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>483</x>
+      <y>28</y>
+      <w>224</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Event
+--
+initialize(type: string)
+_initPosition(pageX: number, pageY: number)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>483</x>
+      <y>147</y>
+      <w>413</w>
+      <h>350</h>
+    </coordinates>
+    <panel_attributes>Core
+--
+- width: number
+- height: number
+- scale: number
+- actualFps: number
+--
+- initialize(width: number, height: number)
+- _dispatchCoreResizeEvent()
+- _oncoreresize(e)
+- preload(assets: string|string[]): Core
+- load(src: string, alias: string, callback: Function, onerror: Function): Deferred
+- start(deferred: Deferred): Deferred
+- _requestPreload()
+- _createTouchToStartScene(): Scene
+- debug(): Deferred
+- _requestNextFrame(delay: number)
+- _callTick(time: number)
+- _tick(time: number)
+- stop()
+- pause()
+- resume()
+- pushScene(scene: Scene): Scene
+- popScene(): Scene
+- replaceScene(scene: Scene): Scene
+- removeScene(scene: Scene): Scene
+- _buttonListener(e)
+- keybind(key: number, button: string): Core
+- keyunbind(key: number): Core
+- changeButtonState(button, bool)
+- getElapsedTime(): number</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>140</x>
+      <y>105</y>
+      <w>469</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;650.0;60.0</additional_attributes>
+  </element>
+</diagram>
