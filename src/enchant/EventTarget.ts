@@ -1,3 +1,4 @@
+import Event from './Event'
 
 /**
  * A class for implementation of events similar to DOM Events.
@@ -69,7 +70,7 @@ export default class EventTarget {
      * Issue an event.
      * @param e Event to be issued.
      */
-    dispatchEvent(e: enchant.Event) {
+    dispatchEvent(e: Event) {
         e.target = this;
         e.localX = e.x - this._offsetX;
         e.localY = e.y - this._offsetY;

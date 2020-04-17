@@ -13,6 +13,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `getTime`
   - [ ] `window.requestAnimationFrame`
   - [ ] `enchant`
+  - [ ] `window.addEventListener('message')`
 - [ ] `Class.js`
   - [ ] `Class`
   - [ ] `create`
@@ -82,6 +83,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [x] `EventTarget.js`
 - [ ] `Core.js`
   - [ ] `initialize`
+    - [ ] `detectAssets` from plugins
   - [x] `_dispatchCoreResizeEvent`
   - [x] `_oncoreresize`
   - [x] `preload`
@@ -132,6 +134,17 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [ ] `Entity.js`
 - [ ] `Sprite.js`
 - [ ] `Label.js`
+  - [ ] `initialize`
+  - [ ] `width`
+  - [ ] `text`
+  - [ ] `textAlign`
+  - [ ] `font`
+  - [ ] `color`
+  - [ ] `cvsRender`
+  - [ ] `domRender`
+  - [ ] `detectRender`
+  - [ ] `updateBoundArea`
+  - [ ] `getMetrics`
 - [ ] `Map.js`
 - [x] `Group.js`
   - [x] `initialize`

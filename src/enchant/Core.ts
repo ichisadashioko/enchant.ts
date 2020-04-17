@@ -1,3 +1,15 @@
+import EventTarget from './EventTarget'
+import Deferred from './Deferred'
+import { getTime } from './header'
+import KeyboardInputManager from './KeyboardInputManager'
+import LoadingScene from './LoadingScene'
+import Scene from './Scene'
+import Event from './Event'
+import EventType from './EventType'
+import ENV from './Env'
+import Label from './Label'
+import Surface from './Surface'
+import Sound from './Sound'
 
 /**
  * A class for controlling the core's main loop and scenes.
@@ -8,26 +20,26 @@
  * The existing instance can be accessed from `enchant.Core.instance`.
  */
 export default class Core extends EventTarget {
-    static instance: Core;
+    static instance: Core
 
-    _calledTime: number;
-    _mousedownID: number;
-    _surfaceID: number;
-    _soundID: number;
-    _pageX: number;
-    _pageY: number;
-    _element: HTMLElement;
+    _calledTime: number
+    _mousedownID: number
+    _surfaceID: number
+    _soundID: number
+    _pageX: number
+    _pageY: number
+    _element: HTMLElement
 
-    _width: number;
+    _width: number
     /**
      * The width of the core screen.
      */
     get width(): number {
-        return this._width;
+        return this._width
     }
     set width(w: number) {
-        this._width = w;
-        this._dispatchCoreResizeEvent();
+        this._width = w
+        this._dispatchCoreResizeEvent()
     }
 
     _height: number;
@@ -35,23 +47,23 @@ export default class Core extends EventTarget {
      * The height of the core screen.
      */
     get height(): number {
-        return this._height;
+        return this._height
     }
     set height(h: number) {
-        this._height = h;
-        this._dispatchCoreResizeEvent();
+        this._height = h
+        this._dispatchCoreResizeEvent()
     }
 
-    _scale: number;
+    _scale: number
     /**
      * The scaling of the core rendering.
      */
     get scale(): number {
-        return this._scale;
+        return this._scale
     }
     set scale(s: number) {
-        this._scale = s;
-        this._dispatchCoreResizeEvent();
+        this._scale = s
+        this._dispatchCoreResizeEvent()
     }
 
     /**
@@ -126,12 +138,12 @@ export default class Core extends EventTarget {
         super();
 
         let initial = true;
-        if (enchant.Core.instance) {
+        if (Core.instance) {
             initial = false;
-            enchant.Core.instance.stop();
+            Core.instance.stop();
         }
 
-        enchant.Core.instance = this;
+        Core.instance = this;
 
         this._calledTime = 0;
         this._mousedownID = 0;
@@ -209,25 +221,7 @@ export default class Core extends EventTarget {
         this.assets = {}
         let assets = this._assets = [];
 
-        // Load module assets e.g.
-        // `ui.enchant.js` requires ['apad.png', 'pad.png', 'font0.png', 'icon0.png']
-        // this methods will walk through all the module properties and their properties
-        // to find the `assets` and `preload` them.
-        (function detectAssets(module: object) {
-            // check whether the `module` has `assets` property.
-            // if true then `preload` them.
-            if (module['assets']) {
-                enchant.Core.instance.preload(module['assets']);
-            }
-
-            for (var prop in module) {
-                if (module.hasOwnProperty(prop)) {
-                    if (typeof module[prop] === 'object' && module[prop] !== null && Object.getPrototypeOf(module[prop]) === Object.prototype) {
-                        detectAssets(module[prop]);
-                    }
-                }
-            }
-        }(enchant))
+        // TODO load plugins' assets
 
         this.currentScene = null;
         this.rootScene = new Scene();
@@ -246,14 +240,14 @@ export default class Core extends EventTarget {
     }
 
     _dispatchCoreResizeEvent() {
-        let e = new Event('coreresize');
+        let e = new Event(EventType.CORE_RESIZE);
         e.width = this._width;
         e.height = this._height;
         e.scale = this._scale;
         this.dispatchEvent(e);
     }
 
-    _oncoreresize(e: enchant.Event) {
+    _oncoreresize(e: Event) {
         // @TODO Test the resize function as the original library did not resize at all.
         this._element.style.width = Math.floor(this._width * this._scale) + 'px';
         this._element.style.height = Math.floor(this._height * this._scale) + 'px';
@@ -317,21 +311,65 @@ export default class Core extends EventTarget {
 
         let ext = Core.findExt(src);
 
-        return enchant.Deferred.next(function () {
-            let d = new enchant.Deferred();
+        return Deferred.next(function () {
+            let d = new Deferred()
             let _callback = function (e) {
-                d.call(e);
-                callback.call(this, e);
+                d.call(e)
+                callback.call(this, e)
             }
         })
     }
 
-    start(deferred: enchant.Deferred) {
+    /**
+     * Start the core.
+     * 
+     * Sets the framerate of the {@link Core.currentScene} according to the value stored in {@link Core.core.fps}. If there are images to preload, loading will begin and the loading screen will be displayed.
+     * 
+     * @param deferred 
+     */
+    start(deferred?: Deferred): Deferred {
         let onloadTimeSetter = function () {
-            this.frame = 0;
-            this.removeEventListener('load', onloadTimeSetter);
+            this.frame = 0
+            this.removeEventListener('load', onloadTimeSetter)
         }
-        // #2020-01-10 15:15
+        this.addEventListener('load', onloadTimeSetter)
+
+        this.currentTime = getTime()
+        this.running = true
+        this.ready = true
+
+        if (!this._activated) {
+            this._activated = true
+            if (ENV.BROWSER === 'mobilesafari'
+                && ENV.USE_WEBAUDIO
+                && ENV.USE_TOUCH_TO_START_SCENE) {
+                let d = new Deferred()
+                let scene = this._createTouchToStartScene()
+            }
+        }
+    }
+
+    _requestPreload() {
+        // TODO
+    }
+
+    _createTouchToStartScene() {
+        let label = new Label('Touch to Start')
+        let size = Math.round(this.width / 10)
+        let scene = new Scene()
+
+        label.color = '#fff'
+        label.font = (size - 1) + 'px bold Helvetica,Arial,sans-serif'
+        label.textAlign = 'center'
+        label.width = this.width
+        label.height = label._boundHeight
+        label.y = (this.height - label.height) / 2
+
+        scene.backgroundColor = '#000'
+        scene.addChild(label)
+
+        return scene
+
     }
 
     /**
@@ -339,12 +377,12 @@ export default class Core extends EventTarget {
      * @param time 
      */
     _callTick(time: number) {
-        enchant.Core.instance._tick(time);
+        Core.instance._tick(time)
     }
 
     _tick(time: number) {
-        let e = new enchant.Event('enterframe');
-        let now = enchant.getTime();
+        let e = new Event(EventType.ENTER_FRAME)
+        let now = getTime()
         let elapsed = e.elapsed = now - this.currentTime;
         this.currentTime = now;
 
@@ -364,9 +402,9 @@ export default class Core extends EventTarget {
         this.currentScene.dispatchEvent(e);
         this.dispatchEvent(e);
 
-        this.dispatchEvent(new enchant.Event('exitframe'));
+        this.dispatchEvent(new Event(EventType.EXIT_FRAME));
         this.frame++;
-        now = enchant.getTime();
+        now = getTime();
 
         this._requestNextFrame(1000 / this.fps - (now - this._calledTime));
     }
@@ -396,7 +434,7 @@ export default class Core extends EventTarget {
         if (this.ready) {
             return;
         }
-        this.currentTime = enchant.getTime();
+        this.currentTime = getTime();
         this.ready = true;
         this.running = true;
         this._requestNextFrame(0);
@@ -417,10 +455,10 @@ export default class Core extends EventTarget {
     pushScene(scene: Scene) {
         this._element.appendChild(scene._element);
         if (this.currentScene) {
-            this.currentScene.dispatchEvent(new enchant.Event('exit'));
+            this.currentScene.dispatchEvent(new Event(EventType.EXIT));
         }
         this.currentScene = scene;
-        this.currentScene.dispatchEvent(new enchant.Event('enter'));
+        this.currentScene.dispatchEvent(new Event(EventType.ENTER));
         return this._scenes.push(scene);
     }
 
@@ -437,9 +475,9 @@ export default class Core extends EventTarget {
             return this.currentScene;
         }
         this._element.removeChild(this.currentScene._element);
-        this.currentScene.dispatchEvent(new enchant.Event('exit'));
+        this.currentScene.dispatchEvent(new Event(EventType.EXIT));
         this.currentScene = this._scenes[this._scenes.length - 2];
-        this.currentScene.dispatchEvent(new enchant.Event('enter'));
+        this.currentScene.dispatchEvent(new Event(EventType.ENTER));
         return this._scenes.pop();
     }
 
@@ -449,7 +487,7 @@ export default class Core extends EventTarget {
      * Execute `enchant.Core.popScene` and `enchant.Core.pushScene` one after another to replace the current scene with the new scene.
      * @param scene The new scene with which to replace the current scene.
      */
-    replaceScene(scene: enchant.Scene) {
+    replaceScene(scene: Scene) {
         this.popScene();
         return this.pushScene(scene);
     }
@@ -461,11 +499,11 @@ export default class Core extends EventTarget {
      * @param scene Scene to be removed.
      * @returns The deleted Scene.
      */
-    removeScene(scene: enchant.Scene) {
+    removeScene(scene: Scene) {
         if (this.currentScene === scene) {
             return this.popScene();
         } else {
-            let i = this._scences.indexOf(scene);
+            let i = this._scenes.indexOf(scene);
             if (i !== -1) {
                 this._scenes.splice(i, 1);
                 this._element.removeChild(scene._element);
@@ -485,12 +523,12 @@ export default class Core extends EventTarget {
             return;
         }
         if (this.fps >= 60 || delay <= 16) {
-            this._calledTime = enchant.getTime();
+            this._calledTime = getTime();
             window.requestAnimationFrame(this._callTick);
         } else {
             setTimeout(function () {
-                let core = enchant.Core.instance;
-                core._calledTime = enchant.getTime();
+                let core = Core.instance;
+                core._calledTime = getTime();
                 window.requestAnimationFrame(core._callTick);
             }, Math.max(0, delay));
         }

@@ -1,5 +1,8 @@
 import Core from './Core'
 import Group from './Group'
+import Event from './Event'
+import EventType from './EventType'
+import Node from './Node'
 
 interface NodeMap {
     [type: string]: Node;
@@ -21,7 +24,7 @@ interface NodeMap {
  * scene.addChild(enemy);
  * core.pushScene(scene);
  */
-export class Scene extends Group {
+export default class Scene extends Group {
 
     _element: HTMLElement
     _layers: NodeMap
@@ -56,12 +59,12 @@ export class Scene extends Group {
         this._layers = {};
         this._layerPriority = [];
 
-        this.addEventListener(Event.CHILD_ADDED, this._onchildadded);
-        this.addEventListener(Event.CHILD_REMOVED, this._onchildremoved);
-        this.addEventListener(Event.ENTER, this._onenter);
-        this.addEventListener(Event.EXIT, this._onexit);
+        this.addEventListener(EventType.CHILD_ADDED, this._onchildadded);
+        this.addEventListener(EventType.CHILD_REMOVED, this._onchildremoved);
+        this.addEventListener(EventType.ENTER, this._onenter);
+        this.addEventListener(EventType.EXIT, this._onexit);
 
-        this.addEventListener(Event.CORE_RESIZE, this._oncoreresize);
+        this.addEventListener(EventType.CORE_RESIZE, this._oncoreresize);
 
         this._oncoreresize(core);
     }
@@ -70,7 +73,7 @@ export class Scene extends Group {
         let layer;
         for (let prop in this._layers) {
             layer = this._layers[prop];
-            layer.dispatchEvent(new enchant.Event(Event.EXIT_FRAME));
+            layer.dispatchEvent(new Event(EventType.EXIT_FRAME));
         }
     }
 
@@ -129,10 +132,10 @@ export class Scene extends Group {
             this.childNodes[0].remove();
         }
 
-        return enchant.Core.instance.removeScene(this);
+        return Core.instance.removeScene(this);
     }
 
-    _oncoreresize(e: enchant.Core) {
+    _oncoreresize(e: Core) {
         this._element.style.width = e.width + 'px';
         this.width = e.width;
         this._element.style.height = e.height + 'px';
@@ -173,13 +176,13 @@ export class Scene extends Group {
         for (let type in this._layers) {
             this._layers[type]._startRendering();
         }
-        enchant.Core.instance.addEventListener('exitframe', this._dispatchExitframe);
+        Core.instance.addEventListener('exitframe', this._dispatchExitframe);
     }
 
     _onexit() {
         for (let type in this._layers) {
             this._layers[type]._stopRendering();
         }
-        enchant.Core.instance.removeEventListener('exitframe', this._dispatchExitframe);
+        Core.instance.removeEventListener('exitframe', this._dispatchExitframe);
     }
 }

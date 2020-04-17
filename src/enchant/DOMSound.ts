@@ -1,3 +1,8 @@
+import Core from './Core'
+import Event from './Event'
+import EventType from './EventType'
+import EventTarget from './EventTarget'
+import ENV from './Env'
 
 /**
  * Class to wrap audio elements.
@@ -99,33 +104,33 @@ export default class DOMSound extends EventTarget {
         sound.addEventListener('load', callback);
         sound.addEventListener('error', onerror);
         let audio = new Audio();
-        if (!enchant.ENV.SOUND_ENABLED_ON_MOBILE_SAFARI
-            && enchant.ENV.VENDOR_PREFIX === 'webkit'
-            && enchant.ENV.TOUCH_ENABLED) {
+        if (!ENV.SOUND_ENABLED_ON_MOBILE_SAFARI
+            && ENV.VENDOR_PREFIX === 'webkit'
+            && ENV.TOUCH_ENABLED) {
             window.setTimeout(function () {
-                sound.dispatchEvent(new enchant.Event('load'));
+                sound.dispatchEvent(new Event(EventType.LOAD));
             }, 0);
         } else {
             if (audio.canPlayType(type)) {
                 audio.addEventListener('canplaythrough', function canplay() {
                     sound.duration = audio.duration;
-                    sound.dispatchEvent(new enchant.Event('load'));
+                    sound.dispatchEvent(new Event(EventType.LOAD));
                     audio.removeEventListener('canplaythrough', canplay);
                 }, false);
                 audio.src = src;
                 audio.load();
                 audio.autoplay = false;
                 audio.onerror = function () {
-                    let e = new enchant.Event(enchant.Event.ERROR);
+                    let e = new Event(EventType.ERROR);
                     e.message = 'Cannot load an asset: ' + audio.src;
-                    enchant.Core.instance.dispatchEvent(e);
+                    Core.instance.dispatchEvent(e);
                     sound.dispatchEvent(e);
                 };
 
                 sound._element = audio;
             } else {
                 window.setTimeout(function () {
-                    sound.dispatchEvent(new enchant.Event('load'));
+                    sound.dispatchEvent(new Event(EventType.LOAD));
                 }, 0);
             }
         }

@@ -1,3 +1,5 @@
+import ActionEventTarget from './ActionEventTarget'
+import EventType from './EventType'
 
 export default class Action extends ActionEventTarget {
     time
@@ -25,19 +27,19 @@ export default class Action extends ActionEventTarget {
         this.timeline = null
         this.node = null
 
-        this.addEventListener(enchant.Event.ADDED_TO_TIMELINE, function (evt) {
+        this.addEventListener(EventType.ADDED_TO_TIMELINE, function (evt) {
             action.timeline = evt.timeline
             action.node = evt.timeline.node
             action.frame = 0
         })
 
-        this.addEventListener(enchant.Event.REMOVED_FROM_TIMELINE, function () {
+        this.addEventListener(EventType.REMOVED_FROM_TIMELINE, function () {
             action.timeline = null
             action.node = null
             action.frame = 0
         })
 
-        this.addEventListener(enchant.Event.ACTION_TICK, function (evt) {
+        this.addEventListener(EventType.ACTION_TICK, function (evt) {
             let remaining = action.time - (action.frame + evt.elapsed)
             if (action.time != null && remaining <= 0) {
                 action.frame = action.time

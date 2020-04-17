@@ -1,4 +1,6 @@
 import EventTarget from './EventTarget'
+import Event from './Event'
+import EventType from './EventType'
 import Node from './Node'
 
 /**
@@ -34,7 +36,7 @@ export default class Timeline extends EventTarget {
         this._parallel = null
         this._activated = false
 
-        this.addEventListener(enchant.Event.ENTER_FRAME, this._onenterframe)
+        this.addEventListener(EventType.ENTER_FRAME, this._onenterframe)
     }
 
     /**
@@ -43,17 +45,17 @@ export default class Timeline extends EventTarget {
      */
     tick(elapsed: number) {
         if (this.queue.length > 0) {
-            let action = this.queue[0];
+            let action = this.queue[0]
             if (action.frame === 0) {
-                let f = new Event('actionstart');
-                f.timeline = this;
-                action.dispatchEvent(f);
+                let f = new Event(EventType.ACTION_START)
+                f.timeline = this
+                action.dispatchEvent(f)
             }
 
-            let e = new Event('actiontick');
-            e.timeline = this;
-            e.elapsed = elapsed;
-            action.dispatchEvent(e);
+            let e = new Event(EventType.ACTION_TICK)
+            e.timeline = this
+            e.elapsed = elapsed
+            action.dispatchEvent(e)
         }
     }
 
@@ -72,13 +74,13 @@ export default class Timeline extends EventTarget {
     _deactivateTimeline() {
         if (this._activated) {
             this._activated = false;
-            this.node.removeEventListener('enterframe', this._nodeEventListener);
+            this.node.removeEventListener(EventType.ENTER_FRAME, this._nodeEventListener);
         }
     }
 
     _activateTimeline() {
         if (!this._activated && !this.paused) {
-            this.node.addEventListener('enterframe', this._nodeEventListener);
+            this.node.addEventListener(EventType.ENTER_FRAME, this._nodeEventListener);
             this._activated = true;
         }
     }

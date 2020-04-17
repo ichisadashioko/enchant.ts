@@ -1,3 +1,7 @@
+import Core from './Core'
+import Event from './Event'
+import EventType from './EventType'
+import EventTarget from './EventTarget'
 
 /**
  * Sound wrapper class for Web Audio API (supported on some webkit-based browsers)
@@ -23,6 +27,7 @@ export default class WebAudioSound extends EventTarget {
         }
 
         super();
+
         if (!WebAudioSound.audioContext) {
             WebAudioSound.audioContext = new AudioContext();
             WebAudioSound.destination = WebAudioSound.audioContext.destination;
@@ -143,25 +148,25 @@ export default class WebAudioSound extends EventTarget {
         let sound = new WebAudioSound();
         callback = callback || function () { };
         onerror = onerror || function () { };
-        sound.addEventListener(enchant.Event.LOAD, callback);
-        sound.addEventListener(enchant.Event.ERROR, onerror);
+        sound.addEventListener(EventType.LOAD, callback);
+        sound.addEventListener(EventType.ERROR, onerror);
         function dispatchErrorEvent() {
-            let e = new enchant.Event(enchant.Event.ERROR);
+            let e = new Event(EventType.ERROR);
             e.message = 'Cannot load an asset: ' + src;
-            enchant.Core.instance.dispatchEvent(e);
+            Core.instance.dispatchEvent(e);
             sound.dispatchEvent(e);
         }
 
         let actx: AudioContext, xhr: XMLHttpRequest;
         if (canPlay === 'maybe' || canPlay === 'probably') {
-            actx = enchant.WebAudioSound.audioContext;
+            actx = WebAudioSound.audioContext;
             xhr = new XMLHttpRequest();
             xhr.open('GET', src, true);
             xhr.responseType = 'arraybuffer';
             xhr.onload = function () {
                 actx.decodeAudioData(xhr.response, function (buffer) {
                     sound.buffer = buffer;
-                    sound.dispatchEvent(new enchant.Event(enchant.Event.LOAD));
+                    sound.dispatchEvent(new Event(EventType.LOAD));
                 }, dispatchErrorEvent);
             };
             xhr.onerror = dispatchErrorEvent;

@@ -1,4 +1,4 @@
 
-export class LoadingScene {
+export default class LoadingScene {
 
 }
