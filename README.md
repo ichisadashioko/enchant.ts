@@ -36,50 +36,50 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
     - [ ] `USE_ANIMATION`
     - [ ] `COLOR_DETECTION_LEVEL`
 - [ ] `Event.js`
-  - [ ] `initialize`
-  - [ ] `_initPosition`
-  - [ ] `LOAD`
-  - [ ] `ERROR`
-  - [ ] `CORE_RESIZE`
-  - [ ] `PROGRESS`
-  - [ ] `ENTER_FRAME`
-  - [ ] `EXIT_FRAME`
-  - [ ] `ENTER`
-  - [ ] `EXIT`
-  - [ ] `CHILD_ADDED`
-  - [ ] `ADDED`
-  - [ ] `ADDED_TO_SCENE`
-  - [ ] `CHILD_REMOVE`
-  - [ ] `REMOVED`
-  - [ ] `REMOVED_FROM_SCENE`
-  - [ ] `TOUCH_START`
-  - [ ] `TOUCH_MOVE`
-  - [ ] `TOUCH_END`
-  - [ ] `RENDER`
-  - [ ] `INPUT_START`
-  - [ ] `INPUT_CHANGE`
-  - [ ] `INPUT_END`
-  - [ ] `INPUT_STATE_CHANGED`
-  - [ ] `LEFT_BUTTON_DOWN`
-  - [ ] `LEFT_BUTTON_UP`
-  - [ ] `RIGHT_BUTTON_DOWN`
-  - [ ] `RIGHT_BUTTON_UP`
-  - [ ] `UP_BUTTON_DOWN`
-  - [ ] `UP_BUTTON_UP`
-  - [ ] `DOWN_BUTTON_DOWN`
-  - [ ] `DOWN_BUTTON_UP`
-  - [ ] `A_BUTTON_DOWN`
-  - [ ] `A_BUTTON_UP`
-  - [ ] `B_BUTTON_DOWN`
-  - [ ] `B_BUTTON_UP`
-  - [ ] `ADDED_TO_TIMELINE`
-  - [ ] `REMOVED_FROM_TIMELINE`
-  - [ ] `ACTION_START`
-  - [ ] `ACTION_END`
-  - [ ] `ACTION_TICK`
-  - [ ] `ACTION_ADDED`
-  - [ ] `ACTION_REMOVED`
-  - [ ] `ANIMATION_END`
+  - [x] `initialize`
+  - [x] `_initPosition`
+  - [x] `LOAD`
+  - [x] `ERROR`
+  - [x] `CORE_RESIZE`
+  - [x] `PROGRESS`
+  - [x] `ENTER_FRAME`
+  - [x] `EXIT_FRAME`
+  - [x] `ENTER`
+  - [x] `EXIT`
+  - [x] `CHILD_ADDED`
+  - [x] `ADDED`
+  - [x] `ADDED_TO_SCENE`
+  - [x] `CHILD_REMOVE`
+  - [x] `REMOVED`
+  - [x] `REMOVED_FROM_SCENE`
+  - [x] `TOUCH_START`
+  - [x] `TOUCH_MOVE`
+  - [x] `TOUCH_END`
+  - [x] `RENDER`
+  - [x] `INPUT_START`
+  - [x] `INPUT_CHANGE`
+  - [x] `INPUT_END`
+  - [x] `INPUT_STATE_CHANGED`
+  - [x] `LEFT_BUTTON_DOWN`
+  - [x] `LEFT_BUTTON_UP`
+  - [x] `RIGHT_BUTTON_DOWN`
+  - [x] `RIGHT_BUTTON_UP`
+  - [x] `UP_BUTTON_DOWN`
+  - [x] `UP_BUTTON_UP`
+  - [x] `DOWN_BUTTON_DOWN`
+  - [x] `DOWN_BUTTON_UP`
+  - [x] `A_BUTTON_DOWN`
+  - [x] `A_BUTTON_UP`
+  - [x] `B_BUTTON_DOWN`
+  - [x] `B_BUTTON_UP`
+  - [x] `ADDED_TO_TIMELINE`
+  - [x] `REMOVED_FROM_TIMELINE`
+  - [x] `ACTION_START`
+  - [x] `ACTION_END`
+  - [x] `ACTION_TICK`
+  - [x] `ACTION_ADDED`
+  - [x] `ACTION_REMOVED`
+  - [x] `ANIMATION_END`
 - [x] `EventTarget.js`
 - [ ] `Core.js`
   - [ ] `initialize`
