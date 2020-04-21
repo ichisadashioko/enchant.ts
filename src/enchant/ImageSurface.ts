@@ -1,3 +1,4 @@
+import Surface from './Surface'
 
 export default class ImageSurface extends Surface {
     _element: HTMLImageElement;
