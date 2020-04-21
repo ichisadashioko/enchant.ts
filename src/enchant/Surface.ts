@@ -1,3 +1,9 @@
+import EventTarget from './EventTarget'
+import CanvasSurface from './CanvasSurface'
+import ImageSurface from './ImageSurface'
+import Core from './Core'
+import EventType from './EventType'
+import Event from './Event'
 
 /**
  * Class that wraps canvas elements.
@@ -71,15 +77,15 @@ export default abstract class Surface extends EventTarget {
         surface.addEventListener('load', callback);
         surface.addEventListener('error', onerror);
         image.onerror = function () {
-            let e = new Event(enchant.Event.ERROR);
+            let e = new Event(EventType.ERROR);
             e.message = `Cannot load an assets: ${image.src}`;
-            enchant.Core.instance.dispatchEvent(e);
+            Core.instance.dispatchEvent(e);
             surface.dispatchEvent(e);
         };
         image.onload = function () {
             surface.width = image.width;
             surface.height = image.height;
-            surface.dispatchEvent(new Event('load'));
+            surface.dispatchEvent(new Event(EventType.LOAD));
         };
         image.src = src;
         return surface;
