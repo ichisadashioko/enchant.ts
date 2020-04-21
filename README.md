@@ -168,6 +168,17 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [ ] `_collectizeConstructor`
   - [ ] `_inherited`
 - [ ] `Sprite.js`
+  - [x] `initialize`
+  - [x] `image`
+  - [x] `frame`
+  - [x] `_frameSequence`
+  - [x] `_deepCompareToPreviousFrame`
+  - [x] `_computeFramePosition`
+  - [x] `_rotateFrameSequence`
+  - [x] `width`
+  - [x] `height`
+  - [x] `cvsRender`
+  - [x] `domRender`
 - [ ] `Label.js`
   - [ ] `initialize`
   - [ ] `width`
@@ -215,6 +226,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `_onenter`
   - [x] `_onexit`
 - [ ] `LoadingScene.js`
+  - [ ] `initialize`
 - [ ] `CanvasScene.js`
 - [ ] `DOMScene.js`
 - [x] `Surface.js`
