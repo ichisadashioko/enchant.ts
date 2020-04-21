@@ -59,34 +59,6 @@ export default class Node extends EventTarget {
 
     tl?: Timeline;
 
-    // properties for `enchant.Matrix`
-    // TODO BUG
-    width?: number;
-    height?: number;
-    _rotation?: number;
-    _scaleX?: number;
-    _scaleY?: number;
-    _originX?: number;
-    _originY?: number;
-    _width?: number;
-    _height?: number;
-
-    _element?: any;
-
-    // setter for `enchant.Core._dispatchExitframe`
-    // TODO BUG
-    set rotation(rotation: number) {
-        this._rotation = rotation;
-    }
-    set scaleX(scale: number) {
-        this._scaleX = scale;
-    }
-    set scaleY(scale: number) {
-        this._scaleY = scale;
-    }
-
-    // workaround for `Scene._onchildadded`
-
     constructor() {
         super();
 
