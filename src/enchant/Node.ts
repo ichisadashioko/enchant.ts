@@ -1,4 +1,9 @@
+import ENV from './Env'
 import EventTarget from './EventTarget'
+import Timeline from './TimeLine'
+import Group from './Group'
+import Matrix from './Matrix'
+import Scene from './Scene'
 
 /**
  * Base class for objects in the display tree which is rooted at a Scene.
@@ -116,7 +121,7 @@ export default class Node extends EventTarget {
             }
         });
 
-        if (enchant.ENV.USE_ANIMATION) {
+        if (ENV.USE_ANIMATION) {
             this.tl = new Timeline(this);
         }
     }
@@ -152,7 +157,7 @@ export default class Node extends EventTarget {
             parent = node.parentNode;
         }
 
-        let matrix = enchant.Matrix.instance;
+        let matrix = Matrix.instance;
         let stack = matrix.stack;
         let mat = [];
         let newmat, ox, oy;
