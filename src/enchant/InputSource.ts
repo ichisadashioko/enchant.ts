@@ -1,4 +1,6 @@
-
+import EventTarget from './EventTarget'
+import EventType from './EventType'
+import Event from './Event'
 /**
  * Class that wrap input.
  */
@@ -21,7 +23,7 @@ export default class InputSource extends EventTarget {
      * @param data state
      */
     notifyStateChange(data: any) {
-        let e = new enchant.Event(enchant.Event.INPUT_STATE_CHANGED);
+        let e = new Event(EventType.INPUT_STATE_CHANGED);
         e.data = data;
         e.source = this;
         this.dispatchEvent(e);
