@@ -1,3 +1,6 @@
+import ENV from './Env'
+import Core from './Core'
+import Surface from './Surface'
 
 export default class CanvasSurface extends Surface {
     _element: HTMLCanvasElement;
@@ -12,7 +15,7 @@ export default class CanvasSurface extends Surface {
     constructor(width: number, height: number) {
         super();
 
-        let core = enchant.Core.instance;
+        let core = Core.instance;
 
         this.width = Math.ceil(width);
         this.height = Math.ceil(height);
@@ -27,7 +30,7 @@ export default class CanvasSurface extends Surface {
 
         let that = this;
 
-        enchant.ENV.CANVAS_DRAWING_METHODS.forEach(function (name) {
+        ENV.CANVAS_DRAWING_METHODS.forEach(function (name) {
             let method: Function = that.context[name];
             that.context[name] = function () {
                 method.apply(that, arguments);
