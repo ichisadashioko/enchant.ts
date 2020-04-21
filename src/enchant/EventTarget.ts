@@ -5,50 +5,50 @@ import Event from './Event'
  * However, it does not include the concept of phases.
  */
 export default class EventTarget {
-    _offsetX: number;
-    _offsetY: number;
-    _listeners;
+    _offsetX: number
+    _offsetY: number
+    _listeners: Map<string, Array<(e: Event) => void>>
 
-    frame?: number;
+    frame?: number
 
     constructor() {
-        this._listeners = {}
+        this._listeners = new Map()
     }
 
     /**
      * Add a new event listener which will be executed when the event is dispatched.
      * @param type Type of the events.
-     * @param {Function(enchant.Event)} listener Event listener to be added.
+     * @param listener Event listener to be added.
      */
-    addEventListener(type: string, listener: Function) {
-        var listeners = this._listeners[type] as Array<Function>;
+    addEventListener(type: string, listener: (e: Event) => void) {
+        var listeners = this._listeners[type] as Array<Function>
         if (listeners == null) {
-            this._listeners[type] = [listener];
+            this._listeners[type] = [listener]
         } else if (listeners.indexOf(listener) === -1) {
-            listeners.unshift(listener);
+            listeners.unshift(listener)
         }
     }
 
     /**
      * Synonym for addEventListener.
-     * @param {String} type Type of the events.
-     * @param {Function(enchant.Event)} listener Event listener to be added.
+     * @param type Type of the events.
+     * @param listener Event listener to be added.
      */
-    on() {
-        this.addEventListener.apply(this, arguments);
+    on(type: string, listener: (e: Event) => void) {
+        this.addEventListener.apply(this, arguments)
     }
 
     /**
      * Delete an event listener.
      * @param type Type of the events.
-     * @param {Function(enchant.Event)} listener Event listener to be deleted.
+     * @param listener Event listener to be deleted.
      */
-    removeEventListener(type: string, listener: Function) {
-        var listeners = this._listeners[type] as Array<Function>;
+    removeEventListener(type: string, listener: (e: Event) => void) {
+        var listeners = this._listeners[type] as Array<Function>
         if (listeners != null) {
-            var i = listeners.indexOf(listener);
+            var i = listeners.indexOf(listener)
             if (i !== -1) {
-                listeners.splice(i, 1);
+                listeners.splice(i, 1)
             }
         }
     }
@@ -60,9 +60,9 @@ export default class EventTarget {
      */
     clearEventListener(type?: string) {
         if (type != null) {
-            delete this._listeners[type];
+            delete this._listeners[type]
         } else {
-            this._listeners = {};
+            this._listeners = new Map()
         }
     }
 
@@ -71,17 +71,17 @@ export default class EventTarget {
      * @param e Event to be issued.
      */
     dispatchEvent(e: Event) {
-        e.target = this;
-        e.localX = e.x - this._offsetX;
-        e.localY = e.y - this._offsetY;
+        e.target = this
+        e.localX = e.x - this._offsetX
+        e.localY = e.y - this._offsetY
         if (this['on' + e.type] != null) {
-            this['on' + e.type](e);
+            this['on' + e.type](e)
         }
-        var listeners = this._listeners[e.type] as Array<Function>;
+        var listeners = this._listeners[e.type]
         if (listeners != null) {
-            listeners = listeners.slice();
+            listeners = listeners.slice()
             for (let i = 0, len = listeners.length; i < len; i++) {
-                listeners[i].call(this, e);
+                listeners[i].call(this, e)
             }
         }
     }
