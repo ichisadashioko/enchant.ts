@@ -1,3 +1,7 @@
+import EventTarget from './EventTarget'
+import EventType from './EventType'
+import Event from './Event'
+import InputSource from './InputSource'
 
 /**
  * Class for managing input.
@@ -7,20 +11,20 @@ export default class InputManager extends EventTarget {
     /**
      * Array that store event target.
      */
-    broadcastTargets: EventTarget[];
+    broadcastTargets: EventTarget[]
 
     /**
      * Object that store input state.
      */
-    valueStore: any;
+    valueStore: any
 
     /**
      * source that will be added to event object.
      */
-    source: any;
+    source: any
 
-    _binds: any;
-    _stateHandler: any;
+    _binds: any
+    _stateHandler: (e) => void
 
     /**
      * 
@@ -29,16 +33,16 @@ export default class InputManager extends EventTarget {
      */
     constructor(valueStore: any, source?: any) {
         super()
-        this.broadcastTargets = [];
-        this.valueStore = valueStore;
-        this.source = source || this;
-        this._binds = {};
+        this.broadcastTargets = []
+        this.valueStore = valueStore
+        this.source = source || this
+        this._binds = {}
 
         this._stateHandler = function (e) {
-            let id = e.source.identifier;
-            let name = this._binds[id];
-            this.changeState(name, e.data);
-        }.bind(this);
+            let id = e.source.identifier
+            let name = this._binds[id]
+            this.changeState(name, e.data)
+        }.bind(this)
     }
 
     /**
@@ -48,8 +52,8 @@ export default class InputManager extends EventTarget {
      * @param name input name.
      */
     bind(inputSource: InputSource, name: string) {
-        inputSource.addEventListener(enchant.Event.INPUT_STATE_CHANGED, this._stateHandler);
-        this._binds[inputSource.identifier] = name;
+        inputSource.addEventListener(EventType.INPUT_STATE_CHANGED, this._stateHandler)
+        this._binds[inputSource.identifier] = name
     }
 
     /**
@@ -57,8 +61,8 @@ export default class InputManager extends EventTarget {
      * @param inputSource input source.
      */
     unbind(inputSource: InputSource) {
-        inputSource.removeEventListener(enchant.Event.INPUT_STATE_CHANGED, this._stateHandler);
-        delete this._binds[inputSource.identifier];
+        inputSource.removeEventListener(EventType.INPUT_STATE_CHANGED, this._stateHandler)
+        delete this._binds[inputSource.identifier]
     }
 
     /**
@@ -66,9 +70,9 @@ export default class InputManager extends EventTarget {
      * @param eventTarget broadcast target.
      */
     addBroadcastTarget(eventTarget: EventTarget) {
-        let i = this.broadcastTargets.indexOf(eventTarget);
+        let i = this.broadcastTargets.indexOf(eventTarget)
         if (i === -1) {
-            this.broadcastTargets.push(eventTarget);
+            this.broadcastTargets.push(eventTarget)
         }
     }
 
