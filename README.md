@@ -21,20 +21,20 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [ ] `Env.js`
   - [ ] `ENV`
     - [ ] `VERSION`
-    - [ ] `BROWSER`
-    - [ ] `VENDOR_PREFIX`
-    - [ ] `TOUCH_ENABLED`
-    - [ ] `RETINA_DISPLAY`
-    - [ ] `USE_FLASH_SOUND`
-    - [ ] `USE_DEFAULT_EVENT_TAGS`
-    - [ ] `CANVAS_DRAWING_METHODS`
-    - [ ] `KEY_BIND_TABLE`
-    - [ ] `PREVENT_DEFAULT_KEY_CODES`
-    - [ ] `SOUND_ENABLED_ON_MOBILE_SAFARI`
-    - [ ] `USE_TOUCH_TO_START_SCENE`
-    - [ ] `USE_WEB_AUDIO`
-    - [ ] `USE_ANIMATION`
-    - [ ] `COLOR_DETECTION_LEVEL`
+    - [x] `BROWSER`
+    - [x] `VENDOR_PREFIX`
+    - [x] `TOUCH_ENABLED`
+    - [x] `RETINA_DISPLAY`
+    - [x] `USE_FLASH_SOUND`
+    - [x] `USE_DEFAULT_EVENT_TAGS`
+    - [x] `CANVAS_DRAWING_METHODS`
+    - [x] `KEY_BIND_TABLE`
+    - [x] `PREVENT_DEFAULT_KEY_CODES`
+    - [x] `SOUND_ENABLED_ON_MOBILE_SAFARI`
+    - [x] `USE_TOUCH_TO_START_SCENE`
+    - [x] `USE_WEB_AUDIO`
+    - [x] `USE_ANIMATION`
+    - [x] `COLOR_DETECTION_LEVEL`
 - [ ] `Event.js`
   - [x] `initialize`
   - [x] `_initPosition`
@@ -103,8 +103,8 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `popScene`
   - [ ] `replaceScene`
   - [ ] `removeScene`
-  - [ ] `_buttonListener`
-  - [ ] `keybind`
+  - [x] `_buttonListener`
+  - [x] `keybind`
   - [ ] `keyunbind`
   - [ ] `changeButtonState`
   - [ ] `getElapsedTime`
@@ -132,6 +132,41 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `getByKeyCode`
 - [x] `Node.js`
 - [ ] `Entity.js`
+  - [ ] `_intersectBetweenClassAndInstance`
+  - [ ] `_intersectBetweenClassAndClass`
+  - [ ] `_intersectStrictBetweenClassAndInstance`
+  - [ ] `_intersectStrictBetweenClassAndClass`
+  - [ ] `_staticIntersect`
+  - [ ] `_staticIntersectStrict`
+  - [ ] `_nodePrototypeClearEventListener`
+  - [ ] `initialize`
+  - [ ] `width`
+  - [ ] `height`
+  - [ ] `backgroundColor`
+  - [ ] `debugColor`
+  - [ ] `opacity`
+  - [ ] `visible`
+  - [ ] `touchEnabled`
+  - [ ] `intersect`
+  - [ ] `_intersectOne`
+  - [ ] `within`
+  - [ ] `scale`
+  - [ ] `rotate`
+  - [ ] `scaleX`
+  - [ ] `scaleY`
+  - [ ] `rotation`
+  - [ ] `originX`
+  - [ ] `originY`
+  - [ ] `enableCollection`
+  - [ ] `disableCollection`
+  - [ ] `clearEventListener`
+  - [ ] `_addSelfToCollection`
+  - [ ] `_removeSelfFromCollection`
+  - [ ] `getBoundingRect`
+  - [ ] `getOrientedBoundingRect`
+  - [ ] `getConstructor`
+  - [ ] `_collectizeConstructor`
+  - [ ] `_inherited`
 - [ ] `Sprite.js`
 - [ ] `Label.js`
   - [ ] `initialize`
