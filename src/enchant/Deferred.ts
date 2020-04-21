@@ -11,13 +11,13 @@ export default class Deferred {
     }
 
     next(func: Function) {
-        let q = new enchant.Deferred();
+        let q = new Deferred();
         q._succ = func;
         return this._add(q)
     }
 
     error(func: Function) {
-        let q = new enchant.Deferred();
+        let q = new Deferred();
         q._fail = func;
         return this._add(q);
     }
@@ -36,7 +36,7 @@ export default class Deferred {
         while (queue && !queue._succ) {
             queue = queue._next;
         }
-        if (!(queue instanceof enchant.Deferred)) {
+        if (!(queue instanceof Deferred)) {
             return;
         }
 
@@ -46,9 +46,9 @@ export default class Deferred {
             return queue.fail(e);
         }
 
-        if (received instanceof enchant.Deferred) {
-            enchant.Deferred._insert(queue, received);
-        } else if (queue._next instanceof enchant.Deferred) {
+        if (received instanceof Deferred) {
+            Deferred._insert(queue, received);
+        } else if (queue._next instanceof Deferred) {
             queue._next.call(received);
         }
     }
@@ -60,7 +60,7 @@ export default class Deferred {
             queue = queue._next;
         }
 
-        if (queue instanceof enchant.Deferred) {
+        if (queue instanceof Deferred) {
             result = queue._fail(arg);
             queue.call(result);
         } else if (arg instanceof Error) {
@@ -73,7 +73,7 @@ export default class Deferred {
     }
 
     static _insert(queue: Deferred, ins: Deferred) {
-        if (queue._next instanceof enchant.Deferred) {
+        if (queue._next instanceof Deferred) {
             ins._tail._next = queue._next;
         }
 
@@ -81,17 +81,17 @@ export default class Deferred {
     }
 
     static next(func: Function) {
-        let q = new enchant.Deferred().next(func);
+        let q = new Deferred().next(func);
         q._id = setTimeout(function () { q.call(); }, 0);
         return q;
     }
 
     static parallel(arg) {
-        let q = new enchant.Deferred();
+        let q = new Deferred();
         q._id = setTimeout(function () { q.call(); }, 0);
         let progress = 0;
         let ret = (arg instanceof Array) ? [] : {};
-        let p = new enchant.Deferred();
+        let p = new Deferred();
         for (let prop in arg) {
             if (arg.hasOwnProperty(prop)) {
                 progress++;
