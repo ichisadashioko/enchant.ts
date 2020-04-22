@@ -10,6 +10,7 @@ import ENV from './Env'
 import Label from './Label'
 import Surface from './Surface'
 import Sound from './Sound'
+import WebAudioSound from './WebAudioSound'
 
 /**
  * A class for controlling the core's main loop and scenes.
@@ -42,7 +43,7 @@ export default class Core extends EventTarget {
         this._dispatchCoreResizeEvent()
     }
 
-    _height: number;
+    _height: number
     /**
      * The height of the core screen.
      */
@@ -69,194 +70,194 @@ export default class Core extends EventTarget {
     /**
      * The frame rate of the core.
      */
-    fps: number;
+    fps: number
 
     /**
      * The number of frames processed since the core was started.
      */
-    frame: number;
+    frame: number
 
     /**
      * Indicates whether or not the core can be executed.
      */
-    ready: boolean;
+    ready: boolean
 
     /**
      * Indicates whether or not the core is currently running.
      */
-    running: boolean;
+    running: boolean
 
     /**
      * Object which stores loaded assets using their paths as keys.
      */
-    assets: object;
+    assets: object
 
-    _assets: [];
-    _scenes: Scene[];
+    _assets: []
+    _scenes: Scene[]
 
     /**
      * The `Scene` which is currently displayed. This `Scene` is on top of the `Scene` stack.
      */
-    currentScene: Scene;
+    currentScene: Scene
 
     /**
      * The root Scene. The Scene at the bottom of the Scene stack.
      */
-    rootScene: Scene;
+    rootScene: Scene
 
     /**
      * The Scene to be displayed during loading.
      */
-    loadingScene: LoadingScene;
+    loadingScene: LoadingScene
 
     /**
      * Indicates whether or not `echant.Core.start` has been called.
      */
-    _activated: boolean;
+    _activated: boolean
 
     /**
      * Object that saves the current input state for the core.
      */
-    input: object;
+    input: object
 
-    keyboardInputManager: KeyboardInputManager;
-    _keybind;
-    currentTime: number;
-    _actualFps?: number;
+    keyboardInputManager: KeyboardInputManager
+    _keybind
+    currentTime: number
+    _actualFps?: number
 
     public get actualFps(): number {
-        return this._actualFps || this.fps;
+        return this._actualFps || this.fps
     }
 
     constructor(width?: number, height?: number) {
 
         if (window.document.body === null) {
             // @TODO postpone initialization after `window.onload`
-            throw new Error('document.body is null. Please excute `new Core()` in window.onload.');
+            throw new Error('document.body is null. Please excute `new Core()` in window.onload.')
         }
 
-        super();
+        super()
 
-        let initial = true;
+        let initial = true
         if (Core.instance) {
-            initial = false;
-            Core.instance.stop();
+            initial = false
+            Core.instance.stop()
         }
 
-        Core.instance = this;
+        Core.instance = this
 
-        this._calledTime = 0;
-        this._mousedownID = 0;
-        this._surfaceID = 0;
-        this._soundID = 0;
+        this._calledTime = 0
+        this._mousedownID = 0
+        this._surfaceID = 0
+        this._soundID = 0
 
-        this._scenes = [];
+        this._scenes = []
 
-        width = width || 320;
-        height = height || 320;
+        width = width || 320
+        height = height || 320
 
-        const stageId = 'enchant-stage';
+        const stageId = 'enchant-stage'
 
-        let stage = document.getElementById(stageId);
+        let stage = document.getElementById(stageId)
 
         // @TODO compute scale for every frame for dynamic resizing.
-        let scale: number, sWidth: number, sHeight: number;
+        let scale: number, sWidth: number, sHeight: number
         if (!stage) {
-            stage = document.createElement('div');
-            stage.id = stageId;
-            stage.style.position = 'absolute';
+            stage = document.createElement('div')
+            stage.id = stageId
+            stage.style.position = 'absolute'
 
             if (document.body.firstChild) {
-                document.body.insertBefore(stage, document.body.firstChild);
+                document.body.insertBefore(stage, document.body.firstChild)
             } else {
-                document.body.appendChild(stage);
+                document.body.appendChild(stage)
             }
 
             scale = Math.min(
                 window.innerWidth / width,
                 window.innerHeight / height,
-            );
+            )
 
-            this._pageX = stage.getBoundingClientRect().left;
-            this._pageY = stage.getBoundingClientRect().top;
+            this._pageX = stage.getBoundingClientRect().left
+            this._pageY = stage.getBoundingClientRect().top
         } else {
-            let style = window.getComputedStyle(stage);
-            sWidth = parseInt(style.width, 10);
-            sHeight = parseInt(style.height, 10);
+            let style = window.getComputedStyle(stage)
+            sWidth = parseInt(style.width, 10)
+            sHeight = parseInt(style.height, 10)
             if (sWidth && sHeight) {
                 scale = Math.min(
                     sWidth / width,
                     sHeight / height,
-                );
+                )
             } else {
-                scale = 1;
+                scale = 1
             }
 
             while (stage.firstChild) {
-                stage.removeChild(stage.firstChild);
+                stage.removeChild(stage.firstChild)
             }
 
-            stage.style.position = 'relative';
+            stage.style.position = 'relative'
 
-            let bounding = stage.getBoundingClientRect();
-            this._pageX = Math.round(window.scrollX || window.pageXOffset + bounding.left);
-            this._pageY = Math.round(window.scrollY || window.pageYOffset + bounding.top);
+            let bounding = stage.getBoundingClientRect()
+            this._pageX = Math.round(window.scrollX || window.pageXOffset + bounding.left)
+            this._pageY = Math.round(window.scrollY || window.pageYOffset + bounding.top)
         }
 
-        stage.style.fontSize = '12px';
-        stage.style.webkitTextSizeAdjust = 'none';
-        stage.style.webkitTapHighlightColor = 'rgba(0, 0, 0, 0)';
-        this._element = stage;
+        stage.style.fontSize = '12px'
+        stage.style.webkitTextSizeAdjust = 'none'
+        stage.style.webkitTapHighlightColor = 'rgba(0, 0, 0, 0)'
+        this._element = stage
 
-        this.addEventListener('coreresize', this._oncoreresize);
+        this.addEventListener('coreresize', this._oncoreresize)
 
-        this._width = width;
-        this._height = height;
-        this.scale = scale;
+        this._width = width
+        this._height = height
+        this.scale = scale
 
-        this.fps = 30;
-        this.frame = 0;
-        this.ready = false;
-        this.running = false;
+        this.fps = 30
+        this.frame = 0
+        this.ready = false
+        this.running = false
         this.assets = {}
-        let assets = this._assets = [];
+        let assets = this._assets = []
 
         // TODO load plugins' assets
 
-        this.currentScene = null;
-        this.rootScene = new Scene();
-        this.pushScene(this.rootScene);
-        this.loadingScene = new LoadingScene();
-        this._activated = false;
+        this.currentScene = null
+        this.rootScene = new Scene()
+        this.pushScene(this.rootScene)
+        this.loadingScene = new LoadingScene()
+        this._activated = false
 
-        this._offsetX = 0;
-        this._offsetY = 0;
+        this._offsetX = 0
+        this._offsetY = 0
 
-        this.input = {};
+        this.input = {}
 
-        this.keyboardInputManager = new KeyboardInputManager(window.document.body, this.input);
-        this.keyboardInputManager.addBroadcastTarget(this);
-        this._keybind = this.keyboardInputManager._binds;
+        this.keyboardInputManager = new KeyboardInputManager(window.document.body, this.input)
+        this.keyboardInputManager.addBroadcastTarget(this)
+        this._keybind = this.keyboardInputManager._binds
     }
 
     _dispatchCoreResizeEvent() {
-        let e = new Event(EventType.CORE_RESIZE);
-        e.width = this._width;
-        e.height = this._height;
-        e.scale = this._scale;
-        this.dispatchEvent(e);
+        let e = new Event(EventType.CORE_RESIZE)
+        e.width = this._width
+        e.height = this._height
+        e.scale = this._scale
+        this.dispatchEvent(e)
     }
 
     _oncoreresize(e: Event) {
         // @TODO Test the resize function as the original library did not resize at all.
-        this._element.style.width = Math.floor(this._width * this._scale) + 'px';
-        this._element.style.height = Math.floor(this._height * this._scale) + 'px';
+        this._element.style.width = Math.floor(this._width * this._scale) + 'px'
+        this._element.style.height = Math.floor(this._height * this._scale) + 'px'
 
         // notify all the scenes of the resize event
-        let scene;
+        let scene
         for (let i = 0, l = this._scenes.length; i < l; i++) {
-            scene = this._scenes[i];
-            scene.dispatchEvent(e);
+            scene = this._scenes[i]
+            scene.dispatchEvent(e)
         }
     }
 
@@ -285,8 +286,8 @@ export default class Core extends EventTarget {
         if (!(assets instanceof Array)) {
             assets = Array.prototype.slice.call(arguments)
         }
-        Array.prototype.push.apply(this._assets, assets);
-        return this;
+        Array.prototype.push.apply(this._assets, assets)
+        return this
     }
 
     /**
@@ -297,19 +298,19 @@ export default class Core extends EventTarget {
      * @param onerror Function to be called if the file fails to load.
      */
     load(src: string, alias?: string, callback?: Function, onerror?: Function) {
-        let assetName: string;
+        let assetName: string
         if (typeof arguments[1] === 'string') {
-            assetName = alias;
-            callback = callback || function () { };
-            onerror = onerror || function () { };
+            assetName = alias
+            callback = callback || function () { }
+            onerror = onerror || function () { }
         } else {
-            assetName = src;
-            let tempCallback = callback;
-            callback = arguments[1] || function () { };
-            onerror = tempCallback || function () { };
+            assetName = src
+            let tempCallback = callback
+            callback = arguments[1] || function () { }
+            onerror = tempCallback || function () { }
         }
 
-        let ext = Core.findExt(src);
+        let ext = Core.findExt(src)
 
         return Deferred.next(function () {
             let d = new Deferred()
@@ -323,7 +324,10 @@ export default class Core extends EventTarget {
     /**
      * Start the core.
      * 
-     * Sets the framerate of the {@link Core.currentScene} according to the value stored in {@link Core.core.fps}. If there are images to preload, loading will begin and the loading screen will be displayed.
+     * Sets the framerate of the {@link Core.currentScene} according to
+     * the value stored in {@link Core.core.fps}. If there are images to
+     * preload, loading will begin and the loading screen will be
+     * displayed.
      * 
      * @param deferred 
      */
@@ -345,12 +349,73 @@ export default class Core extends EventTarget {
                 && ENV.USE_TOUCH_TO_START_SCENE) {
                 let d = new Deferred()
                 let scene = this._createTouchToStartScene()
+
+                let core = Core.instance
+                let that = this
+
+                scene.addEventListener(EventType.TOUCH_START, function waitTouch() {
+                    that.removeEventListener(EventType.TOUCH_START, waitTouch)
+                    let a = new WebAudioSound()
+                    a.buffer = WebAudioSound.audioContext.createBuffer(1, 1, 48000)
+                    a.play()
+                    core.removeScene(scene)
+                    core.start(d)
+                }, false)
+
+                core.pushScene(scene)
+                return d
             }
         }
+
+        this._requestNextFrame(0)
+
+        let ret = this._requestPreload().next(function () {
+            Core.instance.loadingScene.dispatchEvent(new Event(EventType.LOAD))
+        })
+
+        if (deferred) {
+            ret.next(function (args) {
+                deferred.call(args)
+            }).error(function (args) {
+                deferred.fail(args)
+            })
+        }
+
+        return ret
     }
 
     _requestPreload() {
-        // TODO
+        let o: Record<string, Deferred> = {}
+        let loaded = 0
+        let len = 0
+        function loadFunc() {
+            let e = new Event(EventType.PROGRESS)
+            e.loaded = ++loaded
+            e.total = len
+            Core.instance.loadingScene.dispatchEvent(e)
+        }
+
+        let that = this
+
+        this._assets.reverse().forEach(function (asset: string | string[]) {
+            let src: string
+            let name: string
+
+            if (asset instanceof Array) {
+                src = asset[0]
+                name = asset[1]
+            } else {
+                src = name = asset
+            }
+
+            if (!o[name]) {
+                o[name] = that.load(src, name, loadFunc)
+                len++
+            }
+        })
+
+        this.pushScene(this.loadingScene)
+        return Deferred.parallel(o)
     }
 
     _createTouchToStartScene() {
@@ -373,6 +438,26 @@ export default class Core extends EventTarget {
     }
 
     /**
+     * Request the next frame.
+     * @param delay Amount of time to delay before calling `requestAnimationFrame`.
+     */
+    _requestNextFrame(delay: number) {
+        if (!this.ready) {
+            return
+        }
+        if (this.fps >= 60 || delay <= 16) {
+            this._calledTime = getTime()
+            window.requestAnimationFrame(this._callTick)
+        } else {
+            setTimeout(function () {
+                let core = Core.instance
+                core._calledTime = getTime()
+                window.requestAnimationFrame(core._callTick)
+            }, Math.max(0, delay))
+        }
+    }
+
+    /**
      * Call `enchant.Core._tick`
      * @param time 
      */
@@ -383,30 +468,30 @@ export default class Core extends EventTarget {
     _tick(time: number) {
         let e = new Event(EventType.ENTER_FRAME)
         let now = getTime()
-        let elapsed = e.elapsed = now - this.currentTime;
-        this.currentTime = now;
+        let elapsed = e.elapsed = now - this.currentTime
+        this.currentTime = now
 
-        this._actualFps = elapsed > 0 ? (1000 / elapsed) : 0;
+        this._actualFps = elapsed > 0 ? (1000 / elapsed) : 0
 
-        let nodes = this.currentScene.childNodes.slice();
+        let nodes = this.currentScene.childNodes.slice()
         while (nodes.length) {
-            let node = nodes.pop();
-            node.age++;
-            node.dispatchEvent(e);
+            let node = nodes.pop()
+            node.age++
+            node.dispatchEvent(e)
             if (node.childNodes) {
-                nodes.push(node.childNodes);
+                nodes.push(node.childNodes)
             }
         }
 
-        this.currentScene.age++;
-        this.currentScene.dispatchEvent(e);
-        this.dispatchEvent(e);
+        this.currentScene.age++
+        this.currentScene.dispatchEvent(e)
+        this.dispatchEvent(e)
 
-        this.dispatchEvent(new Event(EventType.EXIT_FRAME));
-        this.frame++;
-        now = getTime();
+        this.dispatchEvent(new Event(EventType.EXIT_FRAME))
+        this.frame++
+        now = getTime()
 
-        this._requestNextFrame(1000 / this.fps - (now - this._calledTime));
+        this._requestNextFrame(1000 / this.fps - (now - this._calledTime))
     }
 
     /**
@@ -416,8 +501,8 @@ export default class Core extends EventTarget {
      * Core can be restarted using {@link enchant.Core.resume}
      */
     stop() {
-        this.ready = false;
-        this.running = false;
+        this.ready = false
+        this.running = false
     }
 
     /**
@@ -427,17 +512,17 @@ export default class Core extends EventTarget {
      * Core can be started again using `enchant.Core.resume`.
      */
     pause() {
-        this.ready = false;
+        this.ready = false
     }
 
     resume() {
         if (this.ready) {
-            return;
+            return
         }
-        this.currentTime = getTime();
-        this.ready = true;
-        this.running = true;
-        this._requestNextFrame(0);
+        this.currentTime = getTime()
+        this.ready = true
+        this.running = true
+        this._requestNextFrame(0)
     }
 
     /**
@@ -453,13 +538,13 @@ export default class Core extends EventTarget {
      * @param scene The new scene to display.
      */
     pushScene(scene: Scene) {
-        this._element.appendChild(scene._element);
+        this._element.appendChild(scene._element)
         if (this.currentScene) {
-            this.currentScene.dispatchEvent(new Event(EventType.EXIT));
+            this.currentScene.dispatchEvent(new Event(EventType.EXIT))
         }
-        this.currentScene = scene;
-        this.currentScene.dispatchEvent(new Event(EventType.ENTER));
-        return this._scenes.push(scene);
+        this.currentScene = scene
+        this.currentScene.dispatchEvent(new Event(EventType.ENTER))
+        return this._scenes.push(scene)
     }
 
     /**
@@ -472,13 +557,13 @@ export default class Core extends EventTarget {
      */
     popScene(): Scene {
         if (this.currentScene === this.rootScene) {
-            return this.currentScene;
+            return this.currentScene
         }
-        this._element.removeChild(this.currentScene._element);
-        this.currentScene.dispatchEvent(new Event(EventType.EXIT));
-        this.currentScene = this._scenes[this._scenes.length - 2];
-        this.currentScene.dispatchEvent(new Event(EventType.ENTER));
-        return this._scenes.pop();
+        this._element.removeChild(this.currentScene._element)
+        this.currentScene.dispatchEvent(new Event(EventType.EXIT))
+        this.currentScene = this._scenes[this._scenes.length - 2]
+        this.currentScene.dispatchEvent(new Event(EventType.ENTER))
+        return this._scenes.pop()
     }
 
     /**
@@ -488,8 +573,8 @@ export default class Core extends EventTarget {
      * @param scene The new scene with which to replace the current scene.
      */
     replaceScene(scene: Scene) {
-        this.popScene();
-        return this.pushScene(scene);
+        this.popScene()
+        return this.pushScene(scene)
     }
 
     /**
@@ -501,45 +586,45 @@ export default class Core extends EventTarget {
      */
     removeScene(scene: Scene) {
         if (this.currentScene === scene) {
-            return this.popScene();
+            return this.popScene()
         } else {
-            let i = this._scenes.indexOf(scene);
+            let i = this._scenes.indexOf(scene)
             if (i !== -1) {
-                this._scenes.splice(i, 1);
-                this._element.removeChild(scene._element);
-                return scene;
+                this._scenes.splice(i, 1)
+                this._element.removeChild(scene._element)
+                return scene
             } else {
-                return null;
+                return null
             }
         }
     }
 
+    _buttonListener(e: Event) {
+        this.currentScene.dispatchEvent(e)
+    }
+
     /**
-     * Request the next frame.
-     * @param delay Amount of time to delay before calling `requestAnimationFrame`.
+     * Bind a key to an enchant.js button.
+     * 
+     * Binds the given key code to the given enchant.js button
+     * ('left', 'right', 'up', 'down', 'a', 'b').
+     * 
+     * @param key Key code for the button to be bound.
+     * @param button An enchant.js button.
      */
-    _requestNextFrame(delay: number) {
-        if (!this.ready) {
-            return;
-        }
-        if (this.fps >= 60 || delay <= 16) {
-            this._calledTime = getTime();
-            window.requestAnimationFrame(this._callTick);
-        } else {
-            setTimeout(function () {
-                let core = Core.instance;
-                core._calledTime = getTime();
-                window.requestAnimationFrame(core._callTick);
-            }, Math.max(0, delay));
-        }
+    keybind(key: number, button: 'left' | 'right' | 'up' | 'down' | 'a' | 'b') {
+        this.keyboardInputManager.keybind(key, button)
+        this.addEventListener(button + 'buttondown', this._buttonListener)
+        this.addEventListener(button + 'buttonup', this._buttonListener)
+        return this
     }
 
     static _loadImage(src, ext, callback, onerror) {
-        return Surface.load(src, callback, onerror);
+        return Surface.load(src, callback, onerror)
     }
 
     static _loadSound(src, ext, callback, onerror) {
-        return Sound.load(src, 'audio/' + ext, callback, onerror);
+        return Sound.load(src, 'audio/' + ext, callback, onerror)
     }
 
     static _loadFuncs = {
@@ -562,16 +647,16 @@ export default class Core extends EventTarget {
      * @param path file path.
      */
     static findExt(path: string) {
-        let matched = path.match(/\.\w+$/);
+        let matched = path.match(/\.\w+$/)
         if (matched && matched.length > 0) {
-            return matched[0].slice(1).toLowerCase();
+            return matched[0].slice(1).toLowerCase()
         }
 
         // for data URI
         if (path.indexOf('data:') === 0) {
-            return path.split(/[\/;]/)[1].toLowerCase();
+            return path.split(/[\/]/)[1].toLowerCase()
         }
 
-        return null;
+        return null
     }
 }
