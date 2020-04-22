@@ -130,7 +130,14 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [x] `KeyboardInputSource.js`
   - [x] `initialize`
   - [x] `getByKeyCode`
-- [x] `Node.js`
+- [ ] `Node.js`
+  - [x] `initialize`
+  - [x] `moveTo`
+  - [x] `moveBy`
+  - [x] `x`
+  - [x] `y`
+  - [x] `_updateCoordinate`
+  - [x] `remove`
 - [ ] `Entity.js`
   - [ ] `_intersectBetweenClassAndInstance`
   - [ ] `_intersectBetweenClassAndClass`
@@ -140,26 +147,28 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [ ] `_staticIntersectStrict`
   - [ ] `_nodePrototypeClearEventListener`
   - [ ] `initialize`
-  - [ ] `width`
-  - [ ] `height`
-  - [ ] `backgroundColor`
-  - [ ] `debugColor`
-  - [ ] `opacity`
-  - [ ] `visible`
-  - [ ] `touchEnabled`
+  - [x] `width`
+  - [x] `height`
+  - [x] `backgroundColor`
+  - [x] `debugColor`
+  - [x] `opacity`
+  - [x] `visible`
+  - [x] `touchEnabled`
   - [ ] `intersect`
   - [ ] `_intersectOne`
-  - [ ] `within`
-  - [ ] `scale`
-  - [ ] `rotate`
-  - [ ] `scaleX`
-  - [ ] `scaleY`
-  - [ ] `rotation`
-  - [ ] `originX`
-  - [ ] `originY`
-  - [ ] `enableCollection`
-  - [ ] `disableCollection`
-  - [ ] `clearEventListener`
+  - [x] `_intersectStrict`
+  - [x] `_intersectStrictOne`
+  - [x] `within`
+  - [x] `scale`
+  - [x] `rotate`
+  - [x] `scaleX`
+  - [x] `scaleY`
+  - [x] `rotation`
+  - [x] `originX`
+  - [x] `originY`
+  - [x] `enableCollection`
+  - [x] `disableCollection`
+  - [x] `clearEventListener`
   - [ ] `_addSelfToCollection`
   - [ ] `_removeSelfFromCollection`
   - [ ] `getBoundingRect`
@@ -217,6 +226,14 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [ ] `CanvasRenderer.js`
 - [ ] `Scene.js`
   - [x] `initialize`
+  - [ ] `x`
+  - [ ] `y`
+  - [ ] `width`
+  - [ ] `height`
+  - [ ] `rotation`
+  - [ ] `scaleX`
+  - [ ] `scaleY`
+  - [ ] `backgroundColor`
   - [x] `remove`
   - [x] `_oncoreresize`
   - [ ] `addLayer`
