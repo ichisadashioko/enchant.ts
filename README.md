@@ -268,7 +268,7 @@ __animation feature__
 
 - How to get started?
   - Create issues to ask questions about what you want to ask about the project.
-  - Take a look at [Gruntfile.coffee](./original-enchant.js/Gruntfile.coffee) for list of modules and convert them to TypeScript.
+  - Take a look at [Gruntfile.coffee](./enchant.js/Gruntfile.coffee) for list of modules and convert them to TypeScript.
 
 ## Development guide
 
@@ -279,4 +279,4 @@ __animation feature__
 - Run `tsc` to compile `src/index.ts` to `build/index.js`.
 - Run a web server at root project (e.g. `python3 -m http.server 8080`).
 - Browser to `build` to try `build/index.js` (e.g. [http://localhost:8080/build](http://localhost:8080/build)).
-- Browser to `original-enchant.js/dev` to compare the behavior with `enchant.js` (e.g. [http://localhost:8080/original-enchant.js/dev](http://localhost:8080/original-enchant.js/dev)).
+- Browser to `enchant.js/dev` to compare the behavior with `enchant.js` (e.g. [http://localhost:8080/enchant.js/dev](http://localhost:8080/enchant.js/dev)).
