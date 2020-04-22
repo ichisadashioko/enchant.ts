@@ -7,12 +7,12 @@ import Event from './Event'
 export default class EventTarget {
     _offsetX: number
     _offsetY: number
-    _listeners: Map<string, Array<(e: Event) => void>>
+    _listeners: Record<string, Array<(e: Event) => void>>
 
     frame?: number
 
     constructor() {
-        this._listeners = new Map()
+        this._listeners = {}
     }
 
     /**
@@ -62,7 +62,7 @@ export default class EventTarget {
         if (type != null) {
             delete this._listeners[type]
         } else {
-            this._listeners = new Map()
+            this._listeners = {}
         }
     }
 
