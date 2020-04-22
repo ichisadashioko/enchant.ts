@@ -5,6 +5,7 @@
         "sourceMap": true,
         "removeComments": true,
         "preserveConstEnums": true,
+        "noImplicitAny": true,
     },
     "typeAcquisition": {
         "enable": true,
