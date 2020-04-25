@@ -82,11 +82,13 @@ export default abstract class Surface extends EventTarget {
             Core.instance.dispatchEvent(e);
             surface.dispatchEvent(e);
         };
+
         image.onload = function () {
             surface.width = image.width;
             surface.height = image.height;
             surface.dispatchEvent(new Event(EventType.LOAD));
         };
+
         image.src = src;
         return surface;
     }

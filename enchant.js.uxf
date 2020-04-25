@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>7</zoom_level>
+  <zoom_level>9</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>35</x>
-      <y>14</y>
-      <w>224</w>
-      <h>98</h>
+      <x>585</x>
+      <y>0</y>
+      <w>288</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>EventTarget
 --
@@ -21,10 +21,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>35</x>
-      <y>147</y>
-      <w>224</w>
-      <h>105</h>
+      <x>0</x>
+      <y>189</y>
+      <w>288</w>
+      <h>135</h>
     </coordinates>
     <panel_attributes>Node
 --
@@ -41,22 +41,22 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
-      <y>105</y>
-      <w>70</w>
-      <h>56</h>
+      <x>135</x>
+      <y>117</y>
+      <w>612</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+    <additional_attributes>660.0;10.0;10.0;80.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>35</x>
-      <y>287</y>
-      <w>420</w>
-      <h>357</h>
+      <x>0</x>
+      <y>369</y>
+      <w>540</w>
+      <h>459</h>
     </coordinates>
     <panel_attributes>Entity
 --
@@ -94,10 +94,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
-      <y>245</y>
-      <w>70</w>
-      <h>56</h>
+      <x>135</x>
+      <y>315</y>
+      <w>81</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -106,10 +106,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>35</x>
-      <y>679</y>
-      <w>224</w>
-      <h>161</h>
+      <x>0</x>
+      <y>873</y>
+      <w>288</w>
+      <h>207</h>
     </coordinates>
     <panel_attributes>Label
 --
@@ -131,10 +131,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
-      <y>637</y>
-      <w>70</w>
-      <h>56</h>
+      <x>135</x>
+      <y>819</y>
+      <w>81</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -143,10 +143,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>483</x>
-      <y>28</y>
-      <w>224</w>
-      <h>49</h>
+      <x>1089</x>
+      <y>36</y>
+      <w>288</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>Event
 --
@@ -157,10 +157,10 @@ _initPosition(pageX: number, pageY: number)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>483</x>
-      <y>147</y>
-      <w>413</w>
-      <h>350</h>
+      <x>576</x>
+      <y>189</y>
+      <w>459</w>
+      <h>450</h>
     </coordinates>
     <panel_attributes>Core
 --
@@ -198,13 +198,72 @@ _initPosition(pageX: number, pageY: number)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>140</x>
-      <y>105</y>
-      <w>469</w>
-      <h>56</h>
+      <x>711</x>
+      <y>117</y>
+      <w>90</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;650.0;60.0</additional_attributes>
+    <additional_attributes>20.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1071</x>
+      <y>180</y>
+      <w>351</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>InputManager
+--
+initialize(valueStore, source)
+bind(inputSource: InputSource, name: string)
+unbind(inputSource: InputSource)
+addBroadcastTarget(eventTarget: EventTarget)
+removeBroadcastTarget(eventTarget: EventTarget)
+broadcastEvent(e: Event)
+changeState(name: string, data)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>117</y>
+      <w>558</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;600.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1116</x>
+      <y>864</y>
+      <w>288</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>LoadingScene
+--
+initialize()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1089</x>
+      <y>720</y>
+      <w>288</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>LoadingScene
+--
+initialize()
+</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

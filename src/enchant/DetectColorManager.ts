@@ -1,6 +1,6 @@
 
 export default class DetectColorManager {
-    reference: Array<any>
+    reference
     colorResolution: number
     max: number
     capacity: number

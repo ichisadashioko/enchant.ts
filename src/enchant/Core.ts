@@ -11,6 +11,8 @@ import Label from './Label'
 import Surface from './Surface'
 import Sound from './Sound'
 import WebAudioSound from './WebAudioSound'
+import ImageSurface from './ImageSurface'
+import DOMSound from './DOMSound'
 
 /**
  * A class for controlling the core's main loop and scenes.
@@ -32,36 +34,42 @@ export default class Core extends EventTarget {
     _element: HTMLElement
 
     _width: number
+
     /**
      * The width of the core screen.
      */
     get width(): number {
         return this._width
     }
+
     set width(w: number) {
         this._width = w
         this._dispatchCoreResizeEvent()
     }
 
     _height: number
+
     /**
      * The height of the core screen.
      */
     get height(): number {
         return this._height
     }
+
     set height(h: number) {
         this._height = h
         this._dispatchCoreResizeEvent()
     }
 
     _scale: number
+
     /**
      * The scaling of the core rendering.
      */
     get scale(): number {
         return this._scale
     }
+
     set scale(s: number) {
         this._scale = s
         this._dispatchCoreResizeEvent()
@@ -90,7 +98,7 @@ export default class Core extends EventTarget {
     /**
      * Object which stores loaded assets using their paths as keys.
      */
-    assets: object
+    assets: Record<string, ImageSurface | DOMSound | WebAudioSound>
 
     _assets: []
     _scenes: Scene[]
@@ -132,7 +140,7 @@ export default class Core extends EventTarget {
     constructor(width?: number, height?: number) {
 
         if (window.document.body === null) {
-            // @TODO postpone initialization after `window.onload`
+            // TODO postpone initialization after `window.onload`
             throw new Error('document.body is null. Please excute `new Core()` in window.onload.')
         }
 
@@ -160,7 +168,7 @@ export default class Core extends EventTarget {
 
         let stage = document.getElementById(stageId)
 
-        // @TODO compute scale for every frame for dynamic resizing.
+        // TODO compute scale for every frame for dynamic resizing.
         let scale: number, sWidth: number, sHeight: number
         if (!stage) {
             stage = document.createElement('div')
@@ -220,7 +228,7 @@ export default class Core extends EventTarget {
         this.ready = false
         this.running = false
         this.assets = {}
-        let assets = this._assets = []
+        this._assets = []
 
         // TODO load plugins' assets
 
@@ -238,6 +246,121 @@ export default class Core extends EventTarget {
         this.keyboardInputManager = new KeyboardInputManager(window.document.body, this.input)
         this.keyboardInputManager.addBroadcastTarget(this)
         this._keybind = this.keyboardInputManager._binds
+
+        if (!ENV.KEY_BIND_TABLE) {
+            ENV.KEY_BIND_TABLE = {}
+        }
+
+        for (let prop in ENV.KEY_BIND_TABLE) {
+            this.keybind(prop, ENV.KEY_BIND_TABLE[prop])
+        }
+
+        if (initial) {
+            stage = Core.instance._element
+
+            document.addEventListener('keydown', function (ev) {
+                Core.instance.dispatchEvent(new Event('keydown'))
+                if (ENV.PREVENT_DEFAULT_KEY_CODES.indexOf(ev.keyCode) !== -1) {
+                    ev.preventDefault()
+                    ev.stopPropagation()
+                }
+            }, true)
+
+            if (ENV.TOUCH_ENABLED) {
+                stage.addEventListener('touchstart', function (ev) {
+                    let target = ev.target as HTMLElement
+                    if (!target.tagName) { return }
+                    let tagName = (target.tagName).toLowerCase()
+                    if (ENV.USE_DEFAULT_EVENT_TAGS.indexOf(tagName) === -1) {
+                        ev.preventDefault()
+                        if (!Core.instance.running) {
+                            ev.stopPropagation()
+                        }
+                    }
+                })
+
+                stage.addEventListener('touchmove', function (ev) {
+                    let target = ev.target as HTMLElement
+                    if (!target.tagName) { return }
+                    let tagName = (target.tagName).toLowerCase()
+                    if (ENV.USE_DEFAULT_EVENT_TAGS.indexOf(tagName) === -1) {
+                        ev.preventDefault()
+                        if (!Core.instance.running) {
+                            ev.stopPropagation()
+                        }
+                    }
+                })
+
+                stage.addEventListener('touchend', function (ev) {
+                    let target = ev.target as HTMLElement
+                    if (!target.tagName) { return }
+                    let tagName = (target.tagName).toLowerCase()
+                    if (ENV.USE_DEFAULT_EVENT_TAGS.indexOf(tagName) === -1) {
+                        ev.preventDefault()
+                        if (!Core.instance.running) {
+                            ev.stopPropagation()
+                        }
+                    }
+                })
+            }
+
+            stage.addEventListener('mousedown', function (ev) {
+                let target = ev.target as HTMLElement
+                if (!target.tagName) { return }
+                let tagName = (target.tagName).toLowerCase()
+                if (ENV.USE_DEFAULT_EVENT_TAGS.indexOf(tagName) === -1) {
+                    ev.preventDefault()
+                    Core.instance._mousedownID++
+                    if (!Core.instance.running) {
+                        ev.stopPropagation()
+                    }
+                }
+            }, true)
+
+            stage.addEventListener('mousemove', function (ev) {
+                let target = ev.target as HTMLElement
+                if (!target.tagName) { return }
+                let tagName = (target.tagName).toLowerCase()
+                if (ENV.USE_DEFAULT_EVENT_TAGS.indexOf(tagName) === -1) {
+                    ev.preventDefault()
+                    if (!Core.instance.running) {
+                        ev.stopPropagation()
+                    }
+                }
+            }, true)
+
+            stage.addEventListener('mouseup', function (ev) {
+                let target = ev.target as HTMLElement
+                if (!target.tagName) { return }
+                let tagName = (target.tagName).toLowerCase()
+                if (ENV.USE_DEFAULT_EVENT_TAGS.indexOf(tagName) === -1) {
+                    ev.preventDefault()
+                    if (!Core.instance.running) {
+                        ev.stopPropagation()
+                    }
+                }
+            }, true)
+
+            Core.instance._touchEventTarget = {}
+
+            if (ENV.TOUCH_ENABLED) {
+                stage.addEventListener('touchstart', function (ev) {
+                    let evt = new Event(EventType.TOUCH_START)
+                    let touches = ev.changedTouches
+
+                    let touch: Touch
+                    let target
+
+                    for (let i = 0, l = touches.length; i < l; i++) {
+                        touch = touches[i]
+                        evt._initPosition(touch.pageX, touch.pageY)
+                        target = Core.instance.currentScene._determineEventTarget(evt)
+                        Core.instance._touchEventTarget[touch.identifier] = target
+                        target.dispatchEvent(evt)
+                    }
+                })
+            }
+        }
     }
 
     _dispatchCoreResizeEvent() {
@@ -249,7 +372,7 @@ export default class Core extends EventTarget {
     }
 
     _oncoreresize(e: Event) {
-        // @TODO Test the resize function as the original library did not resize at all.
+        // TODO Test the resize function as the original library did not resize at all.
         this._element.style.width = Math.floor(this._width * this._scale) + 'px'
         this._element.style.height = Math.floor(this._height * this._scale) + 'px'
 
@@ -569,7 +692,9 @@ export default class Core extends EventTarget {
     /**
      * Overwrite the current Scene with a new Scene.
      * 
-     * Execute `enchant.Core.popScene` and `enchant.Core.pushScene` one after another to replace the current scene with the new scene.
+     * Execute `enchant.Core.popScene` and `enchant.Core.pushScene` one
+     * after another to replace the current scene with the new scene.
+     * 
      * @param scene The new scene with which to replace the current scene.
      */
     replaceScene(scene: Scene) {
@@ -580,7 +705,10 @@ export default class Core extends EventTarget {
     /**
      * Remove a Scene from the Scene stack.
      * 
-     * If the scene passed in as a parameter is not the current scene, the stack will be searched for the given scene. If the given scene does not exist anywhere in the stack, this method returns null.
+     * If the scene passed in as a parameter is not the current scene,
+     * the stack will be searched for the given scene. If the given
+     * scene does not exist anywhere in the stack, this method returns null.
+     * 
      * @param scene Scene to be removed.
      * @returns The deleted Scene.
      */
@@ -619,11 +747,37 @@ export default class Core extends EventTarget {
         return this
     }
 
-    static _loadImage(src, ext, callback, onerror) {
+    /**
+     * Delete the key binding for the given key.
+     * 
+     * @param key Key code whose binding is to be deleted.
+     */
+    keyunbind(key: number) {
+        let button = this._keybind[key]
+        this.keyboardInputManager.keyunbind(key)
+        this.removeEventListener(button + 'buttondown', this._buttonListener)
+        this.removeEventListener(button + 'buttonup', this._buttonListener)
+        return this
+    }
+
+    changeButtonState(button: 'left' | 'right' | 'up' | 'down' | 'a' | 'b', bool: boolean) {
+        this.keyboardInputManager.changeState(button, bool)
+    }
+
+    /**
+     * Get the core time (not actual) elapsed since {@link enchant.Core.start} was called.
+     * 
+     * @returns Time elapsed (in seconds).
+     */
+    getElapsedTime() {
+        return this.frame / this.fps
+    }
+
+    static _loadImage(src: string, ext: string, callback?: (e: Event) => void, onerror?: (e: Event) => void) {
         return Surface.load(src, callback, onerror)
     }
 
-    static _loadSound(src, ext, callback, onerror) {
+    static _loadSound(src: string, ext: string, callback?: (e: Event) => void, onerror?: (e: Event) => void) {
         return Sound.load(src, 'audio/' + ext, callback, onerror)
     }
 

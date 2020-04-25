@@ -36,6 +36,8 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
     - [x] `USE_ANIMATION`
     - [x] `COLOR_DETECTION_LEVEL`
 - [ ] `Event.js`
+  - [ ] `WebAudioSound` adds `message` for `ERROR` event
+  - [ ] `Core` adds `elapsed` for `ENTER_FRAME` event
   - [x] `initialize`
   - [x] `_initPosition`
   - [x] `LOAD`
@@ -101,13 +103,13 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `resume`
   - [x] `pushScene`
   - [x] `popScene`
-  - [ ] `replaceScene`
-  - [ ] `removeScene`
+  - [x] `replaceScene`
+  - [x] `removeScene`
   - [x] `_buttonListener`
   - [x] `keybind`
-  - [ ] `keyunbind`
-  - [ ] `changeButtonState`
-  - [ ] `getElapsedTime`
+  - [x] `keyunbind`
+  - [x] `changeButtonState`
+  - [x] `getElapsedTime`
   - [x] `findExt`
 - [x] `Game.js`
 - [x] `InputManager.js`
@@ -131,6 +133,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `initialize`
   - [x] `getByKeyCode`
 - [ ] `Node.js`
+  - [ ] `childNodes` property only exists on some sub-classes (`Group`, `enchant.widget.EntityGroup`, and four more classes from `gl.enchant.js` - somes are not sub-class of `Node`) but `Node` tries to access it
   - [x] `initialize`
   - [x] `moveTo`
   - [x] `moveBy`

@@ -143,7 +143,7 @@ export default class WebAudioSound extends EventTarget {
      * @param callback on load callback.
      * @param onerror on error callback.
      */
-    static load(src: string, type: string, callback?: Function, onerror?: Function) {
+    static load(src: string, type: string, callback?: (e: Event) => void, onerror?: (e: Event) => void) {
         let canPlay = (new Audio()).canPlayType(type);
         let sound = new WebAudioSound();
         callback = callback || function () { };

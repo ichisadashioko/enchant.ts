@@ -16,14 +16,14 @@ export default class InputManager extends EventTarget {
     /**
      * Object that store input state.
      */
-    valueStore: any
+    valueStore
 
     /**
      * source that will be added to event object.
      */
-    source: any
+    source
 
-    _binds: any
+    _binds
     _stateHandler: (e) => void
 
     /**
@@ -31,7 +31,7 @@ export default class InputManager extends EventTarget {
      * @param valueStore object that store input state.
      * @param source source that will be added to event object.
      */
-    constructor(valueStore: any, source?: any) {
+    constructor(valueStore, source?) {
         super()
         this.broadcastTargets = []
         this.valueStore = valueStore
@@ -99,5 +99,5 @@ export default class InputManager extends EventTarget {
      * @param name input name.
      * @param data input state.
      */
-    changeState(name: string, data: any) { }
+    changeState(name: string, data) { }
 }

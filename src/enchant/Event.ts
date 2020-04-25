@@ -12,7 +12,7 @@ export default class Event {
     /**
      * The target of the event.
      */
-    target: any
+    target
 
     /**
      * The x-coordinate of the event's occurrence.

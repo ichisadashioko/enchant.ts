@@ -19,7 +19,7 @@ export default class Timeline extends EventTarget {
     paused: boolean
     looped: boolean
     isFrameBased: boolean
-    _parallel: any
+    _parallel
     _activated: boolean
 
     /**

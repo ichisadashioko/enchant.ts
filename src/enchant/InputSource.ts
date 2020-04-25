@@ -22,7 +22,7 @@ export default class InputSource extends EventTarget {
      * Notify state change by event.
      * @param data state
      */
-    notifyStateChange(data: any) {
+    notifyStateChange(data) {
         let e = new Event(EventType.INPUT_STATE_CHANGED);
         e.data = data;
         e.source = this;
