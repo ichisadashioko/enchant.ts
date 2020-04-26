@@ -130,6 +130,10 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `_up`
 - [x] `BinaryInputSource.js`
 - [ ] `KeyboardInputManager.js`
+  - [x] `initialize`
+  - [x] `keybind`
+  - [x] `keyunbind`
+  - [x] `_attachDOMEvent`
 - [x] `KeyboardInputSource.js`
   - [x] `initialize`
   - [x] `getByKeyCode`
