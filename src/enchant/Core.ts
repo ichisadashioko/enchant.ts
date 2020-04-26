@@ -441,6 +441,42 @@ export default class Core extends EventTarget {
                 d.call(e)
                 callback.call(this, e)
             }
+
+            let _onerror = function (e) {
+                d.fail(e)
+                onerror.call(this, e)
+            }
+
+            if (Core._loadFuncs[ext]) {
+                Core.instance.assets[assetName] = Core._loadFuncs[ext](src, ext, _callback, _onerror)
+            } else {
+                let xhr = new XMLHttpRequest()
+                xhr.open('GET', src, true)
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status !== 200 && xhr.status !== 0) {
+                            // throw new Error(`${xhr.status}: Cannot load an asset: ${src}`)
+                            let e = new Event(EventType.ERROR)
+                            e.message = `${xhr.status}: Cannot load an asset: ${src}`
+                            _onerror.call(Core.instance, e)
+                        }
+
+                        let type = xhr.getResponseHeader('Content-Type') || ''
+                        if (type.match(/^image/)) {
+                            Core.instance.assets[assetName] = Surface.load(src, _callback, _onerror)
+                        } else if (type.match(/^audio/)) {
+                            Core.instance.assets[assetName] = Sound.load(src, type, _callback, _onerror)
+                        } else {
+                            Core.instance.assets[assetName] = xhr.responseText
+                            _callback.call(Core.instance, new Event(EventType.LOAD))
+                        }
+                    }
+                }
+
+                xhr.send()
+            }
+
+            return d
         })
     }
 
@@ -451,8 +487,6 @@ export default class Core extends EventTarget {
      * the value stored in {@link Core.core.fps}. If there are images to
      * preload, loading will begin and the loading screen will be
      * displayed.
-     * 
-     * @param deferred 
      */
     start(deferred?: Deferred): Deferred {
         let onloadTimeSetter = function () {
@@ -467,9 +501,8 @@ export default class Core extends EventTarget {
 
         if (!this._activated) {
             this._activated = true
-            if (ENV.BROWSER === 'mobilesafari'
-                && ENV.USE_WEBAUDIO
-                && ENV.USE_TOUCH_TO_START_SCENE) {
+            if (ENV.BROWSER === 'mobilesafari' && ENV.USE_WEBAUDIO && ENV.USE_TOUCH_TO_START_SCENE) {
+                // enable iPhone devices to debug this code
                 let d = new Deferred()
                 let scene = this._createTouchToStartScene()
 
@@ -483,7 +516,7 @@ export default class Core extends EventTarget {
                     a.play()
                     core.removeScene(scene)
                     core.start(d)
-                }, false)
+                } /**,false */) // TODO this is not Web API addEventListener so the last argument may not be processed.
 
                 core.pushScene(scene)
                 return d
@@ -557,7 +590,17 @@ export default class Core extends EventTarget {
         scene.addChild(label)
 
         return scene
+    }
 
+    /**
+     * Start application in debug mode.
+     * 
+     * Core debug mode can be turned on even if the
+     * {@link enchant.Core._debug} flag is already set to true.
+     */
+    debug() {
+        this._debug = true
+        return this.start()
     }
 
     /**
