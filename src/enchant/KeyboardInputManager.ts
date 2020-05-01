@@ -27,7 +27,7 @@ export default class KeyboardInputManager extends BinaryInputManager {
      * @param keyCode key code
      */
     keyunbind(keyCode: number) {
-        this.unbind(KeyboardInputSource.getByKeyCode('' + keyCode));
+        this.unbind(KeyboardInputSource.getByKeyCode('' + keyCode))
     }
 
     _attachDOMEvent(domElement: HTMLElement, eventType: string, state: boolean) {
@@ -36,7 +36,7 @@ export default class KeyboardInputManager extends BinaryInputManager {
             if (!core || !core.running) {
                 return
             }
-            let code = e.keyCode;
+            let code = e.keyCode
             let source = KeyboardInputSource._instances[code]
             if (source) {
                 source.notifyStateChange(state)
