@@ -81,16 +81,16 @@ export default class InputManager extends EventTarget {
      * @param eventTarget broadcast target.
      */
     removeBroadcastTarget(eventTarget: EventTarget) {
-        let i = this.broadcastTargets.indexOf(eventTarget);
+        let i = this.broadcastTargets.indexOf(eventTarget)
         if (i !== -1) {
-            this.broadcastTargets.splice(i, 1);
+            this.broadcastTargets.splice(i, 1)
         }
     }
 
     broadcastEvent(e: Event) {
-        let targets = this.broadcastTargets;
+        let targets = this.broadcastTargets
         for (let i = 0, l = targets.length; i < l; i++) {
-            targets[i].dispatchEvent(e);
+            targets[i].dispatchEvent(e)
         }
     }
 
