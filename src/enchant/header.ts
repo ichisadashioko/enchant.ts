@@ -2,8 +2,8 @@ import Core from './Core'
 import Event from './Event'
 
 export const getTime = (function () {
-    return Date.now();
-});
+    return Date.now()
+})
 
 window.addEventListener('message', function (msg) {
     try {
