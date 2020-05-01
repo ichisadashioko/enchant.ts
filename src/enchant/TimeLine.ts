@@ -61,27 +61,27 @@ export default class Timeline extends EventTarget {
 
     _onenterframe(e) {
         if (this.paused) {
-            return;
+            return
         }
 
-        this.tick(this.isFrameBased ? 1 : e.elapsed);
+        this.tick(this.isFrameBased ? 1 : e.elapsed)
     }
 
     _nodeEventListener(e) {
-        this.dispatchEvent(e);
+        this.dispatchEvent(e)
     }
 
     _deactivateTimeline() {
         if (this._activated) {
-            this._activated = false;
-            this.node.removeEventListener(EventType.ENTER_FRAME, this._nodeEventListener);
+            this._activated = false
+            this.node.removeEventListener(EventType.ENTER_FRAME, this._nodeEventListener)
         }
     }
 
     _activateTimeline() {
         if (!this._activated && !this.paused) {
-            this.node.addEventListener(EventType.ENTER_FRAME, this._nodeEventListener);
-            this._activated = true;
+            this.node.addEventListener(EventType.ENTER_FRAME, this._nodeEventListener)
+            this._activated = true
         }
     }
 
