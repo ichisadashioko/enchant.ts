@@ -8,14 +8,14 @@ export default class InputSource extends EventTarget {
     /**
      * identifier of InputSource.
      */
-    identifier: string;
+    identifier: string
 
     /**
      * @param identifier identifier of InputSource
      */
     constructor(identifier: string) {
-        super();
-        this.identifier = identifier;
+        super()
+        this.identifier = identifier
     }
 
     /**
@@ -23,9 +23,9 @@ export default class InputSource extends EventTarget {
      * @param data state
      */
     notifyStateChange(data) {
-        let e = new Event(EventType.INPUT_STATE_CHANGED);
-        e.data = data;
-        e.source = this;
-        this.dispatchEvent(e);
+        let e = new Event(EventType.INPUT_STATE_CHANGED)
+        e.data = data
+        e.source = this
+        this.dispatchEvent(e)
     }
 }
