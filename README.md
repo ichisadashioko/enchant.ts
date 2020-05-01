@@ -122,6 +122,8 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `broadcastEvent`
   - [x] `changeState`
 - [x] `InputSource.js`
+  - [x] `initialize`
+  - [x] `notifyStateChange`
 - [x] `BinaryInputManager.js`
   - [x] `bind`
   - [x] `unbind`
@@ -129,13 +131,15 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `_down`
   - [x] `_up`
 - [x] `BinaryInputSource.js`
-- [ ] `KeyboardInputManager.js`
+  - [x] `initialize`
+- [x] `KeyboardInputManager.js`
   - [x] `initialize`
   - [x] `keybind`
   - [x] `keyunbind`
   - [x] `_attachDOMEvent`
 - [x] `KeyboardInputSource.js`
   - [x] `initialize`
+  - [x] `_instances`
   - [x] `getByKeyCode`
 - [ ] `Node.js`
   - [ ] `childNodes` property only exists on some sub-classes (`Group`, `enchant.widget.EntityGroup`, and four more classes from `gl.enchant.js` - somes are not sub-class of `Node`) but `Node` tries to access it
@@ -147,12 +151,12 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `_updateCoordinate`
   - [x] `remove`
 - [ ] `Entity.js`
-  - [ ] `_intersectBetweenClassAndInstance`
-  - [ ] `_intersectBetweenClassAndClass`
-  - [ ] `_intersectStrictBetweenClassAndInstance`
-  - [ ] `_intersectStrictBetweenClassAndClass`
-  - [ ] `_staticIntersect`
-  - [ ] `_staticIntersectStrict`
+  - [x] `_intersectBetweenClassAndInstance`
+  - [x] `_intersectBetweenClassAndClass`
+  - [x] `_intersectStrictBetweenClassAndInstance`
+  - [x] `_intersectStrictBetweenClassAndClass`
+  - [x] `_staticIntersect`
+  - [x] `_staticIntersectStrict`
   - [ ] `_nodePrototypeClearEventListener`
   - [ ] `initialize`
   - [x] `width`

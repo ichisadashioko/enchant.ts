@@ -10,38 +10,38 @@ export default {
      */
     BROWSER: (function (ua) {
         if (/Eagle/.test(ua)) {
-            return 'eagle';
+            return 'eagle'
         } else if (/Opera/.test(ua)) {
-            return 'opera';
+            return 'opera'
         } else if (/MSIE|Trident/.test(ua)) {
-            return 'ie';
+            return 'ie'
         } else if (/Chrome/.test(ua)) {
-            return 'chrome';
+            return 'chrome'
         } else if (/(?:Macintosh|Windows).*AppleWebKit/.test(ua)) {
-            return 'safari';
+            return 'safari'
         } else if (/(?:iPhone|iPad|iPod).*AppleWebKit/.test(ua)) {
-            return 'mobilesafari';
+            return 'mobilesafari'
         } else if (/Firefox/.test(ua)) {
-            return 'firefox';
+            return 'firefox'
         } else if (/Android/.test(ua)) {
-            return 'android';
+            return 'android'
         } else {
-            return '';
+            return ''
         }
     }(navigator.userAgent)),
 
     VENDOR_PREFIX: (function () {
-        let ua = navigator.userAgent;
+        let ua = navigator.userAgent
         if (ua.indexOf('Opera') !== -1) {
-            return 'O';
+            return 'O'
         } else if (/MSIE|Trident/.test(ua)) {
-            return 'ms';
+            return 'ms'
         } else if (ua.indexOf('WebKit') !== -1) {
-            return 'webkit';
+            return 'webkit'
         } else if (navigator.product === 'Gecko') {
-            return 'Moz';
+            return 'Moz'
         } else {
-            return '';
+            return ''
         }
     }()),
 
@@ -49,9 +49,9 @@ export default {
      * Determines if the current browser supports touch.
      */
     TOUCH_ENABLED: (function () {
-        var div = document.createElement('div');
-        div.setAttribute('ontouchstart', 'return');
-        return typeof div.ontouchstart === 'function';
+        var div = document.createElement('div')
+        div.setAttribute('ontouchstart', 'return')
+        return typeof div.ontouchstart === 'function'
     }()),
 
     /**
@@ -60,15 +60,15 @@ export default {
      */
     RETINA_DISPLAY: (function () {
         if (navigator.userAgent.indexOf('iPhone') !== -1 && window.devicePixelRatio === 2) {
-            var viewport = document.querySelector('meta[name="viewport"]');
+            var viewport = document.querySelector('meta[name="viewport"]')
             if (viewport == null) {
-                viewport = document.createElement('meta');
-                document.head.appendChild(viewport);
+                viewport = document.createElement('meta')
+                document.head.appendChild(viewport)
             }
-            viewport.setAttribute('content', 'width=640');
-            return true;
+            viewport.setAttribute('content', 'width=640')
+            return true
         } else {
-            return false;
+            return false
         }
     }()),
 
@@ -78,10 +78,10 @@ export default {
      * True, if flash should be used.
      */
     USE_FLASH_SOUND: (function () {
-        var ua = navigator.userAgent;
-        var vendor = navigator.vendor || "";
+        var ua = navigator.userAgent
+        var vendor = navigator.vendor || ""
         // non-local access, not on mobile mobile device, not on safari
-        return (location.href.indexOf('http') === 0 && ua.indexOf('Mobile') === -1 && vendor.indexOf('Apple') !== -1);
+        return (location.href.indexOf('http') === 0 && ua.indexOf('Mobile') === -1 && vendor.indexOf('Apple') !== -1)
     }()),
 
     /**
@@ -107,7 +107,7 @@ export default {
      *     39: 'right',
      *     40: 'down',
      *     32: 'a', //-> use 'space' key as 'a button'
-     * };
+     * }
      */
     KEY_BIND_TABLE: {
         37: 'left',
@@ -138,7 +138,7 @@ export default {
      * Determines if WebAudioAPI is enabled. (true: use WebAudioAPI instead of Audio element if possible)
      */
     USE_WEBAUDIO: (function () {
-        return location.protocol !== 'file:';
+        return location.protocol !== 'file:'
     }()),
 
     /**

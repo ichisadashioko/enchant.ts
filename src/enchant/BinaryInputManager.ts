@@ -43,9 +43,9 @@ export default class BinaryInputManager extends InputManager {
      * @param binaryInputSource input source
      */
     unbind(binaryInputSource: BinaryInputSource) {
-        let name = this._binds[binaryInputSource.identifier];
-        super.unbind(binaryInputSource);
-        delete this.valueStore[name];
+        let name = this._binds[binaryInputSource.identifier]
+        super.unbind(binaryInputSource)
+        delete this.valueStore[name]
     }
 
     /**
@@ -55,35 +55,35 @@ export default class BinaryInputManager extends InputManager {
      */
     changeState(name: string, bool: boolean) {
         if (bool) {
-            this._down(name);
+            this._down(name)
         } else {
-            this._up(name);
+            this._up(name)
         }
     }
 
     _down(name: string) {
-        let inputEvent: Event;
+        let inputEvent: Event
         if (!this.valueStore[name]) {
-            this.valueStore[name] = true;
-            inputEvent = new Event((this.activeInputsNum++) ? 'inputchange' : 'inputstart');
-            inputEvent.source = this.source;
-            this.broadcastEvent(inputEvent);
+            this.valueStore[name] = true
+            inputEvent = new Event((this.activeInputsNum++) ? 'inputchange' : 'inputstart')
+            inputEvent.source = this.source
+            this.broadcastEvent(inputEvent)
         }
-        let downEvent = new Event(name + this.activeEventNameSuffix);
-        downEvent.source = this.source;
-        this.broadcastEvent(downEvent);
+        let downEvent = new Event(name + this.activeEventNameSuffix)
+        downEvent.source = this.source
+        this.broadcastEvent(downEvent)
     }
 
     _up(name: string) {
-        let inputEvent: Event;
+        let inputEvent: Event
         if (this.valueStore[name]) {
-            this.valueStore[name] = false;
-            inputEvent = new Event((--this.activeInputsNum) ? 'inputchange' : 'inputend');
-            inputEvent.source = this.source;
-            this.broadcastEvent(inputEvent);
+            this.valueStore[name] = false
+            inputEvent = new Event((--this.activeInputsNum) ? 'inputchange' : 'inputend')
+            inputEvent.source = this.source
+            this.broadcastEvent(inputEvent)
         }
-        let upEvent = new Event(name + this.inactiveEventNameSuffix);
-        upEvent.source = this.source;
-        this.broadcastEvent(upEvent);
+        let upEvent = new Event(name + this.inactiveEventNameSuffix)
+        upEvent.source = this.source
+        this.broadcastEvent(upEvent)
     }
 }

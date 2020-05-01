@@ -40,17 +40,17 @@ export default class Event {
      * @param type Event type.
      */
     constructor(type: EventType) {
-        this.type = type;
-        this.target = null;
-        this.x = 0;
-        this.y = 0;
-        this.localX = 0;
-        this.localY = 0;
+        this.type = type
+        this.target = null
+        this.x = 0
+        this.y = 0
+        this.localX = 0
+        this.localY = 0
     }
 
     _initPosition(pageX: number, pageY: number) {
-        let core = Core.instance;
-        this.x = this.localX = (pageX - core._pageX) / core.scale;
-        this.y = this.localY = (pageY - core._pageY) / core.scale;
+        let core = Core.instance
+        this.x = this.localX = (pageX - core._pageX) / core.scale
+        this.y = this.localY = (pageY - core._pageY) / core.scale
     }
 }
