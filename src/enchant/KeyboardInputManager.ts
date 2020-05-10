@@ -6,7 +6,7 @@ import KeyboardInputSource from './KeyboardInputSource'
  * Class that manage keyboard input.
  */
 export default class KeyboardInputManager extends BinaryInputManager {
-    constructor(domElement: HTMLElement, flagStore) {
+    constructor(domElement: HTMLElement, flagStore: Record<string, boolean>) {
         super(flagStore, 'buttondown', 'buttonup')
         this._attachDOMEvent(domElement, 'keydown', true)
         this._attachDOMEvent(domElement, 'keyup', false)
