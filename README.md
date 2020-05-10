@@ -1,6 +1,6 @@
 # enchant.ts
 
-![Node.js CI](https://github.com/ichisadashioko/enchant.ts/workflows/Node.js%20CI/badge.svg)
+![build](https://github.com/ichisadashioko/enchant.ts/workflows/build/badge.svg)
 
 This project aims to port the game library [enchant.js](https://github.com/wise9/enchant.js) to TypeScript.
 
