@@ -3,7 +3,7 @@
         "target": "esnext",
         "outDir": "build",
         "sourceMap": true,
-        "removeComments": true,
+        "removeComments": false,
         "preserveConstEnums": true,
         "noImplicitAny": true,
     },

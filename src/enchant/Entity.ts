@@ -1,94 +1,8 @@
 import Node from './Node'
 import Core from './Core'
-import EventType from './EventType'
 import Event from './Event'
 
-function _intersectBetweenClassAndInstance(Class, instance) {
-    let ret = []
-
-    for (let i = 0, l = Class.collection.length; i < l; i++) {
-        let c = Class.collection[i]
-        if (instance._intersectOne(c)) {
-            ret.push(c)
-        }
-    }
-
-    return ret
-}
-
-function _intersectBetweenClassAndClass(Class1, Class2) {
-    let ret = []
-
-    for (let i = 0, l = Class1.collection.length; i < l; i++) {
-        let c1 = Class1.collection[i]
-
-        for (let j = 0, ll = Class2.collection.length; j < ll; j++) {
-            let c2 = Class2.collection[j]
-
-            if (c1._intersectOne(c2)) {
-                ret.push([c1, c2])
-            }
-        }
-    }
-
-    return ret
-}
-
-function _intersectStrictBetweenClassAndInstance(Class, instance) {
-    let ret = []
-
-    for (let i = 0, l = Class.collection.length; i < l; i++) {
-        let c = Class.collection[i]
-
-        if (instance._intersectStrictOne(c)) {
-            ret.push(c)
-        }
-    }
-
-    return ret
-}
-
-function _intersectStrictBetweenClassAndClass(Class1, Class2) {
-    let ret = []
-
-    for (let i = 0, l = Class1.collection.length; i < l; i++) {
-        let c1 = Class1.collection[i]
-
-        for (let j = 0, ll = Class2.collection.length; j < ll; j++) {
-            let c2 = Class2.collection[j]
-
-            if (c1._intersectStrictOne(c2)) {
-                ret.push([c1, c2])
-            }
-        }
-    }
-
-    return ret
-}
-
-function _staticIntersect(other) {
-    if (other instanceof Entity) {
-        return _intersectBetweenClassAndInstance(this, other)
-    } else if (typeof other === 'function' && other.collection) {
-        return _intersectBetweenClassAndClass(this, other)
-    }
-
-    return false
-}
-
-function _staticIntersectStrict(other) {
-    if (other instanceof Entity) {
-        return _intersectStrictBetweenClassAndInstance(this, other)
-    } else if (typeof other === 'function' && other.collection) {
-        return _intersectStrictBetweenClassAndClass(this, other)
-    }
-
-    return false
-}
-
 export default class Entity extends Node {
-
-    _isContainedInCollection: boolean
 
     /**
      * Entityを描画する際の合成処理を設定する.
@@ -180,6 +94,8 @@ export default class Entity extends Node {
     get visible() { return this._visible }
     set visible(value: boolean) { this._visible = value }
 
+    _style: Record<string, string>
+    __styleStatus: Record<string, string>
     _touchEnabled: boolean
 
     /**
@@ -266,6 +182,8 @@ export default class Entity extends Node {
         }
     }
 
+    _clipping: boolean
+
     constructor() {
         super()
 
@@ -285,12 +203,11 @@ export default class Entity extends Node {
         this._debugColor = '#0000ff'
         this._opacity = 1
         this._visible = true
-        this._buttonMode = null
+        // _buttonMode is not used anywhere!
+        // this._buttonMode = null
 
         this._style = {}
         this.__styleStatus = {}
-
-        this._isContainedInCollection = false
 
         this.compositeOperation = null
 
@@ -323,8 +240,6 @@ export default class Entity extends Node {
             that.dispatchEvent(new Event(eventType))
             core.changeButtonState(that.buttonMode, false)
         })
-
-        this.enableCollection()
     }
 
 
@@ -336,11 +251,9 @@ export default class Entity extends Node {
      * width, height, which are used for the collision detection.
      * @returns True, if a collision was detected.
      */
-    intersect(other) {
+    intersect(other: Entity) {
         if (other instanceof Entity) {
             return this._intersectOne(other)
-        } else if (typeof other === 'function' && other.collection) {
-            return _intersectBetweenClassAndInstance(other, this)
         }
 
         return false
@@ -358,11 +271,9 @@ export default class Entity extends Node {
         )
     }
 
-    intersectStrict(other) {
+    intersectStrict(other: Entity) {
         if (other instanceof Entity) {
             return this._intersectStrictOne(other)
-        } else if (typeof other === 'function' && other.collection) {
-            return _intersectBetweenClassAndInstance(other, this)
         }
 
         return false
@@ -494,44 +405,6 @@ export default class Entity extends Node {
      */
     rotate(deg: number) {
         this.rotation += deg
-    }
-
-    /**
-     * インスタンスをコレクションの対象にする.
-     * デフォルトで呼び出される.
-     */
-    enableCollection() {
-        this.addEventListener(EventType.ADDED_TO_SCENE, this._addSelfToCollection)
-        this.addEventListener(EventType.REMOVED_FROM_SCENE, this._removeSelfFromCollection)
-
-        if (this.scene) {
-            this._addSelfToCollection()
-        }
-    }
-
-    disableCollection() {
-        this.removeEventListener(EventType.ADDED_TO_SCENE, this._addSelfToCollection)
-        this.removeEventListener(EventType.REMOVED_FROM_SCENE, this._removeSelfFromCollection)
-
-        if (this.scene) {
-            this._removeSelfFromCollection()
-        }
-    }
-
-    clearEventListener(type?: string) {
-        super.clearEventListener(type)
-
-        if (this.scene) {
-            this._removeSelfFromCollection()
-        }
-    }
-
-    _addSelfToCollection() {
-        if (this._isContainedInCollection) {
-            return
-        }
-
-        // TODO
     }
 
     getBoundingRect() {

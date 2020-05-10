@@ -1,5 +1,7 @@
 # enchant.ts
 
+![Node.js CI](https://github.com/ichisadashioko/enchant.ts/workflows/Node.js%20CI/badge.svg)
+
 This project aims to port the game library [enchant.js](https://github.com/wise9/enchant.js) to TypeScript.
 
 ## Checklist
@@ -151,13 +153,14 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `_updateCoordinate`
   - [x] `remove`
 - [ ] `Entity.js`
-  - [x] `_intersectBetweenClassAndInstance`
-  - [x] `_intersectBetweenClassAndClass`
-  - [x] `_intersectStrictBetweenClassAndInstance`
-  - [x] `_intersectStrictBetweenClassAndClass`
-  - [x] `_staticIntersect`
-  - [x] `_staticIntersectStrict`
-  - [ ] `_nodePrototypeClearEventListener`
+  - Remove collection (breaking change)
+  - [ ] ~~`_intersectBetweenClassAndInstance`~~
+  - [ ] ~~`_intersectBetweenClassAndClass`~~
+  - [ ] ~~`_intersectStrictBetweenClassAndInstance`~~
+  - [ ] ~~`_intersectStrictBetweenClassAndClass`~~
+  - [ ] ~~`_staticIntersect`~~
+  - [ ] ~~`_staticIntersectStrict`~~
+  - [ ] ~~`_nodePrototypeClearEventListener`~~
   - [ ] `initialize`
   - [x] `width`
   - [x] `height`
@@ -166,8 +169,8 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `opacity`
   - [x] `visible`
   - [x] `touchEnabled`
-  - [ ] `intersect`
-  - [ ] `_intersectOne`
+  - [x] `intersect`
+  - [x] `_intersectOne`
   - [x] `_intersectStrict`
   - [x] `_intersectStrictOne`
   - [x] `within`
@@ -178,16 +181,16 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [x] `rotation`
   - [x] `originX`
   - [x] `originY`
-  - [x] `enableCollection`
-  - [x] `disableCollection`
-  - [x] `clearEventListener`
-  - [ ] `_addSelfToCollection`
-  - [ ] `_removeSelfFromCollection`
-  - [ ] `getBoundingRect`
-  - [ ] `getOrientedBoundingRect`
-  - [ ] `getConstructor`
-  - [ ] `_collectizeConstructor`
-  - [ ] `_inherited`
+  - [ ] ~~`enableCollection`~~
+  - [ ] ~~`disableCollection`~~
+  - [ ] ~~`clearEventListener`~~
+  - [ ] ~~`_addSelfToCollection`~~
+  - [ ] ~~`_removeSelfFromCollection`~~
+  - [x] `getBoundingRect`
+  - [x] `getOrientedBoundingRect`
+  - [ ] ~~`getConstructor`~~
+  - [ ] ~~`_collectizeConstructor`~~
+  - [ ] ~~`_inherited`~~
 - [ ] `Sprite.js`
   - [x] `initialize`
   - [x] `image`
@@ -213,6 +216,19 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [ ] `updateBoundArea`
   - [ ] `getMetrics`
 - [ ] `Map.js`
+  - [ ] `initialize`
+  - [ ] `loadData`
+  - [ ] `checkTile`
+  - [ ] `hitTest`
+  - [ ] `image`
+  - [ ] `tileWidth`
+  - [ ] `tileHeight`
+  - [ ] `width`
+  - [ ] `height`
+  - [ ] `redraw`
+  - [ ] `updateBuffer`
+  - [ ] `cvsRender`
+  - [ ] `domRender`
 - [x] `Group.js`
   - [x] `initialize`
   - [x] `addChild`
@@ -230,6 +246,30 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 - [ ] `DetectColorManager.js`
   - [ ] `initialize`
 - [ ] `DomManager.js`
+  - [ ] `DomManager`
+    - [x] `initialize`
+    - [x] `getDomElement`
+    - [x] `getDomElementAsNext`
+    - [x] `getNextManager`
+    - [x] `addManager`
+    - [x] `removeManager`
+    - [x] `setLayer`
+    - [x] `render`
+    - [x] `domRender`
+    - [x] `_attachEvent`
+    - [x] `_detachEvent`
+    - [x] `remove`
+  - [ ] `DomlessManager`
+    - [ ] `initialize`
+    - [ ] `_register`
+    - [ ] `getNextManager`
+    - [ ] `getDomElement`
+    - [ ] `getDomElementAsNext`
+    - [ ] `addManager`
+    - [ ] `removeManager`
+    - [ ] `setLayer`
+    - [ ] `render`
+    - [ ] `remove`
 - [ ] `DomLayer.js`
 - [ ] `CanvasLayer.js`
   - [ ] `initialize`
@@ -258,7 +298,16 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
   - [ ] `initialize`
 - [ ] `CanvasScene.js`
 - [ ] `DOMScene.js`
-- [x] `Surface.js`
+- [ ] `Surface.js`
+  - [ ] `initialize`
+  - [ ] `getPixel`
+  - [ ] `setPixel`
+  - [ ] `clear`
+  - [ ] `draw`
+  - [ ] `clone`
+  - [ ] `toDataURL`
+  - [ ] `load`
+  - [ ] `_getPattern`
 - [ ] `Deferred.js`
 
 __sound support__

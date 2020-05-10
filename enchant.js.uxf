@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>9</zoom_level>
+  <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>585</x>
+      <x>0</x>
       <y>0</y>
-      <w>288</w>
-      <h>126</h>
+      <w>320</w>
+      <h>140</h>
     </coordinates>
     <panel_attributes>EventTarget
 --
@@ -22,9 +22,9 @@
     <id>UMLClass</id>
     <coordinates>
       <x>0</x>
-      <y>189</y>
-      <w>288</w>
-      <h>135</h>
+      <y>210</y>
+      <w>320</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>Node
 --
@@ -41,22 +41,22 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
-      <y>117</y>
-      <w>612</w>
-      <h>90</h>
+      <x>150</x>
+      <y>130</y>
+      <w>100</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>660.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>0</x>
-      <y>369</y>
-      <w>540</w>
-      <h>459</h>
+      <y>410</y>
+      <w>740</w>
+      <h>420</h>
     </coordinates>
     <panel_attributes>Entity
 --
@@ -94,22 +94,22 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
-      <y>315</y>
-      <w>81</w>
-      <h>72</h>
+      <x>150</x>
+      <y>330</y>
+      <w>100</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>0</x>
-      <y>873</y>
-      <w>288</w>
-      <h>207</h>
+      <y>970</y>
+      <w>320</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>Label
 --
@@ -131,36 +131,36 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
-      <y>819</y>
-      <w>81</w>
-      <h>72</h>
+      <x>150</x>
+      <y>820</y>
+      <w>100</w>
+      <h>170</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1089</x>
-      <y>36</y>
-      <w>288</w>
-      <h>63</h>
+      <x>1210</x>
+      <y>40</y>
+      <w>320</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>Event
 --
-initialize(type: string)
-_initPosition(pageX: number, pageY: number)</panel_attributes>
+- initialize(type: string)
+- _initPosition(pageX: number, pageY: number)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>576</x>
-      <y>189</y>
-      <w>459</w>
-      <h>450</h>
+      <x>1130</x>
+      <y>210</y>
+      <w>710</w>
+      <h>500</h>
     </coordinates>
     <panel_attributes>Core
 --
@@ -198,72 +198,158 @@ _initPosition(pageX: number, pageY: number)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>711</x>
-      <y>117</y>
-      <w>90</w>
-      <h>90</h>
+      <x>150</x>
+      <y>130</y>
+      <w>1160</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>20.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;1140.0;40.0;1140.0;80.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1071</x>
-      <y>180</y>
-      <w>351</w>
-      <h>126</h>
+      <x>330</x>
+      <y>210</y>
+      <w>390</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>InputManager
 --
-initialize(valueStore, source)
-bind(inputSource: InputSource, name: string)
-unbind(inputSource: InputSource)
-addBroadcastTarget(eventTarget: EventTarget)
-removeBroadcastTarget(eventTarget: EventTarget)
-broadcastEvent(e: Event)
-changeState(name: string, data)</panel_attributes>
+- initialize(valueStore, source)
+- bind(inputSource: InputSource, name: string)
+- unbind(inputSource: InputSource)
+- addBroadcastTarget(eventTarget: EventTarget)
+- removeBroadcastTarget(eventTarget: EventTarget)
+- broadcastEvent(e: Event)
+- changeState(name: string, data)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>117</y>
-      <w>558</w>
-      <h>81</h>
+      <x>150</x>
+      <y>130</y>
+      <w>410</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;extends&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;600.0;70.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;390.0;40.0;390.0;80.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1116</x>
-      <y>864</y>
-      <w>288</w>
-      <h>45</h>
+      <x>760</x>
+      <y>500</y>
+      <w>320</w>
+      <h>50</h>
     </coordinates>
-    <panel_attributes>LoadingScene
+    <panel_attributes>Scene
 --
-initialize()
+
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1089</x>
-      <y>720</y>
-      <w>288</w>
-      <h>45</h>
+      <x>760</x>
+      <y>600</y>
+      <w>320</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>LoadingScene
 --
-initialize()
+- initialize()
 </panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>970</y>
+      <w>320</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Sprite
+--
+- image
+- frame
+- _frameSequence
+- width
+- height
+- domRender
+--
+- initialize(width: number, height: number)
+- _deepCompareToPreviousFrame()
+- _computeFramePosition()
+- _rotateFrameSequence()
+- cvsRender()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>150</x>
+      <y>820</y>
+      <w>360</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0;340.0;100.0;340.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>920</x>
+      <y>540</y>
+      <w>100</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>760</x>
+      <y>410</y>
+      <w>320</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Group
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>920</x>
+      <y>450</y>
+      <w>100</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>150</x>
+      <y>330</y>
+      <w>800</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;780.0;50.0;780.0;80.0</additional_attributes>
   </element>
 </diagram>
