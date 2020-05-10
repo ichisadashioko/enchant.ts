@@ -1,6 +1,7 @@
 import InputManager from './InputManager'
 import BinaryInputSource from './BinaryInputSource'
-import Event from './Event'
+import Event, { InputEvent } from './Event'
+import EventType from './EventType'
 
 /**
  * Class for managing input.
@@ -21,7 +22,7 @@ export default class BinaryInputManager extends InputManager {
      */
     inactiveEventNameSuffix: string
 
-    constructor(flagStore, activeEventNameSuffix: string, inactiveEventNameSuffix: string, source?) {
+    constructor(flagStore: Record<string, boolean>, activeEventNameSuffix: string, inactiveEventNameSuffix: string, source?: InputManager) {
         super(flagStore, source)
         this.activeInputsNum = 0
         this.activeEventNameSuffix = activeEventNameSuffix
@@ -65,12 +66,15 @@ export default class BinaryInputManager extends InputManager {
         let inputEvent: Event
         if (!this.valueStore[name]) {
             this.valueStore[name] = true
-            inputEvent = new Event((this.activeInputsNum++) ? 'inputchange' : 'inputstart')
-            inputEvent.source = this.source
+
+            const eventType = (this.activeInputsNum) ? EventType.INPUT_CHANGE : EventType.INPUT_START
+            this.activeInputsNum++
+
+            inputEvent = new InputEvent(eventType, this.source)
             this.broadcastEvent(inputEvent)
         }
-        let downEvent = new Event(name + this.activeEventNameSuffix)
-        downEvent.source = this.source
+
+        let downEvent = new InputEvent(name + this.activeEventNameSuffix, this.source)
         this.broadcastEvent(downEvent)
     }
 
@@ -78,12 +82,14 @@ export default class BinaryInputManager extends InputManager {
         let inputEvent: Event
         if (this.valueStore[name]) {
             this.valueStore[name] = false
-            inputEvent = new Event((--this.activeInputsNum) ? 'inputchange' : 'inputend')
-            inputEvent.source = this.source
+
+            this.activeInputsNum--
+            const eventType = (this.activeInputsNum) ? EventType.INPUT_CHANGE : EventType.INPUT_END
+
+            inputEvent = new InputEvent(eventType, this.source)
             this.broadcastEvent(inputEvent)
         }
-        let upEvent = new Event(name + this.inactiveEventNameSuffix)
-        upEvent.source = this.source
+        let upEvent = new InputEvent(name + this.inactiveEventNameSuffix, this.source)
         this.broadcastEvent(upEvent)
     }
 }

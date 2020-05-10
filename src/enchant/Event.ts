@@ -1,6 +1,7 @@
 import Core from './Core'
 import EventType from './EventType'
 import InputSource from './InputSource'
+import InputManager from './InputManager'
 
 export default class Event {
 
@@ -8,7 +9,7 @@ export default class Event {
     /**
      * The type of the event.
      */
-    type: EventType
+    type: EventType | string
 
     /**
      * The target of the event.
@@ -40,7 +41,7 @@ export default class Event {
      * Does not include phase concepts.
      * @param type Event type.
      */
-    constructor(type: EventType) {
+    constructor(type: EventType | string) {
         this.type = type
         this.target = null
         this.x = 0
@@ -72,6 +73,15 @@ export class InputStateChangedEvent extends Event {
     constructor(data: boolean, source: InputSource) {
         super(EventType.INPUT_STATE_CHANGED)
         this.data = data
+        this.source = source
+    }
+}
+
+export class InputEvent extends Event {
+    source: InputManager
+
+    constructor(type: EventType | string, source: InputManager) {
+        super(type)
         this.source = source
     }
 }
