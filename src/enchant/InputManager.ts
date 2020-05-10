@@ -1,6 +1,6 @@
 import EventTarget from './EventTarget'
 import EventType from './EventType'
-import Event from './Event'
+import Event, { InputStateChangedEvent } from './Event'
 import InputSource from './InputSource'
 
 /**
@@ -16,33 +16,35 @@ export default class InputManager extends EventTarget {
     /**
      * Object that store input state.
      */
-    valueStore
+    valueStore: Record<string, boolean>
 
     /**
      * source that will be added to event object.
      */
-    source
+    source: InputManager
 
-    _binds
-    _stateHandler: (e) => void
+    _binds: Record<string, string>
 
     /**
+     * Class for managing input.
      * 
      * @param valueStore object that store input state.
      * @param source source that will be added to event object.
      */
-    constructor(valueStore, source?) {
+    constructor(valueStore: Record<string, boolean>, source?: InputManager) {
         super()
         this.broadcastTargets = []
         this.valueStore = valueStore
         this.source = source || this
         this._binds = {}
 
-        this._stateHandler = function (e) {
-            let id = e.source.identifier
-            let name = this._binds[id]
-            this.changeState(name, e.data)
-        }.bind(this)
+        this._stateHandler = this._stateHandler.bind(this)
+    }
+
+    _stateHandler(e: InputStateChangedEvent) {
+        let id = e.source.identifier
+        let name = this._binds[id]
+        this.changeState(name, e.data)
     }
 
     /**
@@ -99,5 +101,5 @@ export default class InputManager extends EventTarget {
      * @param name input name.
      * @param data input state.
      */
-    changeState(name: string, data) { }
+    changeState(name: string, data: boolean) { }
 }

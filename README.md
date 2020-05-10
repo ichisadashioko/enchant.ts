@@ -38,6 +38,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
     - [x] `USE_ANIMATION`
     - [x] `COLOR_DETECTION_LEVEL`
 - [ ] `Event.js`
+  - [ ] `InputSource` adds `source` and `data` to `INPUT_STATE_CHANGED` event
   - [ ] `WebAudioSound` adds `message` for `ERROR` event
   - [ ] `Core` adds `elapsed` for `ENTER_FRAME` event
   - [x] `initialize`
