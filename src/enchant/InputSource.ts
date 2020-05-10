@@ -1,6 +1,5 @@
 import EventTarget from './EventTarget'
-import EventType from './EventType'
-import Event from './Event'
+import { InputStateChangedEvent } from './Event'
 /**
  * Class that wrap input.
  */
@@ -22,10 +21,8 @@ export default class InputSource extends EventTarget {
      * Notify state change by event.
      * @param data state
      */
-    notifyStateChange(data) {
-        let e = new Event(EventType.INPUT_STATE_CHANGED)
-        e.data = data
-        e.source = this
+    notifyStateChange(data: boolean) {
+        let e = new InputStateChangedEvent(data, this)
         this.dispatchEvent(e)
     }
 }

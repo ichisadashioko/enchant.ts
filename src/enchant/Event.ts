@@ -1,5 +1,6 @@
 import Core from './Core'
 import EventType from './EventType'
+import InputSource from './InputSource'
 
 export default class Event {
 
@@ -52,5 +53,25 @@ export default class Event {
         let core = Core.instance
         this.x = this.localX = (pageX - core._pageX) / core.scale
         this.y = this.localY = (pageY - core._pageY) / core.scale
+    }
+}
+
+export class EnterFrameEvent extends Event {
+    elapsed: number
+
+    constructor(elapsed: number) {
+        super(EventType.ENTER_FRAME)
+        this.elapsed = elapsed
+    }
+}
+
+export class InputStateChangedEvent extends Event {
+    data: boolean
+    source: InputSource
+
+    constructor(data: boolean, source: InputSource) {
+        super(EventType.INPUT_STATE_CHANGED)
+        this.data = data
+        this.source = source
     }
 }
