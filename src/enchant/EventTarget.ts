@@ -74,9 +74,14 @@ export default class EventTarget {
         e.target = this
         e.localX = e.x - this._offsetX
         e.localY = e.y - this._offsetY
-        if (this['on' + e.type] != null) {
+
+        // @ts-ignore
+        if (typeof target['on' + e.type] === 'function') {
+            // TODO this.onload
+            // @ts-ignore
             this['on' + e.type](e)
         }
+
         var listeners = this._listeners[e.type]
         if (listeners != null) {
             listeners = listeners.slice()

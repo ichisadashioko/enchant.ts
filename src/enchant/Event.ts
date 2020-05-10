@@ -2,6 +2,7 @@ import Core from './Core'
 import EventType from './EventType'
 import InputSource from './InputSource'
 import InputManager from './InputManager'
+import EventTarget from './EventTarget'
 
 export default class Event {
 
@@ -14,7 +15,7 @@ export default class Event {
     /**
      * The target of the event.
      */
-    target
+    target: EventTarget
 
     /**
      * The x-coordinate of the event's occurrence.
