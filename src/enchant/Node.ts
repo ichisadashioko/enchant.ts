@@ -1,6 +1,6 @@
 import ENV from './Env'
 import EventTarget from './EventTarget'
-import Timeline from './TimeLine'
+import Timeline from './Timeline'
 import Group from './Group'
 import Matrix from './Matrix'
 import Scene from './Scene'
@@ -19,7 +19,7 @@ export default class Node extends EventTarget {
     /**
      * x-coordinate of the Node.
      */
-    get x(): number {
+    get x() {
         return this._x
     }
 
@@ -35,7 +35,7 @@ export default class Node extends EventTarget {
     /**
      * y-coordinate of the Node.
      */
-    get y(): number {
+    get y() {
         return this._y
     }
 
@@ -62,6 +62,8 @@ export default class Node extends EventTarget {
     scene: Scene
 
     tl?: Timeline
+
+    childNodes?: Array<Node>
 
     constructor() {
         super()
@@ -170,10 +172,8 @@ export default class Node extends EventTarget {
             this.parentNode.removeChild(this)
         }
 
-        let group = this as unknown as Group
-
-        if (group.childNodes) {
-            let childNodes = group.childNodes.slice()
+        if (this.childNodes) {
+            let childNodes = this.childNodes.slice()
             for (let i = childNodes.length - 1; i >= 0; i--) {
                 childNodes[i].remove()
             }
