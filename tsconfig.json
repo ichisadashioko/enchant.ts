@@ -6,6 +6,7 @@
         "removeComments": false,
         "preserveConstEnums": true,
         "noImplicitAny": true,
+        "strict": true,
     },
     "typeAcquisition": {
         "enable": true,
