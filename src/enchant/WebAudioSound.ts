@@ -12,14 +12,14 @@ export default class WebAudioSound extends EventTarget {
 
     context: AudioContext
     src: AudioBufferSourceNode
-    buffer: AudioBuffer
+    buffer?: AudioBuffer
 
     _volume: number
     _currentTime: number
     _state: number
     connectTarget: AudioDestinationNode
-    _gain: GainNode
-    _startTime: number
+    _gain?: GainNode
+    _startTime?: number
 
     constructor() {
         if (!AudioContext) {
@@ -35,7 +35,6 @@ export default class WebAudioSound extends EventTarget {
 
         this.context = WebAudioSound.audioContext
         this.src = this.context.createBufferSource()
-        this.buffer = null
         this._volume = 1
         this._currentTime = 0
         this._state = 0
@@ -57,6 +56,10 @@ export default class WebAudioSound extends EventTarget {
         let actx = this.context
         this.src = actx.createBufferSource()
         this._gain = actx.createGain()
+
+        if (this.buffer === undefined) {
+            throw new Error('Audio buffer is not initialized!')
+        }
 
         this.src.buffer = this.buffer
         this._gain.gain.value = this._volume
@@ -115,10 +118,15 @@ export default class WebAudioSound extends EventTarget {
     get volume(): number {
         return this._volume
     }
+
     set volume(volume: number) {
         volume = Math.max(0, Math.min(1, volume))
         this._volume = volume
         if (this.src) {
+            if (this._gain === undefined) {
+                throw new Error('The Audio has not been initialized!')
+            }
+
             this._gain.gain.value = volume
         }
     }
@@ -127,8 +135,13 @@ export default class WebAudioSound extends EventTarget {
      * Current playback position (seconds).
      */
     get currentTime(): number {
+        if (this._startTime === undefined) {
+            throw new Error('Audio has not been initialized properly!')
+        }
+
         return Math.max(0, Math.min(this.duration, this.src.context.currentTime - this._startTime))
     }
+
     set currentTime(time: number) {
         this._currentTime = time
         if (this._state !== 2) {
