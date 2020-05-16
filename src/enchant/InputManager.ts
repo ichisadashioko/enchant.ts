@@ -1,6 +1,6 @@
 import EventTarget from './EventTarget'
 import EventType from './EventType'
-import Event, { InputStateChangedEvent } from './Event'
+import Event from './Event'
 import InputSource from './InputSource'
 
 /**
@@ -41,7 +41,11 @@ export default class InputManager extends EventTarget {
         this._stateHandler = this._stateHandler.bind(this)
     }
 
-    _stateHandler(e: InputStateChangedEvent) {
+    _stateHandler(e: Event) {
+        if (e.source === undefined || e.data === undefined) {
+            throw new Error('State changed event requires source and data properties!')
+        }
+
         let id = e.source.identifier
         let name = this._binds[id]
         this.changeState(name, e.data)
