@@ -7,7 +7,7 @@ import EventType from './EventType'
  * Class that uses the HTML Canvas for rendering.
  * The rendering of children will be replaced by the Canvas rendering.
  */
-export class CanvasLayer extends Group {
+export default class CanvasLayer extends Group {
     _cvsCache: {
         matrix: Array<Number>
         detectColor: string
