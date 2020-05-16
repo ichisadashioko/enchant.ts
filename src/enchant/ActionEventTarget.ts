@@ -1,24 +1,30 @@
 import EventTarget from './EventTarget'
+import Event from './Event'
 
 /**
  * EventTarget which can change the context of event listeners.
  */
 export default class ActionEventTarget extends EventTarget {
 
+    node?: ActionEventTarget
+
     constructor() {
         super()
     }
 
-    dispatchEvent(e) {
+    dispatchEvent(e: Event) {
         let target = this.node ? this.node : this
 
         e.target = target
         e.localX = e.x - target._offsetX
         e.localY = e.y - target._offsetY
 
-        if (this['on' + e.type] != null) {
-            this['on' + e.type].call(target, e)
-        }
+        // TODO attach as listener instead of using dirty reflection
+        throw new Error('Fix the commented code!')
+        // if (this['on' + e.type] != null) {
+        //     this['on' + e.type].call(target, e)
+        // }
+
         let listeners = this._listeners[e.type]
         if (listeners != null) {
             listeners = listeners.slice()
