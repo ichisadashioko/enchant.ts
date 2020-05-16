@@ -3,11 +3,13 @@ import ENV from './Env'
 import DomlessManager from './DomlessManager'
 import Matrix from './Matrix'
 import Group from './Group'
+import DomLayer from './DomLayer'
 
 type HTMLElementTagName = keyof HTMLElementTagNameMap
 
 export default class DomManager {
 
+    layer: null | DomLayer
     element: HTMLElement
     style: CSSStyleDeclaration
 
@@ -20,6 +22,8 @@ export default class DomManager {
             this.element = document.createElement(elementDefinition)
         } else if (elementDefinition instanceof HTMLElement) {
             this.element = elementDefinition
+        } else {
+            throw new Error(`Invalid element definition ${elementDefinition}!`)
         }
 
         this.style = this.element.style
@@ -82,11 +86,12 @@ export default class DomManager {
         this.setLayer(this.layer)
     }
 
-    removeManager(childManager) {
+    removeManager(childManager: DomManager | DomlessManager) {
         if (childManager instanceof DomlessManager) {
+            let that = this
             childManager._domRef.forEach(function (element) {
-                this.element.removeChild(element)
-            }, this)
+                that.element.removeChild(element)
+            })
         } else {
             this.element.removeChild(childManager.element)
         }
