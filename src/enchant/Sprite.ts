@@ -2,6 +2,7 @@ import Entity from './Entity'
 import Surface from './Surface'
 import EventType from './EventType'
 import Event from './Event'
+import { SpriteFrame } from './types'
 
 /**
  * @example
@@ -10,7 +11,7 @@ import Event from './Event'
  */
 export default class Sprite extends Entity {
 
-    _image: Surface
+    _image: Surface | null
 
     /**
      * Image displayed in the Sprite.
@@ -19,7 +20,7 @@ export default class Sprite extends Entity {
         return this._image
     }
 
-    set image(value: Surface) {
+    set image(value: Surface | null) {
         if (value === undefined) {
             throw new Error(
                 'Assigned value on Sprite.image is undefined. '
@@ -36,7 +37,7 @@ export default class Sprite extends Entity {
         this._computeFramePosition()
     }
 
-    _frame: number | Array<number | null>
+    _frame: number | null
 
     /**
      * Index of the frame to be displayed.
@@ -56,8 +57,9 @@ export default class Sprite extends Entity {
         return this._frame
     }
 
-    set frame(value: number | Array<number | null>) {
-        if (((this._frameSequence == null) && (this._frame === value)) || (this._deepCompareToPreviousFrame(value))) {
+    set frame(value: SpriteFrame) {
+        let isTheSameFrame = (this._frameSequence == null) && (this._frame === value)
+        if (isTheSameFrame || (this._deepCompareToPreviousFrame(value))) {
             return
         }
 
@@ -70,8 +72,8 @@ export default class Sprite extends Entity {
         }
     }
 
-    _originalFrameSequence?: Array<number | null>
-    __frameSequence?: Array<number | null>
+    _originalFrameSequence?: Array<number | null> | null
+    __frameSequence: Array<number | null> | null
 
     get _frameSequence() {
         return this.__frameSequence
@@ -118,42 +120,46 @@ export default class Sprite extends Entity {
         this._dirty = true
     }
 
+    _frameLeft: number
+    _frameTop: number
+
     constructor(width: number, height: number) {
         super()
 
-        this.width = width
-        this.height = height
+        // TODO add dirty and recompute
+        this._width = width
+        this._height = height
         this._image = null
         this._debugColor = '#ff0000'
         this._frameLeft = 0
         this._frameTop = 0
         this._frame = 0
-        this._frameSequence = null
+        this.__frameSequence = null
     }
 
     /**
-     * If we are setting the same frame Array as ahimation,
+     * If we are setting the same frame Array as animation,
      * just continue animating.
      */
-    _deepCompareToPreviousFrame(frameArray) {
-        if (frameArray === this._originalFrameSequence) {
+    _deepCompareToPreviousFrame(frame: number | Array<number | null> | null) {
+        if (frame === this._originalFrameSequence) {
             return true
         }
 
-        if (frameArray == null || this._originalFrameSequence == null) {
+        if (frame == null || this._originalFrameSequence == null) {
             return false
         }
 
-        if (!(frameArray instanceof Array)) {
+        if (!(frame instanceof Array)) {
             return false
         }
 
-        if (frameArray.length !== this._originalFrameSequence.length) {
+        if (frame.length !== this._originalFrameSequence.length) {
             return false
         }
 
-        for (let i = 0; i < frameArray.length; i++) {
-            if (frameArray[i] !== this._originalFrameSequence[i]) {
+        for (let i = 0; i < frame.length; i++) {
+            if (frame[i] !== this._originalFrameSequence[i]) {
                 return false
             }
         }
@@ -165,8 +171,11 @@ export default class Sprite extends Entity {
         let image = this._image
         if (image != null) {
             let row = image.width / this._width | 0
-            this._frameLeft = (this._frame % row | 0) * this._width
-            this._frameTop = (this._frame / row | 0) * this._height % image.height
+            let rowIndex = (this._frame === null) ? 0 : this._frame / row
+            let colIndex = (this._frame === null) ? 0 : this._frame % row
+
+            this._frameLeft = colIndex * this._width
+            this._frameTop = rowIndex * this._height % image.height
         }
     }
 
@@ -178,6 +187,10 @@ export default class Sprite extends Entity {
                 this._frameSequence = null
                 this.dispatchEvent(new Event(EventType.ANIMATION_END))
             } else {
+                if (nextFrame === undefined) {
+                    throw new Error('There is problem here! Call someone for help!')
+                }
+
                 this._frame = nextFrame
                 this._computeFramePosition()
                 frameSequence.push(nextFrame)
@@ -209,7 +222,7 @@ export default class Sprite extends Entity {
         }
     }
 
-    domRender(element) {
+    domRender() {
         if (this._image) {
             if (this._image._css) {
                 this._style['background-image'] = this._image._css
@@ -217,5 +230,4 @@ export default class Sprite extends Entity {
             } else if (this._image._element) { }
         }
     }
-
 }

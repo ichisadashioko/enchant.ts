@@ -1,4 +1,5 @@
 import Event from './Event'
+import { SpriteFrame } from './types'
 
 /**
  * A class for implementation of events similar to DOM Events.
@@ -9,7 +10,7 @@ export default class EventTarget {
     _offsetY: number
     _listeners: Record<string, Array<(e: Event) => void>>
 
-    frame?: number
+    frame?: SpriteFrame
 
     constructor() {
         this._listeners = {}
@@ -75,12 +76,12 @@ export default class EventTarget {
         e.localX = e.x - this._offsetX
         e.localY = e.y - this._offsetY
 
-        // @ts-ignore
-        if (typeof target['on' + e.type] === 'function') {
-            // TODO this.onload
-            // @ts-ignore
-            this['on' + e.type](e)
-        }
+        // TODO attach as listener instead of using dirty reflection
+        throw new Error('Fix the dirty reflection code!')
+        // if (typeof target['on' + e.type] === 'function') {
+        //     // e.g. this.onload
+        //     this['on' + e.type](e)
+        // }
 
         var listeners = this._listeners[e.type]
         if (listeners != null) {
