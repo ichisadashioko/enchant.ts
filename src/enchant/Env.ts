@@ -1,3 +1,11 @@
+export type ControlKeyType = 'left' | 'right' | 'up' | 'down'
+
+const KEY_BIND_TABLE: Record<number, ControlKeyType> = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down',
+}
 
 /**
  * `enchant` environment variables.
@@ -109,12 +117,7 @@ export default {
      *     32: 'a', //-> use 'space' key as 'a button'
      * }
      */
-    KEY_BIND_TABLE: {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    },
+    KEY_BIND_TABLE: KEY_BIND_TABLE,
 
     /**
      * If keydown event occure for these keycodes the setPreventDefault() method will be called.

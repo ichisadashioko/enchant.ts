@@ -125,8 +125,10 @@ export default class Core extends EventTarget {
 
     /**
      * Object that saves the current input state for the core.
+     * 
+     * TODO rename to more meaningful name
      */
-    input: object
+    input: Record<string, boolean>
 
     keyboardInputManager: KeyboardInputManager
     _keybind
@@ -136,6 +138,8 @@ export default class Core extends EventTarget {
     public get actualFps(): number {
         return this._actualFps || this.fps
     }
+
+    _debug: boolean
 
     constructor(width?: number, height?: number) {
 
@@ -219,9 +223,10 @@ export default class Core extends EventTarget {
 
         this.addEventListener('coreresize', this._oncoreresize)
 
+        // TODO set dirty and call compute something
         this._width = width
         this._height = height
-        this.scale = scale
+        this._scale = scale
 
         this.fps = 30
         this.frame = 0
@@ -232,7 +237,6 @@ export default class Core extends EventTarget {
 
         // TODO load plugins' assets
 
-        this.currentScene = null
         this.rootScene = new Scene()
         this.pushScene(this.rootScene)
         this.loadingScene = new LoadingScene()
@@ -247,12 +251,9 @@ export default class Core extends EventTarget {
         this.keyboardInputManager.addBroadcastTarget(this)
         this._keybind = this.keyboardInputManager._binds
 
-        if (!ENV.KEY_BIND_TABLE) {
-            ENV.KEY_BIND_TABLE = {}
-        }
-
         for (let prop in ENV.KEY_BIND_TABLE) {
-            this.keybind(prop, ENV.KEY_BIND_TABLE[prop])
+            const keycode = Number.parseInt(prop)
+            this.keybind(keycode, ENV.KEY_BIND_TABLE[keycode])
         }
 
         if (initial) {
@@ -623,19 +624,15 @@ export default class Core extends EventTarget {
         }
     }
 
-    /**
-     * Call `enchant.Core._tick`
-     * @param time 
-     */
-    _callTick(time: number) {
-        Core.instance._tick(time)
+    _callTick() {
+        Core.instance._tick()
     }
 
-    _tick(time: number) {
-        let e = new Event(EventType.ENTER_FRAME)
+    _tick() {
         let now = getTime()
-        let elapsed = e.elapsed = now - this.currentTime
+        let elapsed = now - this.currentTime
         this.currentTime = now
+        let e = new EnterFrameEvent(elapsed)
 
         this._actualFps = elapsed > 0 ? (1000 / elapsed) : 0
 
