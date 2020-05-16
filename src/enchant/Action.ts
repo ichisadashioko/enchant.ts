@@ -1,11 +1,18 @@
 import ActionEventTarget from './ActionEventTarget'
 import EventType from './EventType'
+import { ActionParams } from './types'
+import Event from './Event'
+import Timeline from './Timeline'
+import Node from './Node'
 
 export default class Action extends ActionEventTarget {
-    time
+    time: number
     frame: number
-    timeline
-    node
+    timeline: Timeline | null
+    node: Node | null
+    onactionstart: (e: Event) => void
+    onactiontick: (e: Event) => void
+    onactionend: (e: Event) => void
 
     /**
      * Actions are units that make up the timeline.
@@ -17,17 +24,27 @@ export default class Action extends ActionEventTarget {
      * An actionstart event is fired when the action has started.
      * An actionend event is fired when the action has stopped.
      * For each frame that elapses, an actiontick event is fired.
+     * 
+     * You can specify a listener for these events to perform specific events when they occur.
      */
-    constructor(param) {
+    constructor(param: ActionParams) {
         super()
-        this.time = null
         this.frame = 0
+
+        this.time = param.time
+        this.onactionstart = param.onactionstart
+        this.onactiontick = param.onactiontick
+        this.onactionend = param.onactionend
 
         let action = this
         this.timeline = null
         this.node = null
 
         this.addEventListener(EventType.ADDED_TO_TIMELINE, function (evt) {
+            if (evt.timeline == null) {
+                throw new Error(`${EventType.ADDED_TO_TIMELINE} requires timeline property!`)
+            }
+
             action.timeline = evt.timeline
             action.node = evt.timeline.node
             action.frame = 0
@@ -40,6 +57,10 @@ export default class Action extends ActionEventTarget {
         })
 
         this.addEventListener(EventType.ACTION_TICK, function (evt) {
+            if (evt.elapsed == null || evt.timeline == null) {
+                throw new Error(`${EventType.ACTION_TICK} requires elapsed and timeline properties!`)
+            }
+
             let remaining = action.time - (action.frame + evt.elapsed)
             if (action.time != null && remaining <= 0) {
                 action.frame = action.time

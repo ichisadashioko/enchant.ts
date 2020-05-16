@@ -1,4 +1,12 @@
+import Action from './Action'
+import { ActionParams } from './types'
 
-export default class ParallelAction {
+/**
+ * Actions to be executed in parallel. It's possible to have more than one child action.
+ */
+export default class ParallelAction extends Action {
 
+    constructor(param: ActionParams) {
+        super(param)
+    }
 }

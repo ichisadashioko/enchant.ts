@@ -6,7 +6,7 @@ import Event from './Event'
  */
 export default class ActionEventTarget extends EventTarget {
 
-    node?: ActionEventTarget
+    node?: EventTarget | null
 
     constructor() {
         super()
