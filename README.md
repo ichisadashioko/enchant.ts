@@ -38,6 +38,7 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
     - [x] `USE_ANIMATION`
     - [x] `COLOR_DETECTION_LEVEL`
 - [ ] `Event.js`
+  - [ ] Some `ACTION_START`, `ACTION_TICK`, etc. events add `timeline` and `elapsed` properties.
   - [ ] `InputSource` adds `source` and `data` to `INPUT_STATE_CHANGED` event
   - [ ] `WebAudioSound` adds `message` for `ERROR` event
   - [ ] `Core` adds `elapsed` for `ENTER_FRAME` event
@@ -321,8 +322,53 @@ __animation feature__
 
 - [ ] `Easing.js`
 - [ ] `ActionEventTarget.js`
+  - [ ] `initalize`
+  - [ ] `dispatchEvent`
 - [ ] `Timeline.js`
+  - [ ] `initialize`
+  - [ ] `_deactivateTimeline`
+  - [ ] `_activateTimeline`
+  - [ ] `_onenterframe`
+  - [ ] `setFrameBased`
+  - [ ] `setTimeBased`
+  - [ ] `next`
+  - [ ] `tick`
+  - [ ] `add`
+  - [ ] `action`
+  - [ ] `tween`
+  - [ ] `clear`
+  - [ ] `skip`
+  - [ ] `pause`
+  - [ ] `resume`
+  - [ ] `loop`
+  - [ ] `unloop`
+  - [ ] `delay`
+  - [ ] `wait`
+  - [ ] `then`
+  - [ ] `exec`
+  - [ ] `cue`
+  - [ ] `repeat`
+  - [ ] `and`
+  - [ ] `or`
+  - [ ] `doAll`
+  - [ ] `waitAll`
+  - [ ] `waitUntil`
+  - [ ] `fadeTo`
+  - [ ] `fadeIn`
+  - [ ] `fadeOut`
+  - [ ] `moveTo`
+  - [ ] `moveX`
+  - [ ] `moveY`
+  - [ ] `moveBy`
+  - [ ] `hide`
+  - [ ] `show`
+  - [ ] `removeFromScene`
+  - [ ] `scaleTo`
+  - [ ] `scaleBy`
+  - [ ] `rotateTo`
+  - [ ] `rotateBy`
 - [ ] `Action.js`
+  - [ ] `initialize`
 - [ ] `ParallelAction.js`
 - [ ] `Tween.js`
 
