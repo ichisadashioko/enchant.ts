@@ -80,13 +80,15 @@ export default class Group extends Node {
         }
     }
 
-    _originX: number
+    _originX: number | null
+
     /**
      * x-coordinate origin point of rotation, scaling
      */
-    get originX(): number {
+    get originX() {
         return this._originX
     }
+
     set originX(originX: number) {
         if (this._originX !== originX) {
             this._originX = originX
@@ -94,13 +96,15 @@ export default class Group extends Node {
         }
     }
 
-    _originY: number
+    _originY: number | null
+
     /**
      * y-coordinate origin point of rotation, scaling
      */
-    get originY(): number {
+    get originY() {
         return this._originY
     }
+
     set originY(originY: number) {
         if (this._originY !== originY) {
             this._originY = originY
@@ -122,17 +126,18 @@ export default class Group extends Node {
 
         let that = this
 
-        [
+        let sceneEvents = [
             EventType.ADDED_TO_SCENE,
             EventType.REMOVED_FROM_SCENE,
-        ].forEach(function (event) {
-                that.addEventListener(event, function (e) {
-                    that.childNodes.forEach(function (child) {
-                        child.scene = that.scene
-                        child.dispatchEvent(e)
-                    })
+        ]
+        sceneEvents.forEach(function (eventType) {
+            that.addEventListener(eventType, function (e: Event) {
+                that.childNodes.forEach(function (child) {
+                    child.scene = that.scene
+                    child.dispatchEvent(e)
                 })
             })
+        })
     }
 
     /**
