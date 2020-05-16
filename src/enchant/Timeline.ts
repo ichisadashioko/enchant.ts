@@ -2,6 +2,7 @@ import EventTarget from './EventTarget'
 import Event from './Event'
 import EventType from './EventType'
 import Node from './Node'
+import ParallelAction from './ParallelAction'
 
 /**
  * Time-line class.
@@ -19,7 +20,7 @@ export default class Timeline extends EventTarget {
     paused: boolean
     looped: boolean
     isFrameBased: boolean
-    _parallel
+    _parallel?: ParallelAction
     _activated: boolean
 
     /**
@@ -33,8 +34,10 @@ export default class Timeline extends EventTarget {
         this.paused = false
         this.looped = false
         this.isFrameBased = true
-        this._parallel = null
         this._activated = false
+
+        this._nodeEventListener = this._nodeEventListener.bind(this)
+        this._onenterframe = this._onenterframe.bind(this)
 
         this.addEventListener(EventType.ENTER_FRAME, this._onenterframe)
     }
@@ -59,15 +62,19 @@ export default class Timeline extends EventTarget {
         }
     }
 
-    _onenterframe(e) {
+    _onenterframe(e: Event) {
         if (this.paused) {
             return
+        }
+
+        if (e.elapsed === undefined) {
+            throw new Error('Event does not contain elapsed property!')
         }
 
         this.tick(this.isFrameBased ? 1 : e.elapsed)
     }
 
-    _nodeEventListener(e) {
+    _nodeEventListener(e: Event) {
         this.dispatchEvent(e)
     }
 
