@@ -3,6 +3,8 @@ import EventType from './EventType'
 import InputSource from './InputSource'
 import InputManager from './InputManager'
 import EventTarget from './EventTarget'
+import Timeline from './Timeline'
+import Node from './Node'
 
 export default class Event {
 
@@ -14,8 +16,10 @@ export default class Event {
 
     /**
      * The target of the event.
+     * 
+     * @usedwith 'onchildadded'
      */
-    target: EventTarget
+    target?: EventTarget
 
     /**
      * The x-coordinate of the event's occurrence.
@@ -28,23 +32,59 @@ export default class Event {
     y: number
 
     /**
-     * The x-coordinate of the event's occurrence relative to the object which issued the event.
+     * The x-coordinate of the event's occurrence relative to the object
+     * which issued the event.
      */
     localX: number
 
     /**
-     * The y-coordinate of the event's occurrence relative to the object which issued the event.
+     * The y-coordinate of the event's occurrence relative to the object
+     * which issued the event.
      */
     localY: number
 
     /**
-     * A class for an independent implementation of events similar to DOM Events.
-     * Does not include phase concepts.
+     * @usedwith 'error'
+     */
+    message?: string
+
+    /**
+     * @usedwith 'enterframe', 'actiontick'
+     */
+    elapsed?: number
+
+    /**
+     * @usedwith 'actionstart'
+     */
+    timeline?: Timeline
+
+    /**
+     * @usedwith 'inputstatechanged'
+     */
+    source?: InputSource
+
+    /**
+     * @usedwith 'inputstatechanged'
+     */
+    data?: boolean
+
+    /**
+     * @usedwith 'childadded'
+     */
+    node?: Node
+
+    /**
+     * @usedwith 'childadded'
+     */
+    next?: Node | null
+
+    /**
+     * A class for an independent implementation of events similar to
+     * DOM Events. Does not include phase concepts.
      * @param type Event type.
      */
     constructor(type: EventType | string) {
         this.type = type
-        this.target = null
         this.x = 0
         this.y = 0
         this.localX = 0
@@ -55,34 +95,5 @@ export default class Event {
         let core = Core.instance
         this.x = this.localX = (pageX - core._pageX) / core.scale
         this.y = this.localY = (pageY - core._pageY) / core.scale
-    }
-}
-
-export class EnterFrameEvent extends Event {
-    elapsed: number
-
-    constructor(elapsed: number) {
-        super(EventType.ENTER_FRAME)
-        this.elapsed = elapsed
-    }
-}
-
-export class InputStateChangedEvent extends Event {
-    data: boolean
-    source: InputSource
-
-    constructor(data: boolean, source: InputSource) {
-        super(EventType.INPUT_STATE_CHANGED)
-        this.data = data
-        this.source = source
-    }
-}
-
-export class InputEvent extends Event {
-    source: InputManager
-
-    constructor(type: EventType | string, source: InputManager) {
-        super(type)
-        this.source = source
     }
 }
