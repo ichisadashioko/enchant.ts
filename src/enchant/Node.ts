@@ -6,6 +6,7 @@ import Matrix from './Matrix'
 import Scene from './Scene'
 import CanvasLayer from './CanvasLayer'
 import DomLayer from './DomLayer'
+import Entity from './Entity'
 
 /**
  * Base class for objects in the display tree which is rooted at a Scene.
@@ -161,10 +162,15 @@ export default class Node extends EventTarget {
             node._matrix = newmat
             stack.push(newmat)
 
-            // the author was trying to access property in Entity class
-            // TODO should we add these properties to Node class?
-            ox = (typeof node._originX === 'number') ? node._originX : node._width / 2 || 0
-            oy = (typeof node._originY === 'number') ? node._originY : node._height / 2 || 0
+            ox = 0
+            oy = 0
+            if (node instanceof Group) {
+                ox = (typeof node._originX === 'number') ? node._originX : 0
+                oy = (typeof node._originY === 'number') ? node._originY : 0
+            } else if (node instanceof Entity) {
+                ox = (typeof node._originX === 'number') ? node._originX : node._width / 2 || 0
+                oy = (typeof node._originY === 'number') ? node._originY : node._height / 2 || 0
+            }
 
             let vec = [ox, oy]
 
@@ -173,6 +179,7 @@ export default class Node extends EventTarget {
             node._offsetY = vec[1] - oy
             node._dirty = false
         }
+
         matrix.reset()
     }
 
