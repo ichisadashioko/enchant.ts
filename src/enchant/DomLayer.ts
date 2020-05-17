@@ -71,6 +71,14 @@ export default class DomLayer extends Group {
         DomLayer._attachDomManager(child, this.__onchildadded, this.__onchildremoved)
     }
 
+    addChild(node) {
+        // TODO
+    }
+
+    insertBefore(node, reference) {
+        // TODO
+    }
+
     __onchildremoved(e: Event) {
         // TODO
     }

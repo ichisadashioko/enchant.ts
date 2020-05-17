@@ -74,6 +74,8 @@ export default class Node extends EventTarget {
      */
     _layer?: CanvasLayer | DomLayer | null
 
+    _element?: HTMLElement
+
     constructor() {
         super()
 

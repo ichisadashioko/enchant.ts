@@ -17,10 +17,11 @@ import Event from './Event'
  * })
  */
 export default class Group extends Node {
+
     /**
      * Child Nodes.
      */
-    childNodes: Node[]
+    childNodes: Array<Node>
 
     __dirty: boolean
     get _dirty(): boolean {
@@ -160,34 +161,6 @@ export default class Group extends Node {
             node.scene = this.scene
             let addedToScene = new Event(Event.ADDED_TO_SCENE)
             node.dispatchEvent(addedToScene)
-        }
-    }
-
-    /**
-     * Incorporates Node into Group.
-     * @param node Node to be incorporated.
-     * @param reference Node in position before insertion.
-     */
-    insertBefore(node: Node, reference: Node) {
-        if (node.parentNode) {
-            node.parentNode.removeChild(node)
-        }
-        let i = this.childNodes.indexOf(reference)
-        if (i !== -1) {
-            this.childNodes.splice(i, 0, node)
-            node.parentNode = this
-            let childAdded = new Event(Event.CHILD_ADDED)
-            childAdded.node = node
-            childAdded.next = reference
-            this.dispatchEvent(childAdded)
-            node.dispatchEvent(new Event(Event.ADDED))
-            if (this.scene) {
-                node.scene = this.scene
-                let addedToScene = new Event(Event.ADDED_TO_SCENE)
-                node.dispatchEvent(addedToScene)
-            }
-        } else {
-            this.addChild(node)
         }
     }
 
