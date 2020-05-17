@@ -6,13 +6,16 @@ import { SpriteFrame } from './types'
  * However, it does not include the concept of phases.
  */
 export default class EventTarget {
-    _offsetX?: number
-    _offsetY?: number
+
+    _offsetX: number
+    _offsetY: number
     _listeners: Record<string, Array<(e: Event) => void>>
 
     frame?: SpriteFrame
 
     constructor() {
+        this._offsetX = 0
+        this._offsetY = 0
         this._listeners = {}
     }
 
@@ -73,6 +76,7 @@ export default class EventTarget {
      */
     dispatchEvent(e: Event) {
         e.target = this
+
         e.localX = e.x - this._offsetX
         e.localY = e.y - this._offsetY
 
