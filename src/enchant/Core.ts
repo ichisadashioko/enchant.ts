@@ -10,7 +10,6 @@ import Label from './Label'
 import Surface from './Surface'
 import Sound from './Sound'
 import WebAudioSound from './WebAudioSound'
-import ImageSurface from './ImageSurface'
 import DOMSound from './DOMSound'
 
 /**
@@ -22,6 +21,7 @@ import DOMSound from './DOMSound'
  * The existing instance can be accessed from `enchant.Core.instance`.
  */
 export default class Core extends EventTarget {
+
     static instance: Core
 
     _calledTime: number
@@ -31,48 +31,9 @@ export default class Core extends EventTarget {
     _pageX: number
     _pageY: number
     _element: HTMLElement
-
     _width: number
-
-    /**
-     * The width of the core screen.
-     */
-    get width(): number {
-        return this._width
-    }
-
-    set width(w: number) {
-        this._width = w
-        this._dispatchCoreResizeEvent()
-    }
-
     _height: number
-
-    /**
-     * The height of the core screen.
-     */
-    get height(): number {
-        return this._height
-    }
-
-    set height(h: number) {
-        this._height = h
-        this._dispatchCoreResizeEvent()
-    }
-
     _scale: number
-
-    /**
-     * The scaling of the core rendering.
-     */
-    get scale(): number {
-        return this._scale
-    }
-
-    set scale(s: number) {
-        this._scale = s
-        this._dispatchCoreResizeEvent()
-    }
 
     /**
      * The frame rate of the core.
@@ -97,7 +58,7 @@ export default class Core extends EventTarget {
     /**
      * Object which stores loaded assets using their paths as keys.
      */
-    assets: Record<string, ImageSurface | DOMSound | WebAudioSound>
+    assets: Record<string, Surface | DOMSound | WebAudioSound | string>
 
     _assets: []
     _scenes: Scene[]
@@ -134,11 +95,7 @@ export default class Core extends EventTarget {
     currentTime: number
     _actualFps?: number
 
-    public get actualFps(): number {
-        return this._actualFps || this.fps
-    }
-
-    _debug: boolean
+    _debug?: boolean
 
     constructor(width?: number, height?: number) {
 
@@ -363,6 +320,46 @@ export default class Core extends EventTarget {
         }
     }
 
+    /**
+     * The width of the core screen.
+     */
+    get width(): number {
+        return this._width
+    }
+
+    set width(w: number) {
+        this._width = w
+        this._dispatchCoreResizeEvent()
+    }
+
+    /**
+     * The height of the core screen.
+     */
+    get height(): number {
+        return this._height
+    }
+
+    set height(h: number) {
+        this._height = h
+        this._dispatchCoreResizeEvent()
+    }
+
+    /**
+     * The scaling of the core rendering.
+     */
+    get scale(): number {
+        return this._scale
+    }
+
+    set scale(s: number) {
+        this._scale = s
+        this._dispatchCoreResizeEvent()
+    }
+
+    get actualFps() {
+        return this._actualFps || this.fps
+    }
+
     _dispatchCoreResizeEvent() {
         let e = new Event(Event.CORE_RESIZE)
         e.core = this
@@ -420,33 +417,30 @@ export default class Core extends EventTarget {
      * @param onerror Function to be called if the file fails to load.
      */
     load(src: string, alias?: string, callback?: Function, onerror?: Function) {
-        let assetName: string
-        if (typeof arguments[1] === 'string') {
-            assetName = alias
-            callback = callback || function () { }
-            onerror = onerror || function () { }
-        } else {
-            assetName = src
-            let tempCallback = callback
-            callback = arguments[1] || function () { }
-            onerror = tempCallback || function () { }
-        }
+        let assetName = (typeof alias === 'string') ? alias : src
 
         let ext = Core.findExt(src)
 
         return Deferred.next(function () {
             let d = new Deferred()
-            let _callback = function (e) {
+
+            let _callback = function (e: Event) {
                 d.call(e)
-                callback.call(this, e)
+
+                if (callback) {
+                    callback(e)
+                }
             }
 
-            let _onerror = function (e) {
+            let _onerror = function (e: Event) {
                 d.fail(e)
-                onerror.call(this, e)
+
+                if (onerror) {
+                    onerror(e)
+                }
             }
 
-            if (Core._loadFuncs[ext]) {
+            if (ext && Core._loadFuncs[ext]) {
                 Core.instance.assets[assetName] = Core._loadFuncs[ext](src, ext, _callback, _onerror)
             } else {
                 let xhr = new XMLHttpRequest()
@@ -487,7 +481,7 @@ export default class Core extends EventTarget {
      * preload, loading will begin and the loading screen will be
      * displayed.
      */
-    start(deferred?: Deferred): Deferred {
+    start(deferred?: Deferred) {
         let onloadTimeSetter = function () {
             this.frame = 0
             this.removeEventListener('load', onloadTimeSetter)
@@ -630,7 +624,8 @@ export default class Core extends EventTarget {
         let now = getTime()
         let elapsed = now - this.currentTime
         this.currentTime = now
-        let e = new EnterFrameEvent(elapsed)
+        let e = new Event(Event.ENTER_FRAME)
+        e.elapsed = elapsed
 
         this._actualFps = elapsed > 0 ? (1000 / elapsed) : 0
 
@@ -720,6 +715,7 @@ export default class Core extends EventTarget {
         if (this.currentScene === this.rootScene) {
             return this.currentScene
         }
+
         this._element.removeChild(this.currentScene._element)
         this.currentScene.dispatchEvent(new Event(Event.EXIT))
         this.currentScene = this._scenes[this._scenes.length - 2]
@@ -819,7 +815,7 @@ export default class Core extends EventTarget {
         return Sound.load(src, 'audio/' + ext, callback, onerror)
     }
 
-    static _loadFuncs = {
+    static _loadFuncs: Record<string, Function> = {
         // image
         'jpg': Core._loadImage,
         'jpeg': Core._loadImage,

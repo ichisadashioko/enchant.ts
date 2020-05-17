@@ -1,6 +1,5 @@
 import EventTarget from './EventTarget'
 import CanvasSurface from './CanvasSurface'
-import ImageSurface from './ImageSurface'
 import Core from './Core'
 import Event from './Event'
 import ENV from './Env'
@@ -83,7 +82,7 @@ export default class Surface extends EventTarget {
      * and can be used to include this Surface into a DOM tree.
      */
     toDataURL() {
-
+        // TODO
     }
 
     /**
@@ -104,10 +103,13 @@ export default class Surface extends EventTarget {
      * @param callback on load callback.
      * @param onerror on error callback.
      */
-    static load(src: string, callback: (e: Event) => void, onerror?: (e: Event) => void): ImageSurface {
+    static load(src: string, callback?: (e: Event) => void, onerror?: (e: Event) => void): Surface {
         let image = new Image()
-        let surface = new ImageSurface(image, `url(${src})`)
+        let surface = Object.create(Surface.prototype)
 
+        throw new Error('Unimplemented!')
+
+        callback = callback || function () { }
         onerror = onerror || function () { }
         surface.addEventListener('load', callback)
         surface.addEventListener('error', onerror)

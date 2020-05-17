@@ -186,6 +186,7 @@ export default class WebAudioSound extends EventTarget {
         } else {
             setTimeout(dispatchErrorEvent, 50)
         }
+
         return sound
     }
 }
