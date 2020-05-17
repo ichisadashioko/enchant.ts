@@ -236,6 +236,11 @@ export default class Scene extends Group {
 
     _onchildremoved(e: Event) {
         let child = e.node
+
+        if (child?._layer == null) {
+            throw new Error(`This node's _layer hasn't been set!`)
+        }
+
         child._layer.removeChild(child)
         child._layer = null
     }

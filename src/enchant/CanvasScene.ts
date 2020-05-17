@@ -1,4 +1,5 @@
+import Scene from './Scene'
 
-export default class CanvasScene {
+export default class CanvasScene extends Scene {
 
 }

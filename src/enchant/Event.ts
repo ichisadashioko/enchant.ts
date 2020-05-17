@@ -69,7 +69,7 @@ export default class Event {
     data?: boolean
 
     /**
-     * @usedwith 'childadded'
+     * @usedwith 'childadded', 'childremoved'
      */
     node?: Node
 
