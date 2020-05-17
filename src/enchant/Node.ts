@@ -177,7 +177,7 @@ export default class Node extends EventTarget {
     }
 
     remove() {
-        if (this.parentNode) {
+        if (this.parentNode && (this.parentNode instanceof Group)) {
             this.parentNode.removeChild(this)
         }
 
