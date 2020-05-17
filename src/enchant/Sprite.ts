@@ -224,8 +224,8 @@ export default class Sprite extends Entity {
     domRender() {
         if (this._image) {
             if (this._image._css) {
-                this._style['background-image'] = this._image._css
-                this._style['background-position'] = `${-this._frameLeft}px -${-this._frameTop}px`
+                this._style.backgroundImage = this._image._css
+                this._style.backgroundPosition = `${-this._frameLeft}px -${-this._frameTop}px`
             } else if (this._image._element) { }
         }
     }
