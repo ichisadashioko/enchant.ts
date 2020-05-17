@@ -1,17 +1,21 @@
 import Group from './Group'
 import Core from './Core'
 import DetectColorManager from './DetectColorManager'
+import Event from './Event'
+import Node from './Node'
 
 /**
  * Class that uses the HTML Canvas for rendering.
  * The rendering of children will be replaced by the Canvas rendering.
  */
 export default class CanvasLayer extends Group {
+
     _cvsCache: {
         matrix: Array<Number>
         detectColor: string
         layer: CanvasLayer
     }
+
     _element: HTMLCanvasElement
     _detect: HTMLCanvasElement
     _lastDetected: number
@@ -79,6 +83,22 @@ export default class CanvasLayer extends Group {
                 layer = self.scene._layers.Canvas
             }
         }
+    }
+
+    addChild(node: Node) {
+        // TODO
+    }
+
+    insertBefore(node, reference) {
+        // TODO
+    }
+
+    _startRendering() {
+        // TODO
+    }
+
+    _stopRendering() {
+        // TODO
     }
 
     _setImageSmoothingEnable() {

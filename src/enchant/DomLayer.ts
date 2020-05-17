@@ -72,7 +72,19 @@ export default class DomLayer extends Group {
     }
 
     __onchildremoved(e: Event) {
+        // TODO
+    }
 
+    _startRendering() {
+        // TODO
+    }
+
+    _stopRendering() {
+        // TODO
+    }
+
+    static _attachDomManager(node, onchildadded, onchildremoved) {
+        // TODO
     }
 
     static _detachDomManager(node: DomLayer, onchildadded: (e: Event) => void, onchildremoved: (e: Event) => void) {

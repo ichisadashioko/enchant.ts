@@ -241,16 +241,24 @@ export default class Scene extends Group {
     }
 
     _onenter() {
-        for (let type in this._layers) {
-            this._layers[type]._startRendering()
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom._startRendering()
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas._startRendering()
         }
 
         Core.instance.addEventListener('exitframe', this._dispatchExitframe)
     }
 
     _onexit() {
-        for (let type in this._layers) {
-            this._layers[type]._stopRendering()
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom._stopRendering()
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas._stopRendering()
         }
 
         Core.instance.removeEventListener('exitframe', this._dispatchExitframe)
