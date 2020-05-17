@@ -3,6 +3,7 @@ import Core from './Core'
 import DetectColorManager from './DetectColorManager'
 import Event from './Event'
 import Node from './Node'
+import Scene from './Scene'
 
 /**
  * Class that uses the HTML Canvas for rendering.
@@ -24,6 +25,8 @@ export default class CanvasLayer extends Group {
     _colorManager: DetectColorManager
     width: number
     height: number
+
+    _scene?: Scene
 
     constructor() {
         super()
