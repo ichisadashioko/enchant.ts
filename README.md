@@ -4,6 +4,22 @@
 
 This project aims to port the game library [enchant.js](https://github.com/wise9/enchant.js) to TypeScript.
 
+## Development guide
+
+Build `enchant.js` to see how `enchant.js` works.
+
+- Build `enchant.js` with `npm run test` in the `enchant.js` repo.
+- Run a static files web server at `enchant.js` root (e.g. `python3 -m http.server 8080`).
+- Use Chrome and start a Guest session to disable all the extensions.
+
+Setup development environment.
+
+- VSCode (optional)
+- Install Node.JS, Yarn, and Python (optional).
+- Run `yarn` or `npm install` to install dependencies.
+- Run `yarn build` or `npm build` to build TypeScript source code.
+- Fix the errors from the output.
+
 ## Checklist
 
 - [ ] `header.js`
@@ -371,20 +387,3 @@ __animation feature__
   - [ ] `initialize`
 - [ ] `ParallelAction.js`
 - [ ] `Tween.js`
-
-## Contribution
-
-- How to get started?
-  - Create issues to ask questions about what you want to ask about the project.
-  - Take a look at [Gruntfile.coffee](./enchant.js/Gruntfile.coffee) for list of modules and convert them to TypeScript.
-
-## Development guide
-
-- VSCode (optional)
-- Install Node.JS, Yarn, and Python (optional).
-- Run `yarn` to install dependencies.
-- Run `yarn add -g typescript` or `npm i -g typescript` to install `TypeScript` globally in order to use the `tsc` command. Otherwise, you have to put your command in `package.json`'s `scripts` and use `npm run ...`.
-- Run `tsc` to compile `src/index.ts` to `build/index.js`.
-- Run a web server at root project (e.g. `python3 -m http.server 8080`).
-- Browser to `build` to try `build/index.js` (e.g. [http://localhost:8080/build](http://localhost:8080/build)).
-- Browser to `enchant.js/dev` to compare the behavior with `enchant.js` (e.g. [http://localhost:8080/enchant.js/dev](http://localhost:8080/enchant.js/dev)).
