@@ -57,7 +57,7 @@ export default class Node extends EventTarget {
     /**
      * Parent Node of this Node.
      */
-    parentNode?: Node | null
+    parentNode?: Group | null
 
     /**
      * Scene to which Node belongs.
@@ -77,8 +77,8 @@ export default class Node extends EventTarget {
 
     _element?: HTMLElement
 
-    _originX?: number
-    _originY?: number
+    _originX?: number | null
+    _originY?: number | null
     _width?: number
     _height?: number
     width?: number
@@ -147,8 +147,8 @@ export default class Node extends EventTarget {
     }
 
     _updateCoordinate() {
-        let node: Node = this
-        let tree: Array<Node> = [node]
+        let node: Node | Group = this
+        let tree: Array<Node | Group> = [node]
 
         while (node.parentNode && node._dirty) {
             tree.unshift(node.parentNode)
@@ -165,7 +165,7 @@ export default class Node extends EventTarget {
         stack.push(tree[0]._matrix)
 
         for (let i = 1, l = tree.length; i < l; i++) {
-            node = tree[i]
+            node = tree[i] as Node
             newmat = []
             matrix.makeTransformMatrix(node, mat)
             matrix.multiply(stack[stack.length - 1], mat, newmat)

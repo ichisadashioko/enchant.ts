@@ -262,7 +262,7 @@ export default class Scene extends Group {
 
         child._layer = this._layers[target]
         this._layers[target].insertBefore(child, next)
-        child.parentNode = this as Node
+        child.parentNode = this
     }
 
     _onchildremoved(e: Event) {
