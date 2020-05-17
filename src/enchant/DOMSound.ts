@@ -25,6 +25,7 @@ export default class DOMSound extends EventTarget {
     get currentTime(): number {
         return this._element ? this._element.currentTime : 0
     }
+
     set currentTime(time: number) {
         if (this._element) {
             this._element.currentTime = time
@@ -37,6 +38,7 @@ export default class DOMSound extends EventTarget {
     get volume(): number {
         return this._element ? this._element.volume : 1
     }
+
     set volume(volume: number) {
         if (this._element) {
             this._element.volume = volume
@@ -45,10 +47,10 @@ export default class DOMSound extends EventTarget {
 
     _element: HTMLMediaElement
 
-    constructor(element?: HTMLMediaElement, duration?: number) {
+    constructor() {
         super()
-        this._element = element
-        this.duration = duration
+        this.duration = 0
+        throw new Error(`Illegal Constructor`)
     }
 
     /**
@@ -80,13 +82,20 @@ export default class DOMSound extends EventTarget {
     /**
      * Create a copy of this Sound object.
      */
-    clone() {
-        let elementClone = this._element.cloneNode(false) as HTMLMediaElement
-        let clone = new DOMSound(elementClone, this.duration)
+    clone(): DOMSound {
+        // TODO improve typescript standard libraries
+        let clone = Object.create(DOMSound.prototype, {
+            // @ts-ignore
+            _element: this._element.cloneNode(false),
+            // @ts-ignore
+            duration: this.duration,
+        })
+
+        EventTarget.call(clone)
         return clone
     }
 
-    static load(src: string, type: string, callback?: Function, onerror?: Function) {
+    static load(src: string, type: string, callback?: (e: Event) => void, onerror?: (e: Event) => void) {
         if (type == null) {
             let ext = Core.findExt(src)
             if (ext) {
