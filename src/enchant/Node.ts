@@ -6,7 +6,7 @@ import Matrix from './Matrix'
 import Scene from './Scene'
 import CanvasLayer from './CanvasLayer'
 import DomLayer from './DomLayer'
-import Entity from './Entity'
+import DomManager from './DomManager'
 
 /**
  * Base class for objects in the display tree which is rooted at a Scene.
@@ -14,40 +14,11 @@ import Entity from './Entity'
  * Not to be used directly.
  */
 export default class Node extends EventTarget {
+
     _dirty: boolean
     _matrix: number[]
-
     _x: number
-
-    /**
-     * x-coordinate of the Node.
-     */
-    get x() {
-        return this._x
-    }
-
-    set x(value) {
-        if (this._x !== value) {
-            this._x = value
-            this._dirty = true
-        }
-    }
-
     _y: number
-
-    /**
-     * y-coordinate of the Node.
-     */
-    get y() {
-        return this._y
-    }
-
-    set y(value: number) {
-        if (this._y !== value) {
-            this._y = value
-            this._dirty = true
-        }
-    }
 
     /**
      * The age (frames) of this node which will be increased this node receives `enchant.Event.ENTER_FRAME` event.
@@ -86,6 +57,7 @@ export default class Node extends EventTarget {
     _scaleX?: number
     _scaleY?: number
     _rotation?: number
+    _domManager?: DomManager
 
     constructor() {
         super()
@@ -123,6 +95,34 @@ export default class Node extends EventTarget {
 
         if (ENV.USE_ANIMATION) {
             this.tl = new Timeline(this)
+        }
+    }
+
+    /**
+     * x-coordinate of the Node.
+     */
+    get x() {
+        return this._x
+    }
+
+    set x(value) {
+        if (this._x !== value) {
+            this._x = value
+            this._dirty = true
+        }
+    }
+
+    /**
+     * y-coordinate of the Node.
+     */
+    get y() {
+        return this._y
+    }
+
+    set y(value: number) {
+        if (this._y !== value) {
+            this._y = value
+            this._dirty = true
         }
     }
 

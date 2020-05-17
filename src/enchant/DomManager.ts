@@ -4,16 +4,18 @@ import DomlessManager from './DomlessManager'
 import Matrix from './Matrix'
 import Group from './Group'
 import DomLayer from './DomLayer'
+import Node from './Node'
 
 type HTMLElementTagName = keyof HTMLElementTagNameMap
 
 export default class DomManager {
 
-    layer: null | DomLayer
+    targetNode: Node
+    layer: DomLayer | null
     element: HTMLElement
     style: CSSStyleDeclaration
 
-    constructor(node, elementDefinition: HTMLElement | HTMLElementTagName) {
+    constructor(node: Node, elementDefinition: HTMLElement | HTMLElementTagName) {
         let core = Core.instance
         this.layer = null
         this.targetNode = node
@@ -40,6 +42,10 @@ export default class DomManager {
     }
 
     _setDomTarget() {
+        if (this.layer == null) {
+            throw new Error(`layer is not set!`)
+        }
+
         this.layer._touchEventTarget = this.targetNode
     }
 
@@ -51,7 +57,11 @@ export default class DomManager {
         return this.element
     }
 
-    getNextManager(manager) {
+    getNextManager(manager: DomManager) {
+        if (this.targetNode.parentNode == null) {
+            throw new Error(`this.targetNode.parentNode is ${this.targetNode.parentNode}!`)
+        }
+
         let i = this.targetNode.parentNode.childNodes.indexOf(manager.targetNode)
         if (i !== this.targetNode.parentNode.childNodes.length - 1) {
             return this.targetNode.parentNode.childNodes[i + 1]._domManager
@@ -201,8 +211,13 @@ export default class DomManager {
 
     remove() {
         this._detachEvent()
+
+        // TODO check for side effects
+        // @ts-ignore
         this.element = null
+        // @ts-ignore
         this.style = null
+        // @ts-ignore
         this.targetNode = null
     }
 }
