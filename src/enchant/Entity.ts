@@ -9,14 +9,14 @@ export default class Entity extends Node {
      * Canvas上に描画する際のみ有効.
      * CanvasのコンテキストのglobalCompositeOperationにセットされる.
      */
-    compositeOperation?: string
+    compositeOperation: string | null
 
     /**
      * Defines this Entity as a button.
      * When touched or clicked the corresponding button event is dispatched.
      * Valid buttonModes are: left, right, up, down, a, b.
      */
-    buttonMode?: 'left' | 'right' | 'a' | 'b'
+    buttonMode: 'left' | 'right' | 'a' | 'b' | null
 
     /**
      * Indicates if this Entity is being clicked.
@@ -154,28 +154,28 @@ export default class Entity extends Node {
         }
     }
 
-    _originX: number
+    _originX: number | null
 
     /**
      * The point of origin used for rotation and scaling.
      */
     get originX() { return this._originX }
 
-    set originX(value: number) {
+    set originX(value: number | null) {
         if (this._originX !== value) {
             this._originX = value
             this._dirty = true
         }
     }
 
-    _originY: number
+    _originY: number | null
 
     /**
      * The point of origin used for rotation and scaling.
      */
     get originY() { return this._originY }
 
-    set originY(value: number) {
+    set originY(value: number | null) {
         if (this._originY !== value) {
             this._originY = value
             this._dirty = true
@@ -199,14 +199,14 @@ export default class Entity extends Node {
 
         this._width = 0
         this._height = 0
-        this._backgroundColor = null
+        this._backgroundColor = ''
         this._debugColor = '#0000ff'
         this._opacity = 1
         this._visible = true
         // _buttonMode is not used anywhere!
         // this._buttonMode = null
 
-        this._style = {}
+        this._style = {} as CSSStyleDeclaration
         this.__styleStatus = {}
 
         this.compositeOperation = null
