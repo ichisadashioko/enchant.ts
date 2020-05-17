@@ -63,7 +63,7 @@ export default class Label extends Entity {
         }
     }
 
-    get width(): number {
+    get width() {
         return this._width
     }
 
@@ -71,6 +71,14 @@ export default class Label extends Entity {
         this._width = value
         this._dirty = true
         this.updateBoundArea()
+    }
+
+    get color() {
+        return this._style.color
+    }
+
+    set color(value: string) {
+        this._style.color = value
     }
 
     cvsRender() {
