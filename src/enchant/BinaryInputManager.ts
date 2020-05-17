@@ -69,11 +69,13 @@ export default class BinaryInputManager extends InputManager {
             const eventType = (this.activeInputsNum) ? Event.INPUT_CHANGE : Event.INPUT_START
             this.activeInputsNum++
 
-            inputEvent = new InputEvent(eventType, this.source)
+            inputEvent = new Event(eventType)
+            inputEvent.source = this.source
             this.broadcastEvent(inputEvent)
         }
 
-        let downEvent = new InputEvent(name + this.activeEventNameSuffix, this.source)
+        let downEvent = new Event(name + this.activeEventNameSuffix)
+        downEvent.source = this.source
         this.broadcastEvent(downEvent)
     }
 
@@ -85,10 +87,13 @@ export default class BinaryInputManager extends InputManager {
             this.activeInputsNum--
             const eventType = (this.activeInputsNum) ? Event.INPUT_CHANGE : Event.INPUT_END
 
-            inputEvent = new InputEvent(eventType, this.source)
+            inputEvent = new Event(eventType)
+            inputEvent.source = this.source
             this.broadcastEvent(inputEvent)
         }
-        let upEvent = new InputEvent(name + this.inactiveEventNameSuffix, this.source)
+
+        let upEvent = new Event(name + this.inactiveEventNameSuffix)
+        upEvent.source = this.source
         this.broadcastEvent(upEvent)
     }
 }

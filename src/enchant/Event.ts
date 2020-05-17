@@ -4,6 +4,7 @@ import InputManager from './InputManager'
 import EventTarget from './EventTarget'
 import Timeline from './Timeline'
 import Node from './Node'
+import Action from './Action'
 
 export default class Event {
 
@@ -57,9 +58,10 @@ export default class Event {
     timeline?: Timeline
 
     /**
-     * @usedwith 'inputstatechanged'
+     * @usedwith 'inputstatechanged' - InputSource
+     * @usedwith 'inputstart', 'inputchange', 'inputend', 'abuttondown', 'abuttonup', etc. - InputManager
      */
-    source?: InputSource
+    source?: InputSource | InputManager
 
     /**
      * @usedwith 'inputstatechanged'
@@ -75,6 +77,8 @@ export default class Event {
      * @usedwith 'childadded'
      */
     next?: Node | null
+
+    action?: Action
 
     /**
      * A class for an independent implementation of events similar to

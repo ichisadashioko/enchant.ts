@@ -41,8 +41,12 @@ export default class InputManager extends EventTarget {
     }
 
     _stateHandler(e: Event) {
-        if (e.source === undefined || e.data === undefined) {
-            throw new Error('State changed event requires source and data properties!')
+        if (e.source == null || e.data == null) {
+            throw new Error(`(${e.type}) event requires source and data properties!`)
+        }
+
+        if (!(e.source instanceof InputSource)) {
+            throw new Error(`(${e.type}) event's source needs to be an instance of InputSource!`)
         }
 
         let id = e.source.identifier
