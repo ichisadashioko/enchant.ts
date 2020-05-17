@@ -77,6 +77,16 @@ export default class Node extends EventTarget {
 
     _element?: HTMLElement
 
+    _originX?: number
+    _originY?: number
+    _width?: number
+    _height?: number
+    width?: number
+    height?: number
+    _scaleX?: number
+    _scaleY?: number
+    _rotation?: number
+
     constructor() {
         super()
 
@@ -162,15 +172,8 @@ export default class Node extends EventTarget {
             node._matrix = newmat
             stack.push(newmat)
 
-            ox = 0
-            oy = 0
-            if (node instanceof Group) {
-                ox = (typeof node._originX === 'number') ? node._originX : 0
-                oy = (typeof node._originY === 'number') ? node._originY : 0
-            } else if (node instanceof Entity) {
-                ox = (typeof node._originX === 'number') ? node._originX : node._width / 2 || 0
-                oy = (typeof node._originY === 'number') ? node._originY : node._height / 2 || 0
-            }
+            ox = (typeof node._originX === 'number') ? node._originX : ((typeof node._width === 'number') ? node._width / 2 : 0)
+            oy = (typeof node._originY === 'number') ? node._originY : ((typeof node._height === 'number') ? node._height / 2 : 0)
 
             let vec = [ox, oy]
 
