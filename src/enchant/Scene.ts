@@ -124,31 +124,51 @@ export default class Scene extends Group {
         }
     }
 
-    set height(height: number) {
-        this._height = height
-        for (let type in this._layers) {
-            this._layers[type].height = height
+    set height(value: number) {
+        this._height = value
+
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom.height = value
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas.height = value
         }
     }
 
-    set rotation(rotation: number) {
-        this._rotation = rotation
-        for (let type in this._layers) {
-            this._layers[type].rotation = rotation
+    set rotation(value: number) {
+        this._rotation = value
+
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom.rotation = value
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas.rotation = value
         }
     }
 
-    set scaleX(scale: number) {
-        this._scaleX = scale
-        for (let type in this._layers) {
-            this._layers[type].scaleX = scale
+    set scaleX(value: number) {
+        this._scaleX = value
+
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom.scaleX = value
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas.scaleX = value
         }
     }
 
-    set scaleY(scale: number) {
-        this._scaleY = scale
-        for (let type in this._layers) {
-            this._layers[type].scaleY = scale
+    set scaleY(value: number) {
+        this._scaleY = value
+
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom.scaleY = value
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas.scaleY = value
         }
     }
 
