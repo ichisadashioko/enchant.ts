@@ -81,6 +81,13 @@ export default class Event {
     action?: Action
 
     /**
+     * The original enchant.js API dispatch the Core as the event object.
+     * 
+     * @usedwith 'coreresize'
+     */
+    core?: Core
+
+    /**
      * A class for an independent implementation of events similar to
      * DOM Events. Does not include phase concepts.
      * @param type Event type.

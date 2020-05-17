@@ -72,7 +72,10 @@ export default class Scene extends Group {
 
         this.addEventListener(Event.CORE_RESIZE, this._oncoreresize)
 
-        this._oncoreresize(core)
+        let event = new Event(Event.CORE_RESIZE)
+        event.core = core
+
+        this._oncoreresize(event)
     }
 
     _dispatchExitframe() {
@@ -158,15 +161,23 @@ export default class Scene extends Group {
         return Core.instance.removeScene(this)
     }
 
-    _oncoreresize(e: Core) {
-        this._element.style.width = e.width + 'px'
-        this.width = e.width
-        this._element.style.height = e.height + 'px'
-        this.height = e.height
-        this._element.style.transform = `scale(${e.scale})`
+    _oncoreresize(e: Event) {
+        if (e.core == null) {
+            throw new Error(`${e.type} event needs core property!`)
+        }
 
-        for (let type in this._layers) {
-            this._layers[type].dispatchEvent(e)
+        this._element.style.width = e.core.width + 'px'
+        this.width = e.core.width
+        this._element.style.height = e.core.height + 'px'
+        this.height = e.core.height
+        this._element.style.transform = `scale(${e.core.scale})`
+
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom.dispatchEvent(e)
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas.dispatchEvent(e)
         }
     }
 

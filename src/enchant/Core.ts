@@ -365,9 +365,8 @@ export default class Core extends EventTarget {
 
     _dispatchCoreResizeEvent() {
         let e = new Event(Event.CORE_RESIZE)
-        e.width = this._width
-        e.height = this._height
-        e.scale = this._scale
+        e.core = this
+
         this.dispatchEvent(e)
     }
 
