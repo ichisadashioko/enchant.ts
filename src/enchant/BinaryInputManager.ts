@@ -1,7 +1,6 @@
 import InputManager from './InputManager'
 import BinaryInputSource from './BinaryInputSource'
-import Event, { InputEvent } from './Event'
-import EventType from './EventType'
+import Event from './Event'
 
 /**
  * Class for managing input.
@@ -67,7 +66,7 @@ export default class BinaryInputManager extends InputManager {
         if (!this.valueStore[name]) {
             this.valueStore[name] = true
 
-            const eventType = (this.activeInputsNum) ? EventType.INPUT_CHANGE : EventType.INPUT_START
+            const eventType = (this.activeInputsNum) ? Event.INPUT_CHANGE : Event.INPUT_START
             this.activeInputsNum++
 
             inputEvent = new InputEvent(eventType, this.source)
@@ -84,7 +83,7 @@ export default class BinaryInputManager extends InputManager {
             this.valueStore[name] = false
 
             this.activeInputsNum--
-            const eventType = (this.activeInputsNum) ? EventType.INPUT_CHANGE : EventType.INPUT_END
+            const eventType = (this.activeInputsNum) ? Event.INPUT_CHANGE : Event.INPUT_END
 
             inputEvent = new InputEvent(eventType, this.source)
             this.broadcastEvent(inputEvent)

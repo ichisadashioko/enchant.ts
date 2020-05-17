@@ -325,12 +325,12 @@ __animation feature__
   - [ ] `initalize`
   - [ ] `dispatchEvent`
 - [ ] `Timeline.js`
-  - [ ] `initialize`
-  - [ ] `_deactivateTimeline`
-  - [ ] `_activateTimeline`
-  - [ ] `_onenterframe`
-  - [ ] `setFrameBased`
-  - [ ] `setTimeBased`
+  - [x] `initialize`
+  - [x] `_deactivateTimeline`
+  - [x] `_activateTimeline`
+  - [x] `_onenterframe`
+  - [x] `setFrameBased`
+  - [x] `setTimeBased`
   - [ ] `next`
   - [ ] `tick`
   - [ ] `add`

@@ -6,8 +6,8 @@ import { SpriteFrame } from './types'
  * However, it does not include the concept of phases.
  */
 export default class EventTarget {
-    _offsetX: number
-    _offsetY: number
+    _offsetX?: number
+    _offsetY?: number
     _listeners: Record<string, Array<(e: Event) => void>>
 
     frame?: SpriteFrame
@@ -36,7 +36,7 @@ export default class EventTarget {
      * @param listener Event listener to be added.
      */
     on(type: string, listener: (e: Event) => void) {
-        this.addEventListener.apply(this, arguments)
+        this.addEventListener.apply(this, [type, listener])
     }
 
     /**

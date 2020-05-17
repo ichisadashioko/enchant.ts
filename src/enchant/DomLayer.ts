@@ -2,7 +2,6 @@ import Group from './Group'
 import DomManager from './DomManager'
 import Node from './Node'
 import Core from './Core'
-import EventType from './EventType'
 import Scene from './Scene'
 import Event from './Event'
 
@@ -31,9 +30,9 @@ export default class DomLayer extends Group {
         this.height = core.height
 
         let touchEvents = [
-            EventType.TOUCH_START,
-            EventType.TOUCH_MOVE,
-            EventType.TOUCH_END,
+            Event.TOUCH_START,
+            Event.TOUCH_MOVE,
+            Event.TOUCH_END,
         ]
 
         let that = this
@@ -49,8 +48,8 @@ export default class DomLayer extends Group {
         this.__onchildadded = this.__onchildadded.bind(this)
         this.__onchildremoved = this.__onchildremoved.bind(this)
 
-        this.addEventListener(EventType.CHILD_ADDED, this.__onchildadded)
-        this.addEventListener(EventType.CHILD_REMOVED, this.__onchildremoved)
+        this.addEventListener(Event.CHILD_ADDED, this.__onchildadded)
+        this.addEventListener(Event.CHILD_REMOVED, this.__onchildremoved)
     }
 
     __onchildadded(e: Event) {
@@ -77,8 +76,8 @@ export default class DomLayer extends Group {
     }
 
     static _detachDomManager(node: DomLayer, onchildadded: (e: Event) => void, onchildremoved: (e: Event) => void) {
-        node.removeEventListener(EventType.CHILD_ADDED, onchildadded)
-        node.removeEventListener(EventType.CHILD_REMOVED, onchildremoved)
+        node.removeEventListener(Event.CHILD_ADDED, onchildadded)
+        node.removeEventListener(Event.CHILD_REMOVED, onchildremoved)
 
         if (node.childNodes) {
             for (let i = 0, l = node.childNodes.length; i < l; i++) {

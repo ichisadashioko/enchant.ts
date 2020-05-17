@@ -1,6 +1,5 @@
 import Node from './Node'
 import Event from './Event'
-import EventType from './EventType'
 
 /**
  * A class that can hold multiple `enchant.Node`.
@@ -127,9 +126,10 @@ export default class Group extends Node {
         let that = this
 
         let sceneEvents = [
-            EventType.ADDED_TO_SCENE,
-            EventType.REMOVED_FROM_SCENE,
+            Event.ADDED_TO_SCENE,
+            Event.REMOVED_FROM_SCENE,
         ]
+
         sceneEvents.forEach(function (eventType) {
             that.addEventListener(eventType, function (e: Event) {
                 that.childNodes.forEach(function (child) {
@@ -151,14 +151,14 @@ export default class Group extends Node {
 
         this.childNodes.push(node)
         node.parentNode = this
-        let childAdded = new Event(EventType.CHILD_ADDED)
+        let childAdded = new Event(Event.CHILD_ADDED)
         childAdded.node = node
         childAdded.next = null
         this.dispatchEvent(childAdded)
-        node.dispatchEvent(new Event(EventType.ADDED))
+        node.dispatchEvent(new Event(Event.ADDED))
         if (this.scene) {
             node.scene = this.scene
-            let addedToScene = new Event(EventType.ADDED_TO_SCENE)
+            let addedToScene = new Event(Event.ADDED_TO_SCENE)
             node.dispatchEvent(addedToScene)
         }
     }
@@ -176,14 +176,14 @@ export default class Group extends Node {
         if (i !== -1) {
             this.childNodes.splice(i, 0, node)
             node.parentNode = this
-            let childAdded = new Event(EventType.CHILD_ADDED)
+            let childAdded = new Event(Event.CHILD_ADDED)
             childAdded.node = node
             childAdded.next = reference
             this.dispatchEvent(childAdded)
-            node.dispatchEvent(new Event(EventType.ADDED))
+            node.dispatchEvent(new Event(Event.ADDED))
             if (this.scene) {
                 node.scene = this.scene
-                let addedToScene = new Event(EventType.ADDED_TO_SCENE)
+                let addedToScene = new Event(Event.ADDED_TO_SCENE)
                 node.dispatchEvent(addedToScene)
             }
         } else {
@@ -200,13 +200,13 @@ export default class Group extends Node {
         if ((i = this.childNodes.indexOf(node)) !== -1) {
             this.childNodes.splice(i, 1)
             node.parentNode = null
-            let childRemoved = new Event(EventType.CHILD_REMOVED)
+            let childRemoved = new Event(Event.CHILD_REMOVED)
             childRemoved.node = node
             this.dispatchEvent(childRemoved)
-            node.dispatchEvent(new Event(EventType.REMOVED))
+            node.dispatchEvent(new Event(Event.REMOVED))
             if (this.scene) {
                 node.scene = null
-                let removedFromScene = new Event(EventType.REMOVED_FROM_SCENE)
+                let removedFromScene = new Event(Event.REMOVED_FROM_SCENE)
                 node.dispatchEvent(removedFromScene)
             }
         }

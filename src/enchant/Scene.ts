@@ -1,8 +1,10 @@
 import Core from './Core'
 import Group from './Group'
 import Event from './Event'
-import EventType from './EventType'
 import Node from './Node'
+import CanvasLayer from './CanvasLayer'
+import DomLayer from './DomLayer'
+import { LayerType } from './types'
 
 
 /**
@@ -24,17 +26,22 @@ import Node from './Node'
 export default class Scene extends Group {
 
     _element: HTMLElement
-    _layers: Record<string, Node>
-    _layerPriority: []
+    _layers: Record<LayerType, CanvasLayer | DomLayer>
+    _layerPriority: Array<LayerType>
 
-    _backgroundColor: string
+    _width: number | undefined
+    _height: number | undefined
 
-    get backgroundColor(): string {
+    _backgroundColor: string | null
+
+    get backgroundColor() {
         return this._backgroundColor
     }
 
-    set backgroundColor(color: string) {
-        this._backgroundColor = this._element.style.backgroundColor = color
+    set backgroundColor(color: string | null) {
+        this._backgroundColor = color
+
+        this._element.style.backgroundColor = (color == null) ? '' : color
     }
 
     constructor() {
@@ -53,46 +60,64 @@ export default class Scene extends Group {
         this._element.style.overflow = 'hidden'
         this._element.style.transformOrigin = '0 0'
 
-        this._layers = {}
+        this._layers = {} as Record<LayerType, CanvasLayer | DomLayer>
         this._layerPriority = []
 
-        this.addEventListener(EventType.CHILD_ADDED, this._onchildadded)
-        this.addEventListener(EventType.CHILD_REMOVED, this._onchildremoved)
-        this.addEventListener(EventType.ENTER, this._onenter)
-        this.addEventListener(EventType.EXIT, this._onexit)
+        this.addEventListener(Event.CHILD_ADDED, this._onchildadded)
+        this.addEventListener(Event.CHILD_REMOVED, this._onchildremoved)
+        this.addEventListener(Event.ENTER, this._onenter)
+        this.addEventListener(Event.EXIT, this._onexit)
 
         this._dispatchExitframe = this._dispatchExitframe.bind(this)
 
-        this.addEventListener(EventType.CORE_RESIZE, this._oncoreresize)
+        this.addEventListener(Event.CORE_RESIZE, this._oncoreresize)
 
         this._oncoreresize(core)
     }
 
     _dispatchExitframe() {
-        for (let prop in this._layers) {
-            let layer = this._layers[prop]
-            layer.dispatchEvent(new Event(EventType.EXIT_FRAME))
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom.dispatchEvent(new Event(Event.EXIT_FRAME))
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas.dispatchEvent(new Event(Event.EXIT_FRAME))
         }
     }
 
-    set x(x: number) {
-        this._x = x
-        for (let type in this._layers) {
-            this._layers[type].x = x
+    set x(value: number) {
+        this._x = value
+
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom.x = value
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas.x = value
         }
     }
 
-    set y(y: number) {
-        this._y = y
-        for (let type in this._layers) {
-            this._layers[type].y = y
+    set y(value: number) {
+        this._y = value
+
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom.y = value
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas.y = value
         }
     }
 
-    set width(width: number) {
-        this._width = width
-        for (let type in this._layers) {
-            this._layers[type].width = width
+    set width(value: number) {
+        this._width = value
+
+        if (!(this._layers.Dom == null)) {
+            this._layers.Dom.width = value
+        }
+
+        if (!(this._layers.Canvas == null)) {
+            this._layers.Canvas.width = value
         }
     }
 
@@ -145,10 +170,53 @@ export default class Scene extends Group {
         }
     }
 
+    addLayer(type: LayerType, i?: number) {
+        let core = Core.instance
+
+        if (this._layers[type]) {
+            return
+        }
+
+        let layer: CanvasLayer | DomLayer
+
+        if (type === 'Dom') {
+            layer = new DomLayer()
+        } else if (type === 'Canvas') {
+            layer = new CanvasLayer()
+        } else {
+            throw new Error(`Invalid layer type ${type}!`)
+        }
+
+        this._layers[type] = layer
+        let element = layer._element
+
+        if (typeof i === 'number') {
+            let nextSibling = this._element.childNodes[i]
+            if (nextSibling) {
+                this._element.insertBefore(element, nextSibling)
+            } else {
+                this._element.appendChild(element)
+            }
+
+            this._layerPriority.splice(i, 0, type)
+        } else {
+            this._element.appendChild(element)
+            this._layerPriority.push(type)
+        }
+
+        layer._scene = this
+    }
+
     _onchildadded(e: Event) {
         let child = e.node
+        if (child == null) {
+            throw new Error('onchildadded event must have node property!')
+        }
+
         let next = e.next
-        let target: string, i: number
+        let target: LayerType
+        let i: number
+
         if (child._element) {
             target = 'Dom'
             i = 1
@@ -156,9 +224,11 @@ export default class Scene extends Group {
             target = 'Canvas'
             i = 0
         }
+
         if (!this._layers[target]) {
             this.addLayer(target, i)
         }
+
         child._layer = this._layers[target]
         this._layers[target].insertBefore(child, next)
         child.parentNode = this
@@ -174,6 +244,7 @@ export default class Scene extends Group {
         for (let type in this._layers) {
             this._layers[type]._startRendering()
         }
+
         Core.instance.addEventListener('exitframe', this._dispatchExitframe)
     }
 
@@ -181,6 +252,7 @@ export default class Scene extends Group {
         for (let type in this._layers) {
             this._layers[type]._stopRendering()
         }
+
         Core.instance.removeEventListener('exitframe', this._dispatchExitframe)
     }
 }

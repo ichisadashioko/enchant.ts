@@ -1,5 +1,4 @@
 import EventTarget from './EventTarget'
-import EventType from './EventType'
 import Event from './Event'
 import InputSource from './InputSource'
 
@@ -58,7 +57,7 @@ export default class InputManager extends EventTarget {
      * @param name input name.
      */
     bind(inputSource: InputSource, name: string) {
-        inputSource.addEventListener(EventType.INPUT_STATE_CHANGED, this._stateHandler)
+        inputSource.addEventListener(Event.INPUT_STATE_CHANGED, this._stateHandler)
         this._binds[inputSource.identifier] = name
     }
 
@@ -67,7 +66,7 @@ export default class InputManager extends EventTarget {
      * @param inputSource input source.
      */
     unbind(inputSource: InputSource) {
-        inputSource.removeEventListener(EventType.INPUT_STATE_CHANGED, this._stateHandler)
+        inputSource.removeEventListener(Event.INPUT_STATE_CHANGED, this._stateHandler)
         delete this._binds[inputSource.identifier]
     }
 

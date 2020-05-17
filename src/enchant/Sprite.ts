@@ -1,6 +1,5 @@
 import Entity from './Entity'
 import Surface from './Surface'
-import EventType from './EventType'
 import Event from './Event'
 import { SpriteFrame } from './types'
 
@@ -81,9 +80,9 @@ export default class Sprite extends Entity {
 
     set _frameSequence(value: Array<number | null> | null) {
         if (value && !this.__frameSequence) {
-            this.addEventListener(EventType.ENTER_FRAME, this._rotateFrameSequence)
+            this.addEventListener(Event.ENTER_FRAME, this._rotateFrameSequence)
         } else if (!value && this.__frameSequence) {
-            this.removeEventListener(EventType.ENTER_FRAME, this._rotateFrameSequence)
+            this.removeEventListener(Event.ENTER_FRAME, this._rotateFrameSequence)
         }
 
         if (value) {
@@ -171,8 +170,8 @@ export default class Sprite extends Entity {
         let image = this._image
         if (image != null) {
             let row = image.width / this._width | 0
-            let rowIndex = (this._frame === null) ? 0 : this._frame / row
-            let colIndex = (this._frame === null) ? 0 : this._frame % row
+            let rowIndex = (this._frame == null) ? 0 : this._frame / row
+            let colIndex = (this._frame == null) ? 0 : this._frame % row
 
             this._frameLeft = colIndex * this._width
             this._frameTop = rowIndex * this._height % image.height
@@ -183,9 +182,9 @@ export default class Sprite extends Entity {
         let frameSequence = this._frameSequence
         if (frameSequence && frameSequence.length !== 0) {
             let nextFrame = frameSequence.shift()
-            if (nextFrame === null) {
+            if (nextFrame == null) {
                 this._frameSequence = null
-                this.dispatchEvent(new Event(EventType.ANIMATION_END))
+                this.dispatchEvent(new Event(Event.ANIMATION_END))
             } else {
                 if (nextFrame === undefined) {
                     throw new Error('There is problem here! Call someone for help!')

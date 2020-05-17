@@ -8,6 +8,9 @@
         "noImplicitAny": true,
         "strict": true,
     },
+    "include": [
+        "src/**/*.ts",
+    ],
     "typeAcquisition": {
         "enable": true,
     },

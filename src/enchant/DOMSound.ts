@@ -1,6 +1,5 @@
 import Core from './Core'
 import Event from './Event'
-import EventType from './EventType'
 import EventTarget from './EventTarget'
 import ENV from './Env'
 
@@ -108,20 +107,20 @@ export default class DOMSound extends EventTarget {
             && ENV.VENDOR_PREFIX === 'webkit'
             && ENV.TOUCH_ENABLED) {
             window.setTimeout(function () {
-                sound.dispatchEvent(new Event(EventType.LOAD))
+                sound.dispatchEvent(new Event(Event.LOAD))
             }, 0)
         } else {
             if (audio.canPlayType(type)) {
                 audio.addEventListener('canplaythrough', function canplay() {
                     sound.duration = audio.duration
-                    sound.dispatchEvent(new Event(EventType.LOAD))
+                    sound.dispatchEvent(new Event(Event.LOAD))
                     audio.removeEventListener('canplaythrough', canplay)
                 }, false)
                 audio.src = src
                 audio.load()
                 audio.autoplay = false
                 audio.onerror = function () {
-                    let e = new Event(EventType.ERROR)
+                    let e = new Event(Event.ERROR)
                     e.message = 'Cannot load an asset: ' + audio.src
                     Core.instance.dispatchEvent(e)
                     sound.dispatchEvent(e)
@@ -130,7 +129,7 @@ export default class DOMSound extends EventTarget {
                 sound._element = audio
             } else {
                 window.setTimeout(function () {
-                    sound.dispatchEvent(new Event(EventType.LOAD))
+                    sound.dispatchEvent(new Event(Event.LOAD))
                 }, 0)
             }
         }

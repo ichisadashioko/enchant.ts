@@ -1,7 +1,6 @@
 import Group from './Group'
 import Core from './Core'
 import DetectColorManager from './DetectColorManager'
-import EventType from './EventType'
 
 /**
  * Class that uses the HTML Canvas for rendering.
@@ -54,9 +53,9 @@ export default class CanvasLayer extends Group {
         this.height = core.height
 
         let touch = [
-            EventType.TOUCH_START,
-            EventType.TOUCH_MOVE,
-            EventType.TOUCH_END,
+            Event.TOUCH_START,
+            Event.TOUCH_MOVE,
+            Event.TOUCH_END,
         ]
 
         let that = this

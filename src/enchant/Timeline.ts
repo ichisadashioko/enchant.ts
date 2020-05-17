@@ -1,8 +1,8 @@
 import EventTarget from './EventTarget'
 import Event from './Event'
-import EventType from './EventType'
 import Node from './Node'
 import ParallelAction from './ParallelAction'
+import Action from './Action'
 
 /**
  * Time-line class.
@@ -16,11 +16,11 @@ import ParallelAction from './ParallelAction'
  */
 export default class Timeline extends EventTarget {
     node: Node
-    queue: EventTarget[]
+    queue: Action[]
     paused: boolean
     looped: boolean
     isFrameBased: boolean
-    _parallel?: ParallelAction
+    _parallel: ParallelAction | null
     _activated: boolean
 
     /**
@@ -34,31 +34,30 @@ export default class Timeline extends EventTarget {
         this.paused = false
         this.looped = false
         this.isFrameBased = true
+        this._parallel = null
         this._activated = false
 
         this._nodeEventListener = this._nodeEventListener.bind(this)
         this._onenterframe = this._onenterframe.bind(this)
 
-        this.addEventListener(EventType.ENTER_FRAME, this._onenterframe)
+        this.addEventListener(Event.ENTER_FRAME, this._onenterframe)
     }
 
-    /**
-     * 
-     * @param elapsed 
-     */
-    tick(elapsed: number) {
-        if (this.queue.length > 0) {
-            let action = this.queue[0]
-            if (action.frame === 0) {
-                let f = new Event(EventType.ACTION_START)
-                f.timeline = this
-                action.dispatchEvent(f)
-            }
+    _nodeEventListener(e: Event) {
+        this.dispatchEvent(e)
+    }
 
-            let e = new Event(EventType.ACTION_TICK)
-            e.timeline = this
-            e.elapsed = elapsed
-            action.dispatchEvent(e)
+    _deactivateTimeline() {
+        if (this._activated) {
+            this._activated = false
+            this.node.removeEventListener(Event.ENTER_FRAME, this._nodeEventListener)
+        }
+    }
+
+    _activateTimeline() {
+        if (!this._activated && !this.paused) {
+            this.node.addEventListener(Event.ENTER_FRAME, this._nodeEventListener)
+            this._activated = true
         }
     }
 
@@ -74,22 +73,87 @@ export default class Timeline extends EventTarget {
         this.tick(this.isFrameBased ? 1 : e.elapsed)
     }
 
-    _nodeEventListener(e: Event) {
+    setFrameBased() {
+        this.isFrameBased = true
+    }
+
+    setTimeBased() {
+        this.isFrameBased = false
+    }
+
+    next(remainingTime: number) {
+        let e: Event
+        let action = this.queue.shift()
+
+        if (action) {
+            e = new Event(Event.ACTION_END)
+            e.timeline = this
+            action.dispatchEvent(e)
+
+            e = new Event(Event.REMOVED_FROM_TIMELINE)
+            e.timeline = this
+            action.dispatchEvent(e)
+
+            if (this.looped) {
+                this.add(action)
+            }
+        }
+
+        if (this.queue.length === 0) {
+            this._deactivateTimeline()
+            return
+        }
+
+        let nextTarget = this.queue[0]
+        let nextTargetRemainingTime = (nextTarget instanceof Action) ? nextTarget.time : undefined
+        if (remainingTime > 0 || (nextTarget && nextTargetRemainingTime === 0)) {
+            e = new Event(Event.ACTION_TICK)
+            e.elapsed = remainingTime
+            e.timeline = this
+            nextTarget.dispatchEvent(e)
+        }
+    }
+
+    /**
+     * 
+     * @param elapsed 
+     */
+    tick(elapsed: number) {
+        if (this.queue.length > 0) {
+            let action = this.queue[0]
+            if (action.frame === 0) {
+                let f = new Event(Event.ACTION_START)
+                f.timeline = this
+                action.dispatchEvent(f)
+            }
+
+            let e = new Event(Event.ACTION_TICK)
+            e.timeline = this
+            e.elapsed = elapsed
+            action.dispatchEvent(e)
+        }
+    }
+
+    add(action: Action) {
+        this._activateTimeline()
+
+        if (this._parallel) {
+            this._parallel.actions.push(action)
+            this._parallel = null
+        } else {
+            this.queue.push(action)
+        }
+
+        action.frame = 0
+
+        let e = new Event(Event.ADDED_TO_TIMELINE)
+        e.timeline = this
+        action.dispatchEvent(e)
+
+        e = new Event(Event.ACTION_ADDED)
+        e.action = action
         this.dispatchEvent(e)
-    }
 
-    _deactivateTimeline() {
-        if (this._activated) {
-            this._activated = false
-            this.node.removeEventListener(EventType.ENTER_FRAME, this._nodeEventListener)
-        }
+        return this
     }
-
-    _activateTimeline() {
-        if (!this._activated && !this.paused) {
-            this.node.addEventListener(EventType.ENTER_FRAME, this._nodeEventListener)
-            this._activated = true
-        }
-    }
-
 }

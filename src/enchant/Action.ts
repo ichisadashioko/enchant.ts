@@ -1,5 +1,4 @@
 import ActionEventTarget from './ActionEventTarget'
-import EventType from './EventType'
 import { ActionParams } from './types'
 import Event from './Event'
 import Timeline from './Timeline'
@@ -40,9 +39,9 @@ export default class Action extends ActionEventTarget {
         this.timeline = null
         this.node = null
 
-        this.addEventListener(EventType.ADDED_TO_TIMELINE, function (evt) {
+        this.addEventListener(Event.ADDED_TO_TIMELINE, function (evt) {
             if (evt.timeline == null) {
-                throw new Error(`${EventType.ADDED_TO_TIMELINE} requires timeline property!`)
+                throw new Error(`${Event.ADDED_TO_TIMELINE} requires timeline property!`)
             }
 
             action.timeline = evt.timeline
@@ -50,15 +49,15 @@ export default class Action extends ActionEventTarget {
             action.frame = 0
         })
 
-        this.addEventListener(EventType.REMOVED_FROM_TIMELINE, function () {
+        this.addEventListener(Event.REMOVED_FROM_TIMELINE, function () {
             action.timeline = null
             action.node = null
             action.frame = 0
         })
 
-        this.addEventListener(EventType.ACTION_TICK, function (evt) {
+        this.addEventListener(Event.ACTION_TICK, function (evt) {
             if (evt.elapsed == null || evt.timeline == null) {
-                throw new Error(`${EventType.ACTION_TICK} requires elapsed and timeline properties!`)
+                throw new Error(`${Event.ACTION_TICK} requires elapsed and timeline properties!`)
             }
 
             let remaining = action.time - (action.frame + evt.elapsed)

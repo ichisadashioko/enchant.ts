@@ -2,8 +2,8 @@ import EventTarget from './EventTarget'
 import CanvasSurface from './CanvasSurface'
 import ImageSurface from './ImageSurface'
 import Core from './Core'
-import EventType from './EventType'
 import Event from './Event'
+import ENV from './Env'
 
 /**
  * Class that wraps canvas elements.
@@ -20,7 +20,7 @@ import Event from './Event'
  * surface.context.fill()
  * ball.image = surface
  */
-export default abstract class Surface extends EventTarget {
+export default class Surface extends EventTarget {
 
     /**
      * Surface width.
@@ -32,8 +32,40 @@ export default abstract class Surface extends EventTarget {
      */
     height: number
 
-    _element: HTMLCanvasElement | HTMLImageElement
+    context: CanvasRenderingContext2D
+
+    // TODO check to see `_element` should be add to super class
+    _element: HTMLCanvasElement
+
     _pattern?: CanvasPattern
+
+    _css?: string
+
+    constructor(width: number, height: number) {
+        super()
+
+        let core = Core.instance
+
+        this.width = Math.ceil(width)
+        this.height = Math.ceil(height)
+
+        // TODO refactor hard-coded id
+        let id = 'enchant-surface' + core._surfaceID++
+
+        this._element = document.createElement('canvas')
+        this._element.width = this.width
+        this._element.height = this.height
+        // TODO let user specify the game position
+        this._element.style.position = 'absolute'
+
+        // TODO add WebGL
+        let context = this._element.getContext('2d')
+        if (context == null) {
+            throw new Error('Cannot initialize CanvasContext2D!')
+        }
+
+        this.context = context
+    }
 
     /**
      * The copied Surface.
@@ -46,10 +78,13 @@ export default abstract class Surface extends EventTarget {
 
     /**
      * Creates a data URI scheme from this Surface.
+     * 
      * @return The data URI schema that identifies this Surface 
      * and can be used to include this Surface into a DOM tree.
      */
-    abstract toDataURL(): string
+    toDataURL() {
+
+    }
 
     /**
      * Loads an image and creates a Surface object out of it.
@@ -69,7 +104,7 @@ export default abstract class Surface extends EventTarget {
      * @param callback on load callback.
      * @param onerror on error callback.
      */
-    static load(src: string, callback: Function, onerror?: Function): ImageSurface {
+    static load(src: string, callback: (e: Event) => void, onerror?: (e: Event) => void): ImageSurface {
         let image = new Image()
         let surface = new ImageSurface(image, `url(${src})`)
 
@@ -77,7 +112,7 @@ export default abstract class Surface extends EventTarget {
         surface.addEventListener('load', callback)
         surface.addEventListener('error', onerror)
         image.onerror = function () {
-            let e = new Event(EventType.ERROR)
+            let e = new Event(Event.ERROR)
             e.message = `Cannot load an assets: ${image.src}`
             Core.instance.dispatchEvent(e)
             surface.dispatchEvent(e)
@@ -86,7 +121,7 @@ export default abstract class Surface extends EventTarget {
         image.onload = function () {
             surface.width = image.width
             surface.height = image.height
-            surface.dispatchEvent(new Event(EventType.LOAD))
+            surface.dispatchEvent(new Event(Event.LOAD))
         }
 
         image.src = src
@@ -95,10 +130,21 @@ export default abstract class Surface extends EventTarget {
 
     static _staticCanvas2DContext = document.createElement('canvas').getContext('2d')
 
-    static _getPattern(surface: Surface, force: boolean) {
+    static _getPattern(surface: Surface, force?: boolean) {
         if (!surface._pattern || force) {
-            surface._pattern = CanvasSurface._staticCanvas2DContext.createPattern(surface._element, 'repeat')
+            if (Surface._staticCanvas2DContext == null) {
+                throw new Error('Fail to initialize _staticCanvas2DContext!')
+            }
+
+            let pattern = Surface._staticCanvas2DContext.createPattern(surface._element, 'repeat')
+
+            if (pattern == null) {
+                throw new Error('Fail to initialize CanvasPattern!')
+            }
+
+            surface._pattern = pattern
         }
+
         return surface._pattern
     }
 }

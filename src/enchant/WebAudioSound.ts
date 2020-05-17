@@ -1,6 +1,5 @@
 import Core from './Core'
 import Event from './Event'
-import EventType from './EventType'
 import EventTarget from './EventTarget'
 
 /**
@@ -161,10 +160,10 @@ export default class WebAudioSound extends EventTarget {
         let sound = new WebAudioSound()
         callback = callback || function () { }
         onerror = onerror || function () { }
-        sound.addEventListener(EventType.LOAD, callback)
-        sound.addEventListener(EventType.ERROR, onerror)
+        sound.addEventListener(Event.LOAD, callback)
+        sound.addEventListener(Event.ERROR, onerror)
         function dispatchErrorEvent() {
-            let e = new Event(EventType.ERROR)
+            let e = new Event(Event.ERROR)
             e.message = 'Cannot load an asset: ' + src
             Core.instance.dispatchEvent(e)
             sound.dispatchEvent(e)
@@ -179,7 +178,7 @@ export default class WebAudioSound extends EventTarget {
             xhr.onload = function () {
                 actx.decodeAudioData(xhr.response, function (buffer) {
                     sound.buffer = buffer
-                    sound.dispatchEvent(new Event(EventType.LOAD))
+                    sound.dispatchEvent(new Event(Event.LOAD))
                 }, dispatchErrorEvent)
             }
             xhr.onerror = dispatchErrorEvent

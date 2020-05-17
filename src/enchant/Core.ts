@@ -5,7 +5,6 @@ import KeyboardInputManager from './KeyboardInputManager'
 import LoadingScene from './LoadingScene'
 import Scene from './Scene'
 import Event from './Event'
-import EventType from './EventType'
 import ENV from './Env'
 import Label from './Label'
 import Surface from './Surface'
@@ -143,7 +142,7 @@ export default class Core extends EventTarget {
 
     constructor(width?: number, height?: number) {
 
-        if (window.document.body === null) {
+        if (window.document.body == null) {
             // TODO postpone initialization after `window.onload`
             throw new Error('document.body is null. Please excute `new Core()` in window.onload.')
         }
@@ -346,7 +345,7 @@ export default class Core extends EventTarget {
 
             if (ENV.TOUCH_ENABLED) {
                 stage.addEventListener('touchstart', function (ev) {
-                    let evt = new Event(EventType.TOUCH_START)
+                    let evt = new Event(Event.TOUCH_START)
                     let touches = ev.changedTouches
 
                     let touch: Touch
@@ -365,7 +364,7 @@ export default class Core extends EventTarget {
     }
 
     _dispatchCoreResizeEvent() {
-        let e = new Event(EventType.CORE_RESIZE)
+        let e = new Event(Event.CORE_RESIZE)
         e.width = this._width
         e.height = this._height
         e.scale = this._scale
@@ -457,7 +456,7 @@ export default class Core extends EventTarget {
                     if (xhr.readyState === 4) {
                         if (xhr.status !== 200 && xhr.status !== 0) {
                             // throw new Error(`${xhr.status}: Cannot load an asset: ${src}`)
-                            let e = new Event(EventType.ERROR)
+                            let e = new Event(Event.ERROR)
                             e.message = `${xhr.status}: Cannot load an asset: ${src}`
                             _onerror.call(Core.instance, e)
                         }
@@ -469,7 +468,7 @@ export default class Core extends EventTarget {
                             Core.instance.assets[assetName] = Sound.load(src, type, _callback, _onerror)
                         } else {
                             Core.instance.assets[assetName] = xhr.responseText
-                            _callback.call(Core.instance, new Event(EventType.LOAD))
+                            _callback.call(Core.instance, new Event(Event.LOAD))
                         }
                     }
                 }
@@ -510,8 +509,8 @@ export default class Core extends EventTarget {
                 let core = Core.instance
                 let that = this
 
-                scene.addEventListener(EventType.TOUCH_START, function waitTouch() {
-                    that.removeEventListener(EventType.TOUCH_START, waitTouch)
+                scene.addEventListener(Event.TOUCH_START, function waitTouch() {
+                    that.removeEventListener(Event.TOUCH_START, waitTouch)
                     let a = new WebAudioSound()
                     a.buffer = WebAudioSound.audioContext.createBuffer(1, 1, 48000)
                     a.play()
@@ -527,7 +526,7 @@ export default class Core extends EventTarget {
         this._requestNextFrame(0)
 
         let ret = this._requestPreload().next(function () {
-            Core.instance.loadingScene.dispatchEvent(new Event(EventType.LOAD))
+            Core.instance.loadingScene.dispatchEvent(new Event(Event.LOAD))
         })
 
         if (deferred) {
@@ -546,7 +545,7 @@ export default class Core extends EventTarget {
         let loaded = 0
         let len = 0
         function loadFunc() {
-            let e = new Event(EventType.PROGRESS)
+            let e = new Event(Event.PROGRESS)
             e.loaded = ++loaded
             e.total = len
             Core.instance.loadingScene.dispatchEvent(e)
@@ -650,7 +649,7 @@ export default class Core extends EventTarget {
         this.currentScene.dispatchEvent(e)
         this.dispatchEvent(e)
 
-        this.dispatchEvent(new Event(EventType.EXIT_FRAME))
+        this.dispatchEvent(new Event(Event.EXIT_FRAME))
         this.frame++
         now = getTime()
 
@@ -703,10 +702,10 @@ export default class Core extends EventTarget {
     pushScene(scene: Scene) {
         this._element.appendChild(scene._element)
         if (this.currentScene) {
-            this.currentScene.dispatchEvent(new Event(EventType.EXIT))
+            this.currentScene.dispatchEvent(new Event(Event.EXIT))
         }
         this.currentScene = scene
-        this.currentScene.dispatchEvent(new Event(EventType.ENTER))
+        this.currentScene.dispatchEvent(new Event(Event.ENTER))
         return this._scenes.push(scene)
     }
 
@@ -723,9 +722,9 @@ export default class Core extends EventTarget {
             return this.currentScene
         }
         this._element.removeChild(this.currentScene._element)
-        this.currentScene.dispatchEvent(new Event(EventType.EXIT))
+        this.currentScene.dispatchEvent(new Event(Event.EXIT))
         this.currentScene = this._scenes[this._scenes.length - 2]
-        this.currentScene.dispatchEvent(new Event(EventType.ENTER))
+        this.currentScene.dispatchEvent(new Event(Event.ENTER))
         return this._scenes.pop()
     }
 
