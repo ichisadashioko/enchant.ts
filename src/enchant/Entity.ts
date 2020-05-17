@@ -94,7 +94,7 @@ export default class Entity extends Node {
     get visible() { return this._visible }
     set visible(value: boolean) { this._visible = value }
 
-    _style: Record<string, string>
+    _style: CSSStyleDeclaration
     __styleStatus: Record<string, string>
     _touchEnabled: boolean
 
