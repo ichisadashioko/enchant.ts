@@ -56,7 +56,7 @@ export default class Node extends EventTarget {
     /**
      * Parent Node of this Node.
      */
-    parentNode: Group
+    parentNode?: Node | null
 
     /**
      * Scene to which Node belongs.
@@ -136,14 +136,12 @@ export default class Node extends EventTarget {
     }
 
     _updateCoordinate() {
-        let node: Node | Group = this
-        let tree: Array<Node | Group> = [node]
-        let parent = node.parentNode
+        let node: Node = this
+        let tree: Array<Node> = [node]
 
-        while (parent && node._dirty) {
-            tree.unshift(parent)
+        while (node.parentNode && node._dirty) {
+            tree.unshift(node.parentNode)
             node = node.parentNode
-            parent = node.parentNode
         }
 
         let matrix = Matrix.instance

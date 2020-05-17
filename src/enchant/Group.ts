@@ -24,9 +24,11 @@ export default class Group extends Node {
     childNodes: Array<Node>
 
     __dirty: boolean
+
     get _dirty(): boolean {
         return this.__dirty
     }
+
     set _dirty(dirty: boolean) {
         // trigger setter of `dirty`
         dirty = !!dirty
@@ -39,12 +41,15 @@ export default class Group extends Node {
     }
 
     _rotation: number
+
     /**
      * Group rotation angle (degree).
      */
+
     get rotation(): number {
         return this._rotation
     }
+
     set rotation(rotation: number) {
         if (this._rotation !== rotation) {
             this._rotation = rotation
@@ -53,12 +58,15 @@ export default class Group extends Node {
     }
 
     _scaleX: number
+
     /**
      * Scaling factor on the x axis of the Group.
      */
+
     get scaleX(): number {
         return this._scaleX
     }
+
     set scaleX(scale: number) {
         if (this._scaleX !== scale) {
             this._scaleX = scale
@@ -67,12 +75,15 @@ export default class Group extends Node {
     }
 
     _scaleY: number
+
     /**
      * Scaling factor on the y axis of the Group.
      */
+
     get scaleY(): number {
         return this._scaleY
     }
+
     set scaleY(scale: number) {
         if (this._scaleY !== scale) {
             this._scaleY = scale
@@ -89,7 +100,7 @@ export default class Group extends Node {
         return this._originX
     }
 
-    set originX(originX: number) {
+    set originX(originX: number | null) {
         if (this._originX !== originX) {
             this._originX = originX
             this._dirty = true
@@ -105,7 +116,7 @@ export default class Group extends Node {
         return this._originY
     }
 
-    set originY(originY: number) {
+    set originY(originY: number | null) {
         if (this._originY !== originY) {
             this._originY = originY
             this._dirty = true
