@@ -6,6 +6,7 @@ export default class Matrix {
     stack: number[][]
 
     constructor() {
+        this.stack = []
         this.reset()
     }
 
