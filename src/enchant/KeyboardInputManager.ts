@@ -30,7 +30,7 @@ export default class KeyboardInputManager extends BinaryInputManager {
         this.unbind(KeyboardInputSource.getByKeyCode('' + keyCode))
     }
 
-    _attachDOMEvent(domElement: HTMLElement, eventType: string, state: boolean) {
+    _attachDOMEvent(domElement: HTMLElement, eventType: 'keyup' | 'keydown', state: boolean) {
         domElement.addEventListener(eventType, function (e: KeyboardEvent) {
             let core = Core.instance
             if (!core || !core.running) {
