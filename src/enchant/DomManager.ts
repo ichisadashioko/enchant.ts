@@ -171,15 +171,15 @@ export default class DomManager {
             node._style.height = node.height + 'px'
         }
 
-        node._style.opacity = node._opacity
-        // TODO
-        node._style['background-color'] = node._backgroundColor
+        node._style.opacity = '' + node._opacity
+        // TODO remove the use of HTMLElement
+        node._style.backgroundColor = node._backgroundColor
 
         if (typeof node._visible !== 'undefined') {
             node._style.display = node._visible ? 'block' : 'none'
         }
 
-        // TODO
+        // TODO remove the use of HTMLElement
         if (typeof node.domRender === 'function') {
             node.domRender(this.element)
         }
