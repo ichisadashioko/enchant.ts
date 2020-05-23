@@ -5,7 +5,8 @@
     "type": "git"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "tsc -w"
   },
   "dependencies": {
     "typescript": "^3.9.2"

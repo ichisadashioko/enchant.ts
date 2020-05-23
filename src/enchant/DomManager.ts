@@ -5,17 +5,18 @@ import Matrix from './Matrix'
 import Group from './Group'
 import DomLayer from './DomLayer'
 import Node from './Node'
+import Entity from './Entity'
 
 type HTMLElementTagName = keyof HTMLElementTagNameMap
 
 export default class DomManager {
 
-    targetNode: Node
+    targetNode: Entity
     layer: DomLayer | null
     element: HTMLElement
     style: CSSStyleDeclaration
 
-    constructor(node: Node, elementDefinition: HTMLElement | HTMLElementTagName) {
+    constructor(node: Entity, elementDefinition: HTMLElement | HTMLElementTagName) {
         let core = Core.instance
         this.layer = null
         this.targetNode = node

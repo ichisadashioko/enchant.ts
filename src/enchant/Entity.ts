@@ -440,4 +440,9 @@ export default class Entity extends Node {
             rightBottom: [mdx + m11w + m21h, mdy + m12w + m22h],
         }
     }
+
+    /**
+     * Method signature for sub-classes.
+     */
+    domRender(e: HTMLElement) { }
 }
