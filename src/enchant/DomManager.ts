@@ -124,11 +124,11 @@ export default class DomManager {
         }
     }
 
-    render(inheritMat) {
+    render(inheritMat: number[]) {
         let node = this.targetNode
         let matrix = Matrix.instance
         let stack = matrix.stack
-        let dest = []
+        let dest: number[] = []
         matrix.makeTransformMatrix(node, dest)
         matrix.multiply(stack[stack.length - 1], dest, dest)
         matrix.multiply(inheritMat, dest, inheritMat)
@@ -142,6 +142,7 @@ export default class DomManager {
         node._offsetY = vec[1] - oy
 
         if (node.parentNode && !(node.parentNode instanceof Group)) {
+            // parentNode is set by DomLayer
             node._offsetX += node.parentNode._offsetX
             node._offsetY += node.parentNode._offsetY
         }
@@ -156,7 +157,7 @@ export default class DomManager {
     domRender() {
         let node = this.targetNode
         if (!node._style) {
-            node._style = {}
+            node._style = {} as CSSStyleDeclaration
         }
 
         if (!node.__styleStatus) {
