@@ -141,7 +141,7 @@ export default class DomManager {
         node._offsetX = vec[0] - ox
         node._offsetY = vec[1] - oy
 
-        if (node.parentNode && !(node.parentNode instanceof Group)) {
+        if (node.parentNode instanceof DomLayer) {
             // parentNode is set by DomLayer
             node._offsetX += node.parentNode._offsetX
             node._offsetY += node.parentNode._offsetY

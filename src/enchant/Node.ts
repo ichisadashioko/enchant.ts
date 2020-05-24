@@ -28,7 +28,7 @@ export default class Node extends EventTarget {
     /**
      * Parent Node of this Node.
      */
-    parentNode?: Group | null
+    parentNode?: Group | null | DomLayer
 
     /**
      * Scene to which Node belongs.
