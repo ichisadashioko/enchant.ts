@@ -54,7 +54,7 @@ export default class DomManager {
         return this.element
     }
 
-    getDomElemenetAsNext() {
+    getDomElementAsNext() {
         return this.element
     }
 
@@ -71,21 +71,22 @@ export default class DomManager {
         }
     }
 
-    addManager(childManager, nextManager) {
-        let nextElement
+    addManager(childManager: DomManager | DomlessManager, nextManager?: DomManager | DomlessManager) {
+        let nextElement: HTMLElement | null
         if (nextManager) {
             nextElement = nextManager.getDomElementAsNext()
         }
 
         let element = childManager.getDomElement()
         if (element instanceof Array) {
+            let that = this
             element.forEach(function (child) {
                 if (nextElement) {
-                    this.element.insertBefore(child, nextElement)
+                    that.element.insertBefore(child, nextElement)
                 } else {
-                    this.element.appendChild(child)
+                    that.element.appendChild(child)
                 }
-            }, this)
+            })
         } else {
             if (nextElement) {
                 this.element.insertBefore(element, nextElement)

@@ -15,4 +15,12 @@ export default class DomlessManager {
         this._domRef = []
         this.targetNode = node
     }
+
+    getDomElement(): HTMLElement[] {
+        // TODO
+    }
+
+    getDomElementAsNext(): HTMLElement | null {
+        // TODO
+    }
 }
