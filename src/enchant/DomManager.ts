@@ -72,7 +72,7 @@ export default class DomManager {
     }
 
     addManager(childManager: DomManager | DomlessManager, nextManager?: DomManager | DomlessManager) {
-        let nextElement: HTMLElement | null
+        let nextElement: HTMLElement | null = null
         if (nextManager) {
             nextElement = nextManager.getDomElementAsNext()
         }
@@ -111,7 +111,7 @@ export default class DomManager {
         this.setLayer(this.layer)
     }
 
-    setLayer(layer) {
+    setLayer(layer: DomLayer | null) {
         this.layer = layer
         let node = this.targetNode
 
