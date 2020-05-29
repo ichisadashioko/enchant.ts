@@ -4,6 +4,7 @@ import Node from './Node'
 import Core from './Core'
 import Scene from './Scene'
 import Event from './Event'
+import DomlessManager from './DomlessManager'
 
 export default class DomLayer extends Group {
 
@@ -71,12 +72,44 @@ export default class DomLayer extends Group {
         DomLayer._attachDomManager(child, this.__onchildadded, this.__onchildremoved)
     }
 
-    addChild(node) {
-        // TODO
+    addChild(node: Node) {
+        this.childNodes.push(node)
+        node.parentNode = this
+        let childAdded = new Event(Event.CHILD_ADDED)
+        childAdded.node = node
+        childAdded.next = undefined
+        this.dispatchEvent(childAdded)
+        node.dispatchEvent(new Event(Event.ADDED))
+        if (this.scene) {
+            node.scene = this.scene
+            let addedToScene = new Event(Event.ADDED_TO_SCENE)
+            node.dispatchEvent(addedToScene)
+        }
     }
 
-    insertBefore(node, reference) {
-        // TODO
+    insertBefore(node: Node, reference?: Node) {
+        let i = -1
+
+        if (reference) {
+            i = this.childNodes.indexOf(reference)
+        }
+
+        if (i !== -1) {
+            this.childNodes.splice(i, 0, node)
+            node.parentNode = this
+            let childAdded = new Event(Event.CHILD_ADDED)
+            childAdded.node = node
+            childAdded.next = reference
+            this.dispatchEvent(childAdded)
+            node.dispatchEvent(new Event(Event.ADDED))
+            if (this.scene) {
+                node.scene = this.scene
+                let addedToScene = new Event(Event.ADDED_TO_SCENE)
+                node.dispatchEvent(addedToScene)
+            }
+        } else {
+            this.addChild(node)
+        }
     }
 
     __onchildremoved(e: Event) {
@@ -91,7 +124,20 @@ export default class DomLayer extends Group {
         // TODO
     }
 
-    static _attachDomManager(node, onchildadded, onchildremoved) {
+    _determineEventTarget() {
+        return undefined
+        // TODO
+    }
+
+    static _attachDomManager(node: Node, onchildadded: (e: Event) => void, onchildremoved: (e: Event) => void) {
+        if (!node._domManager) {
+            node.addEventListener(Event.CHILD_ADDED, onchildadded)
+            node.addEventListener(Event.CHILD_REMOVED, onchildremoved)
+
+            if (node instanceof Group) {
+                node._domManager = new DomlessManager(node)
+            }
+        }
         // TODO
     }
 
@@ -102,7 +148,10 @@ export default class DomLayer extends Group {
         if (node.childNodes) {
             for (let i = 0, l = node.childNodes.length; i < l; i++) {
                 let child = node.childNodes[i]
-                node._domManager.removeManager(child._domManager, null)
+
+                if (child._domManager) {
+                    node._domManager.removeManager(child._domManager)
+                }
             }
         }
     }

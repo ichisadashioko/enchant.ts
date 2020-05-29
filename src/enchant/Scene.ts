@@ -1,7 +1,7 @@
 import Core from './Core'
 import Group from './Group'
 import Event from './Event'
-import Node from './Node'
+import EventTarget from './EventTarget'
 import CanvasLayer from './CanvasLayer'
 import DomLayer from './DomLayer'
 import { LayerType } from './types'
@@ -236,6 +236,24 @@ export default class Scene extends Group {
         }
 
         layer._scene = this
+    }
+
+    _determineEventTarget(e: Event) {
+        let target: EventTarget | undefined = undefined
+
+        for (let i = this._layerPriority.length - 1; i >= 0; i--) {
+            let layer = this._layers[this._layerPriority[i]]
+            target = layer._determineEventTarget(e)
+            if (target) {
+                break
+            }
+        }
+
+        if (!target) {
+            target = this
+        }
+
+        return target
     }
 
     _onchildadded(e: Event) {

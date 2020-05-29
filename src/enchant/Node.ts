@@ -7,6 +7,7 @@ import Scene from './Scene'
 import CanvasLayer from './CanvasLayer'
 import DomLayer from './DomLayer'
 import DomManager from './DomManager'
+import DomlessManager from './DomlessManager'
 
 /**
  * Base class for objects in the display tree which is rooted at a Scene.
@@ -48,16 +49,16 @@ export default class Node extends EventTarget {
 
     _element?: HTMLElement
 
-    _originX?: number | null
-    _originY?: number | null
+    _originX: number | null = null
+    _originY: number | null = null
     _width?: number
     _height?: number
     width?: number
     height?: number
-    _scaleX?: number
-    _scaleY?: number
-    _rotation?: number
-    _domManager?: DomManager
+    _scaleX = 1
+    _scaleY = 1
+    _rotation = 0
+    _domManager?: DomManager | DomlessManager
 
     constructor() {
         super()
@@ -122,6 +123,77 @@ export default class Node extends EventTarget {
     set y(value: number) {
         if (this._y !== value) {
             this._y = value
+            this._dirty = true
+        }
+    }
+
+    /**
+     * Scaling factor on the x axis of the Group.
+     */
+    get scaleX(): number {
+        return this._scaleX
+    }
+
+    set scaleX(scale: number) {
+        if (this._scaleX !== scale) {
+            this._scaleX = scale
+            this._dirty = true
+        }
+    }
+
+    /**
+     * Scaling factor on the y axis of the Group.
+     */
+    get scaleY(): number {
+        return this._scaleY
+    }
+
+    set scaleY(scale: number) {
+        if (this._scaleY !== scale) {
+            this._scaleY = scale
+            this._dirty = true
+        }
+    }
+
+    /**
+     * x-coordinate origin point of rotation, scaling
+     */
+    get originX() {
+        return this._originX
+    }
+
+    set originX(originX: number | null) {
+        if (this._originX !== originX) {
+            this._originX = originX
+            this._dirty = true
+        }
+    }
+
+    /**
+     * y-coordinate origin point of rotation, scaling
+     */
+    get originY() {
+        return this._originY
+    }
+
+    set originY(originY: number | null) {
+        if (this._originY !== originY) {
+            this._originY = originY
+            this._dirty = true
+        }
+    }
+
+    /**
+     * Group rotation angle (degree).
+     */
+
+    get rotation(): number {
+        return this._rotation
+    }
+
+    set rotation(rotation: number) {
+        if (this._rotation !== rotation) {
+            this._rotation = rotation
             this._dirty = true
         }
     }

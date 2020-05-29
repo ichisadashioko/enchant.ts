@@ -11,12 +11,12 @@ type HTMLElementTagName = keyof HTMLElementTagNameMap
 
 export default class DomManager {
 
-    targetNode: Entity
+    targetNode: Node
     layer: DomLayer | null
     element: HTMLElement
     style: CSSStyleDeclaration
 
-    constructor(node: Entity, elementDefinition: HTMLElement | HTMLElementTagName) {
+    constructor(node: Node, elementDefinition: HTMLElement | HTMLElementTagName) {
         let core = Core.instance
         this.layer = null
         this.targetNode = node
@@ -71,7 +71,7 @@ export default class DomManager {
         }
     }
 
-    addManager(childManager: DomManager | DomlessManager, nextManager?: DomManager | DomlessManager) {
+    addManager(childManager: DomManager | DomlessManager, nextManager?: DomManager | DomlessManager | null) {
         let nextElement: HTMLElement | null = null
         if (nextManager) {
             nextElement = nextManager.getDomElementAsNext()
@@ -134,8 +134,8 @@ export default class DomManager {
         matrix.multiply(stack[stack.length - 1], dest, dest)
         matrix.multiply(inheritMat, dest, inheritMat)
         node._matrix = inheritMat
-        let ox = (typeof node._originX === 'number') ? node._originX : node.width / 2 || 0
-        let oy = (typeof node._originY === 'number') ? node._originY : node.height / 2 || 0
+        let ox = (typeof node._originX === 'number') ? node._originX : ((typeof node.width === 'number') ? node.width / 2 : 0)
+        let oy = (typeof node._originY === 'number') ? node._originY : ((typeof node.height === 'number') ? node.height / 2 : 0)
         let vec = [ox, oy]
         matrix.multiply(dest, vec, vec)
 
@@ -157,41 +157,43 @@ export default class DomManager {
 
     domRender() {
         let node = this.targetNode
-        if (!node._style) {
-            node._style = {} as CSSStyleDeclaration
-        }
+        if (node instanceof Entity) {
+            if (!node._style) {
+                node._style = {} as CSSStyleDeclaration
+            }
 
-        if (!node.__styleStatus) {
-            node.__styleStatus = {}
-        }
+            if (!node.__styleStatus) {
+                node.__styleStatus = {}
+            }
 
-        if (node.width !== null) {
-            node._style.width = node.width + 'px'
-        }
+            if (node.width !== null) {
+                node._style.width = node.width + 'px'
+            }
 
-        if (node.height !== null) {
-            node._style.height = node.height + 'px'
-        }
+            if (node.height !== null) {
+                node._style.height = node.height + 'px'
+            }
 
-        node._style.opacity = '' + node._opacity
-        // TODO remove the use of HTMLElement
-        node._style.backgroundColor = node._backgroundColor
+            node._style.opacity = '' + node._opacity
+            // TODO remove the use of HTMLElement
+            node._style.backgroundColor = node._backgroundColor
 
-        if (typeof node._visible !== 'undefined') {
-            node._style.display = node._visible ? 'block' : 'none'
-        }
+            if (typeof node._visible !== 'undefined') {
+                node._style.display = node._visible ? 'block' : 'none'
+            }
 
-        // TODO remove the use of HTMLElement
-        if (typeof node.domRender === 'function') {
-            node.domRender(this.element)
-        }
+            // TODO remove the use of HTMLElement
+            if (typeof node.domRender === 'function') {
+                node.domRender(this.element)
+            }
 
-        let value
-        for (let prop in node._style) {
-            value = node._style[prop]
-            if (node.__styleStatus[prop] !== value && value != null) {
-                this.style.setProperty(prop, '' + value)
-                node.__styleStatus[prop] = value
+            let value
+            for (let prop in node._style) {
+                value = node._style[prop]
+                if (node.__styleStatus[prop] !== value && value != null) {
+                    this.style.setProperty(prop, '' + value)
+                    node.__styleStatus[prop] = value
+                }
             }
         }
     }

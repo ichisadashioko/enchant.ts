@@ -66,7 +66,7 @@ export default class Core extends EventTarget {
     /**
      * The `Scene` which is currently displayed. This `Scene` is on top of the `Scene` stack.
      */
-    currentScene: Scene
+    currentScene!: Scene
 
     /**
      * The root Scene. The Scene at the bottom of the Scene stack.
@@ -91,11 +91,17 @@ export default class Core extends EventTarget {
     input: Record<string, boolean>
 
     keyboardInputManager: KeyboardInputManager
-    _keybind
-    currentTime: number
+    _keybind: Record<string, string>
+
+    /**
+     * intialized in {@link Core#start}
+     */
+    currentTime!: number
     _actualFps?: number
 
     _debug?: boolean
+
+    _touchEventTarget!: Record<number, EventTarget>
 
     constructor(width?: number, height?: number) {
 
@@ -482,10 +488,13 @@ export default class Core extends EventTarget {
      * displayed.
      */
     start(deferred?: Deferred) {
+        let that = this
+
         let onloadTimeSetter = function () {
-            this.frame = 0
-            this.removeEventListener('load', onloadTimeSetter)
+            that.frame = 0
+            that.removeEventListener('load', onloadTimeSetter)
         }
+
         this.addEventListener('load', onloadTimeSetter)
 
         this.currentTime = getTime()
@@ -523,9 +532,9 @@ export default class Core extends EventTarget {
         })
 
         if (deferred) {
-            ret.next(function (args) {
+            ret.next(function (args: any) {
                 deferred.call(args)
-            }).error(function (args) {
+            }).error(function (args: any) {
                 deferred.fail(args)
             })
         }
@@ -631,11 +640,12 @@ export default class Core extends EventTarget {
 
         let nodes = this.currentScene.childNodes.slice()
         while (nodes.length) {
-            let node = nodes.pop()
+            let node = nodes.pop()!
+
             node.age++
             node.dispatchEvent(e)
             if (node.childNodes) {
-                nodes.push(node.childNodes)
+                nodes.push(...node.childNodes)
             }
         }
 
@@ -695,9 +705,7 @@ export default class Core extends EventTarget {
      */
     pushScene(scene: Scene) {
         this._element.appendChild(scene._element)
-        if (this.currentScene) {
-            this.currentScene.dispatchEvent(new Event(Event.EXIT))
-        }
+        this.currentScene.dispatchEvent(new Event(Event.EXIT))
         this.currentScene = scene
         this.currentScene.dispatchEvent(new Event(Event.ENTER))
         return this._scenes.push(scene)
@@ -711,7 +719,7 @@ export default class Core extends EventTarget {
      * 
      * @return Removed Scene.
      */
-    popScene(): Scene {
+    popScene() {
         if (this.currentScene === this.rootScene) {
             return this.currentScene
         }

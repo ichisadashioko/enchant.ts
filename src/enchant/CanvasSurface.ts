@@ -10,10 +10,10 @@ export default class CanvasSurface extends Surface {
      */
     context: CanvasRenderingContext2D
 
-    _dirty: boolean
+    _dirty: boolean = true
 
     constructor(width: number, height: number) {
-        super()
+        super(width, height)
 
         let core = Core.instance
 
@@ -26,17 +26,73 @@ export default class CanvasSurface extends Surface {
         this._element.width = width
         this._element.height = height
         this._element.style.position = 'absolute'
-        this.context = this._element.getContext('2d')
+        this.context = this._element.getContext('2d')!
 
         let that = this
 
-        ENV.CANVAS_DRAWING_METHODS.forEach(function (name) {
-            let method: Function = that.context[name]
-            that.context[name] = function () {
-                method.apply(that, arguments)
-                that._dirty = true
-            }
-        })
+        // TODO
+        let putImageData = this.context.putImageData
+        this.context.putImageData = function () {
+            // @ts-ignore
+            putImageData.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let drawImage = this.context.drawImage
+        this.context.drawImage = function () {
+            // @ts-ignore
+            drawImage.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let fill = this.context.fill
+        this.context.fill = function () {
+            // @ts-ignore
+            fill.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let stroke = this.context.stroke
+        this.context.stroke = function () {
+            // @ts-ignore
+            stroke.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let clearRect = this.context.clearRect
+        this.context.clearRect = function () {
+            // @ts-ignore
+            clearRect.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let fillRect = this.context.fillRect
+        this.context.fillRect = function () {
+            // @ts-ignore
+            fillRect.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let strokeRect = this.context.strokeRect
+        this.context.strokeRect = function () {
+            // @ts-ignore
+            strokeRect.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let fillText = this.context.fillText
+        this.context.fillText = function () {
+            // @ts-ignore
+            fillText.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let strokeText = this.context.strokeText
+        this.context.strokeText = function () {
+            // @ts-ignore
+            strokeText.apply(that.context, arguments)
+            that._dirty = true
+        }
     }
 
     /**
@@ -99,6 +155,8 @@ export default class CanvasSurface extends Surface {
         } else {
             var args = arguments
             args[0] = image
+            // TODO better TS overloading
+            // @ts-ignore
             this.context.drawImage.apply(this.context, args)
         }
     }

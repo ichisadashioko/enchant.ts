@@ -21,10 +21,11 @@
  * })
  */
 export default class Deferred {
-    _succ?: Function
-    _fail?: Function
-    _next?: Deferred
-    _id?: number
+
+    _succ: Function | null
+    _fail: Function | null
+    _next: Deferred | null
+    _id: number | null
     _tail: Deferred
 
     constructor() {
@@ -32,7 +33,7 @@ export default class Deferred {
         this._tail = this
     }
 
-    next(func: (d: Deferred) => void) {
+    next(func: Function) {
         let q = new Deferred()
         q._succ = func
         return this._add(q)
@@ -45,51 +46,57 @@ export default class Deferred {
     }
 
     _add(queue: Deferred) {
-        // TODO check for assigning `this._tail` after `this._tail._next`
         this._tail._next = queue
         this._tail = queue
         return this
     }
 
-    call(args?) {
+    call(args?: any) {
         let received
-        let queue: Deferred = this
+        let queue: Deferred | null = this
 
         while (queue && !queue._succ) {
             queue = queue._next
         }
-        if (!(queue instanceof Deferred)) {
-            return
-        }
 
-        try {
-            received = queue._succ(args)
-        } catch (e) {
-            return queue.fail(e)
-        }
+        if (queue instanceof Deferred) {
+            try {
+                if (queue._succ) {
+                    received = queue._succ(args)
+                }
+            } catch (e) {
+                return queue.fail(e)
+            }
 
-        if (received instanceof Deferred) {
-            Deferred._insert(queue, received)
-        } else if (queue._next instanceof Deferred) {
-            queue._next.call(received)
+            if (received instanceof Deferred) {
+                Deferred._insert(queue, received)
+            } else if (queue._next instanceof Deferred) {
+                queue._next.call(received)
+            }
         }
     }
 
-    fail(args) {
-        let result, err, queue: Deferred = this
+    fail(arg: any) {
+        let queue: Deferred | null = this
 
         while (queue && !queue._fail) {
             queue = queue._next
         }
 
         if (queue instanceof Deferred) {
-            result = queue._fail(args)
-            queue.call(result)
-        } else if (args instanceof Error) {
-            throw args
+            if (queue._fail) {
+                let result = queue._fail(arg)
+                queue.call(result)
+            } else {
+                queue.call()
+            }
+
+        } else if (arg instanceof Error) {
+            throw arg
         } else {
-            err = new Error('failed in Deferred')
-            err.arg = args
+            let err = new Error('failed in Deferred')
+            // @ts-ignore
+            err.arg = arg
             throw err
         }
     }
@@ -112,19 +119,23 @@ export default class Deferred {
         let q = new Deferred()
         q._id = setTimeout(function () { q.call() }, 0)
         let progress = 0
-        let ret: Deferred[] | Record<string|number, Deferred> = (args instanceof Array) ? [] : {}
+
+        let ret: Record<string, Deferred> = {}
+
         let p = new Deferred()
         for (let prop in args) {
             if (args.hasOwnProperty(prop)) {
                 progress++
-                (function (queue: Deferred, name) {
-                    queue.next(function (args) {
+                (function (queue: Deferred, name: string) {
+                    queue.next(function (arg: any) {
                         progress--
-                        ret[name] = args
+                        ret[name] = arg
                         if (progress <= 0) {
                             p.call(ret)
                         }
-                    }).error(function (err) { p.fail(err) })
+                    }).error(function (err: Error) {
+                        p.fail(err)
+                    })
 
                     if (typeof queue._id === 'number') {
                         clearTimeout(queue._id)
@@ -134,6 +145,7 @@ export default class Deferred {
                 }(args[prop], prop))
             }
         }
+
         if (!progress) {
             p._id = setTimeout(function () { p.call(ret) }, 0)
         }

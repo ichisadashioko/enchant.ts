@@ -76,7 +76,7 @@ export default class Event {
     /**
      * @usedwith 'childadded'
      */
-    next?: Node | null
+    next?: Node
 
     action?: Action
 
@@ -86,6 +86,16 @@ export default class Event {
      * @usedwith 'coreresize'
      */
     core?: Core
+
+    /**
+     * @usedwith 'progress'
+     */
+    loaded?: number
+
+    /**
+     * @usedwith 'progress'
+     */
+    total?: number
 
     /**
      * A class for an independent implementation of events similar to

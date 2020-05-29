@@ -4,6 +4,7 @@ import DetectColorManager from './DetectColorManager'
 import Event from './Event'
 import Node from './Node'
 import Scene from './Scene'
+import DomLayer from './DomLayer'
 
 /**
  * Class that uses the HTML Canvas for rendering.
@@ -50,8 +51,8 @@ export default class CanvasLayer extends Group {
         this._detect.style.position = 'absolute'
         this._lastDetected = 0
 
-        this.context = this._element.getContext('2d')
-        this._dctx = this._detect.getContext('2d')
+        this.context = this._element.getContext('2d')!
+        this._dctx = this._detect.getContext('2d')!
         this._setImageSmoothingEnable()
 
         this._colorManager = new DetectColorManager(16, 256)
@@ -76,23 +77,37 @@ export default class CanvasLayer extends Group {
             })
         })
 
-        let __onchildadded = function (e) {
-            let child = e.node
-            let self = e.target
-            let layer
-            if (self instanceof CanvasLayer) {
-                layer = self._scene._layers.Canvas
-            } else {
-                layer = self.scene._layers.Canvas
-            }
+        this.__onchildadded = this.__onchildadded.bind(this)
+        this.__onchildremoved = this.__onchildremoved.bind(this)
+
+        this.addEventListener('childremoved', this.__onchildremoved)
+        this.addEventListener('childadded', this.__onchildadded)
+    }
+
+    __onchildadded(e: Event) {
+        let child = e.node
+        let self = e.target
+
+        let layer: CanvasLayer | DomLayer
+        if (self instanceof CanvasLayer) {
+            layer = self._scene!._layers.Canvas
+        } else {
+            // TODO
+            // @ts-ignore
+            layer = self.scene._layers.Canvas
         }
+        // TODO
+    }
+
+    __onchildremoved(e: Event) {
+        // TODO
     }
 
     addChild(node: Node) {
         // TODO
     }
 
-    insertBefore(node, reference) {
+    insertBefore(node: Node, reference?: Node) {
         // TODO
     }
 
@@ -101,6 +116,19 @@ export default class CanvasLayer extends Group {
     }
 
     _stopRendering() {
+        // TODO
+    }
+
+    _onexitframe() {
+        // TODO
+    }
+
+    _determineEventTarget(e: Event) {
+        return undefined
+        // TODO
+    }
+
+    _getEntityByPosition() {
         // TODO
     }
 

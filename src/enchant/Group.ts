@@ -1,5 +1,6 @@
 import Node from './Node'
 import Event from './Event'
+import DomlessManager from './DomlessManager'
 
 /**
  * A class that can hold multiple `enchant.Node`.
@@ -18,11 +19,7 @@ import Event from './Event'
  */
 export default class Group extends Node {
 
-    /**
-     * Child Nodes.
-     */
     childNodes: Array<Node>
-
     __dirty: boolean
 
     get _dirty(): boolean {
@@ -40,98 +37,12 @@ export default class Group extends Node {
         }
     }
 
-    _rotation: number
-
-    /**
-     * Group rotation angle (degree).
-     */
-
-    get rotation(): number {
-        return this._rotation
-    }
-
-    set rotation(rotation: number) {
-        if (this._rotation !== rotation) {
-            this._rotation = rotation
-            this._dirty = true
-        }
-    }
-
-    _scaleX: number
-
-    /**
-     * Scaling factor on the x axis of the Group.
-     */
-
-    get scaleX(): number {
-        return this._scaleX
-    }
-
-    set scaleX(scale: number) {
-        if (this._scaleX !== scale) {
-            this._scaleX = scale
-            this._dirty = true
-        }
-    }
-
-    _scaleY: number
-
-    /**
-     * Scaling factor on the y axis of the Group.
-     */
-
-    get scaleY(): number {
-        return this._scaleY
-    }
-
-    set scaleY(scale: number) {
-        if (this._scaleY !== scale) {
-            this._scaleY = scale
-            this._dirty = true
-        }
-    }
-
-    _originX: number | null
-
-    /**
-     * x-coordinate origin point of rotation, scaling
-     */
-    get originX() {
-        return this._originX
-    }
-
-    set originX(originX: number | null) {
-        if (this._originX !== originX) {
-            this._originX = originX
-            this._dirty = true
-        }
-    }
-
-    _originY: number | null
-
-    /**
-     * y-coordinate origin point of rotation, scaling
-     */
-    get originY() {
-        return this._originY
-    }
-
-    set originY(originY: number | null) {
-        if (this._originY !== originY) {
-            this._originY = originY
-            this._dirty = true
-        }
-    }
-
     constructor() {
         super()
         this.childNodes = []
         this._rotation = 0
         this._scaleX = 1
         this._scaleY = 1
-
-        this._originX = null
-        this._originY = null
 
         this.__dirty = false
 
@@ -165,7 +76,7 @@ export default class Group extends Node {
         node.parentNode = this
         let childAdded = new Event(Event.CHILD_ADDED)
         childAdded.node = node
-        childAdded.next = null
+        childAdded.next = undefined
         this.dispatchEvent(childAdded)
         node.dispatchEvent(new Event(Event.ADDED))
         if (this.scene) {
