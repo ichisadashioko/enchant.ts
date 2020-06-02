@@ -290,9 +290,17 @@ Setup development environment.
     - [ ] `remove`
 - [ ] `DomLayer.js`
 - [ ] `CanvasLayer.js`
-  - [ ] `initialize`
+  - [x] `initialize`
+  - [ ] `addChild`
+  - [ ] `insertBefore`
+  - [ ] `_startRendering`
   - [ ] `_stopRendering`
+  - [ ] `_onexitframe`
+  - [ ] `_determineEventTarget`
+  - [ ] `_getEnityByPosition`
   - [x] `_setImageSmoothingEnable`
+  - [ ] `_attachCache`
+  - [ ] `_detachCache`
 - [ ] `CanvasRenderer.js`
 - [ ] `Scene.js`
   - [x] `initialize`

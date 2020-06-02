@@ -5,6 +5,8 @@ import Event from './Event'
 import Node from './Node'
 import Scene from './Scene'
 import DomLayer from './DomLayer'
+import Matrix from './Matrix'
+import CanvasRenderer from './CanvasRenderer'
 
 /**
  * Class that uses the HTML Canvas for rendering.
@@ -40,7 +42,7 @@ export default class CanvasLayer extends Group {
             layer: this,
         }
 
-        // TODO make game more web-component friendly
+        // TODO make game rely on canvas only
         // convert all game component to canvas-based without relying on
         // HTML conponents (e.g. button)
         this._element = document.createElement('canvas')
@@ -85,18 +87,28 @@ export default class CanvasLayer extends Group {
     }
 
     __onchildadded(e: Event) {
-        let child = e.node
-        let self = e.target
+        let child = e.node! as CanvasLayer
+        let self = e.target! as CanvasLayer
 
-        let layer: CanvasLayer | DomLayer
+        let layer: CanvasLayer
         if (self instanceof CanvasLayer) {
-            layer = self._scene!._layers.Canvas
+            layer = self._scene!._layers.Canvas as CanvasLayer
         } else {
-            // TODO
-            // @ts-ignore
+            // @ts-ignore - TODO
             layer = self.scene._layers.Canvas
         }
-        // TODO
+
+        CanvasLayer._attachCache(child, layer, this.__onchildadded, this.__onchildremoved)
+
+        let render = new Event(Event.RENDER)
+        if (self._dirty) {
+            self._updateCoordinate()
+        }
+
+        child._dirty = true
+        Matrix.instance.stack.push(self._matrix)
+        CanvasRenderer.instance.render(layer.context, child, render)
+        Matrix.instance.stack.pop()
     }
 
     __onchildremoved(e: Event) {
@@ -124,8 +136,8 @@ export default class CanvasLayer extends Group {
     }
 
     _determineEventTarget(e: Event) {
-        return undefined
         // TODO
+        return undefined
     }
 
     _getEntityByPosition() {
@@ -135,5 +147,13 @@ export default class CanvasLayer extends Group {
     _setImageSmoothingEnable() {
         // I have no idea why this is set to `false`
         this._dctx.imageSmoothingEnabled = false
+    }
+
+    static _attachCache(node: Node, layer: CanvasLayer | DomLayer, onchildadded: (e: Event) => void, onchildremoved: (e: Event) => void) {
+        // TODO
+    }
+
+    static _detachCache(node: Node, layer: CanvasLayer | DomLayer, onchildadded: (e: Event) => void, onchildremoved: (e: Event) => void) {
+        // TODO
     }
 }
