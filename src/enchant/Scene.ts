@@ -34,16 +34,6 @@ export default class Scene extends Group {
 
     _backgroundColor: string | null
 
-    get backgroundColor() {
-        return this._backgroundColor
-    }
-
-    set backgroundColor(color: string | null) {
-        this._backgroundColor = color
-
-        this._element.style.backgroundColor = (color == null) ? '' : color
-    }
-
     constructor() {
         super()
 
@@ -172,6 +162,16 @@ export default class Scene extends Group {
         }
     }
 
+    get backgroundColor() {
+        return this._backgroundColor
+    }
+
+    set backgroundColor(color: string | null) {
+        this._backgroundColor = color
+
+        this._element.style.backgroundColor = (color == null) ? '' : color
+    }
+
     remove() {
         this.clearEventListener()
         while (this.childNodes.length > 0) {
@@ -216,6 +216,10 @@ export default class Scene extends Group {
             layer = new CanvasLayer()
         } else {
             throw new Error(`Invalid layer type ${type}!`)
+        }
+
+        if (core.currentScene === this) {
+            layer._startRendering()
         }
 
         this._layers[type] = layer
