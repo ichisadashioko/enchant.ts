@@ -115,6 +115,22 @@ export default class Deferred {
         return q
     }
 
+    /**
+     * @example
+     * // array
+     * enchant.Deferred.parallel([
+     *   enchant.Deferred.next(function(){
+     *     return 24
+     *   }),
+     *   enchant.Deferred.next(function(){
+     *     return 42
+     *   })
+     * ]).next(function(arg){
+     *   console.log(arg) // [ 24, 42 ]
+     * })
+     * 
+     * @param args 
+     */
     static parallel(args: Record<string, Deferred>) {
         let q = new Deferred()
         q._id = setTimeout(function () { q.call() }, 0)
