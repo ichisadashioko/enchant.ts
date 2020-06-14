@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "target": "esnext",
-        "outDir": "build",
         "sourceMap": true,
         "removeComments": false,
         "preserveConstEnums": true,
@@ -9,9 +8,6 @@
         "strict": true,
     },
     "include": [
-        "src/**/*.ts",
+        "src",
     ],
-    "typeAcquisition": {
-        "enable": true,
-    },
 }

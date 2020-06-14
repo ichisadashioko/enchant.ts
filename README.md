@@ -6,6 +6,12 @@ This project aims to port the game library [enchant.js](https://github.com/wise9
 
 ## Development guide
 
+Local server for ES6 module
+
+```
+npx http-server
+```
+
 Build `enchant.js` to see how `enchant.js` works.
 
 - Build `enchant.js` with `npm run test` in the `enchant.js` repo.
