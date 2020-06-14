@@ -302,6 +302,9 @@ Setup development environment.
   - [ ] `_attachCache`
   - [ ] `_detachCache`
 - [ ] `CanvasRenderer.js`
+  - [ ] `render`
+  - [ ] `detectRender`
+  - [ ] `transform`
 - [ ] `Scene.js`
   - [x] `initialize`
   - [ ] `x`
@@ -335,6 +338,15 @@ Setup development environment.
   - [ ] `load`
   - [ ] `_getPattern`
 - [ ] `Deferred.js`
+  - [x] `initalize`
+  - [x] `next`
+  - [x] `error`
+  - [x] `_add`
+  - [x] `call`
+  - [x] `fail`
+  - [x] `_insert`
+  - [x] `next`
+  - [x] `parallel`
 
 __sound support__
 
