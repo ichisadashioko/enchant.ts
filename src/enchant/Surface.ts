@@ -1,8 +1,6 @@
 import EventTarget from './EventTarget'
-import CanvasSurface from './CanvasSurface'
 import Core from './Core'
 import Event from './Event'
-import ENV from './Env'
 
 /**
  * Class that wraps canvas elements.
@@ -40,37 +38,158 @@ export default class Surface extends EventTarget {
 
     _css?: string
 
+    _dirty: boolean = true
+
     constructor(width: number, height: number) {
         super()
-
-        let core = Core.instance
 
         this.width = Math.ceil(width)
         this.height = Math.ceil(height)
 
-        // TODO refactor hard-coded id
-        let id = 'enchant-surface' + core._surfaceID++
-
         this._element = document.createElement('canvas')
-        this._element.width = this.width
-        this._element.height = this.height
-        // TODO let user specify the game position
+        this._element.width = width
+        this._element.height = height
         this._element.style.position = 'absolute'
+        this.context = this._element.getContext('2d')!
 
-        // TODO add WebGL
-        let context = this._element.getContext('2d')
-        if (context == null) {
-            throw new Error('Cannot initialize CanvasContext2D!')
+        let that = this
+
+        // TODO
+        let putImageData = this.context.putImageData
+        this.context.putImageData = function () {
+            // @ts-ignore
+            putImageData.apply(that.context, arguments)
+            that._dirty = true
         }
 
-        this.context = context
+        let drawImage = this.context.drawImage
+        this.context.drawImage = function () {
+            // @ts-ignore
+            drawImage.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let fill = this.context.fill
+        this.context.fill = function () {
+            // @ts-ignore
+            fill.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let stroke = this.context.stroke
+        this.context.stroke = function () {
+            // @ts-ignore
+            stroke.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let clearRect = this.context.clearRect
+        this.context.clearRect = function () {
+            // @ts-ignore
+            clearRect.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let fillRect = this.context.fillRect
+        this.context.fillRect = function () {
+            // @ts-ignore
+            fillRect.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let strokeRect = this.context.strokeRect
+        this.context.strokeRect = function () {
+            // @ts-ignore
+            strokeRect.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let fillText = this.context.fillText
+        this.context.fillText = function () {
+            // @ts-ignore
+            fillText.apply(that.context, arguments)
+            that._dirty = true
+        }
+
+        let strokeText = this.context.strokeText
+        this.context.strokeText = function () {
+            // @ts-ignore
+            strokeText.apply(that.context, arguments)
+            that._dirty = true
+        }
+    }
+
+    /**
+     * Return 1 pixel from the Surface.
+     * @param x The pixel's x-coordinate.
+     * @param y The pixel's y-coordinate.
+     */
+    getPixel(x: number, y: number) {
+        return this.context.getImageData(x, y, 1, 1).data
+    }
+
+    /**
+     * Sets one pixel within the surface.
+     * @param x The pixel's x-coordinate.
+     * @param y The pixel's y-coordinate.
+     * @param r The pixel's red level.
+     * @param g The pixel's green level.
+     * @param b The pixel's blue level.
+     * @param a The pixel's transparency.
+     */
+    setPixel(x: number, y: number, r: number, g: number, b: number, a: number) {
+        let pixel = this.context.createImageData(1, 1)
+        pixel.data[0] = r
+        pixel.data[1] = g
+        pixel.data[2] = b
+        pixel.data[3] = a
+        this.context.putImageData(pixel, x, y)
+    }
+
+    /**
+     * Clear all Surface pixels and make the pixels transparent.
+     */
+    clear() {
+        this.context.clearRect(0, 0, this.width, this.height)
+    }
+
+    /**
+     * Draws the content of the given Surface onto this surface.
+     * 
+     * Wraps Canvas API drawImage and if mutiple arguments are given, 
+     * these are getting applied to the Canvas drawImage method.
+     * 
+     * @example
+     * var src = core.assets['src.gif']
+     * var dst = new Surface(100, 100)
+     * dst.draw(src)         // Draws source at (0, 0)
+     * dst.draw(src, 50, 50) // Draws source at (50, 50)
+     * // Draws just 30 horizontal and vertical pixels of source at (50, 50)
+     * dst.draw(src, 50, 50, 30, 30)
+     * // Takes the image content in src starting at (10, 10) with a (width, height) of (40, 40),
+     * // scales it and draws it in this surface at (50, 50) with a (width, height) of (30, 30).
+     * dst.draw(src, 10, 10, 40, 40, 50, 50, 30, 30)
+     * 
+     * @param image Surface used in drawing.
+     */
+    draw(image: Surface) {
+        let _image = image._element
+        if (arguments.length === 1) {
+            this.context.drawImage(_image, 0, 0)
+        } else {
+            var args = arguments
+            args[0] = image
+            // TODO better TS overloading
+            // @ts-ignore
+            this.context.drawImage.apply(this.context, args)
+        }
     }
 
     /**
      * The copied Surface.
      */
     clone() {
-        let clone = new CanvasSurface(this.width, this.height)
+        let clone = new Surface(this.width, this.height)
         clone.draw(this)
         return clone
     }
@@ -82,7 +201,7 @@ export default class Surface extends EventTarget {
      * and can be used to include this Surface into a DOM tree.
      */
     toDataURL() {
-        // TODO
+        return this._element.toDataURL()
     }
 
     /**
@@ -136,21 +255,11 @@ export default class Surface extends EventTarget {
         return surface
     }
 
-    static _staticCanvas2DContext = document.createElement('canvas').getContext('2d')
+    static _staticCanvas2DContext = document.createElement('canvas').getContext('2d')!
 
     static _getPattern(surface: Surface, force?: boolean) {
         if (!surface._pattern || force) {
-            if (Surface._staticCanvas2DContext == null) {
-                throw new Error('Fail to initialize _staticCanvas2DContext!')
-            }
-
-            let pattern = Surface._staticCanvas2DContext.createPattern(surface._element, 'repeat')
-
-            if (pattern == null) {
-                throw new Error('Fail to initialize CanvasPattern!')
-            }
-
-            surface._pattern = pattern
+            surface._pattern = Surface._staticCanvas2DContext!.createPattern(surface._element, 'repeat')!
         }
 
         return surface._pattern
