@@ -705,7 +705,11 @@ export default class Core extends EventTarget {
      */
     pushScene(scene: Scene) {
         this._element.appendChild(scene._element)
-        this.currentScene.dispatchEvent(new Event(Event.EXIT))
+
+        if (this.currentScene) {
+            this.currentScene.dispatchEvent(new Event(Event.EXIT))
+        }
+
         this.currentScene = scene
         this.currentScene.dispatchEvent(new Event(Event.ENTER))
         return this._scenes.push(scene)

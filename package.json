@@ -6,9 +6,11 @@
   },
   "scripts": {
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "parcel-dev": "parcel ./src/examples/index.html"
   },
   "dependencies": {
+    "parcel": "^1.12.4",
     "typescript": "^3.9.5"
   }
 }

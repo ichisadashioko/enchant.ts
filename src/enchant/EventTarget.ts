@@ -81,11 +81,12 @@ export default class EventTarget {
         e.localY = e.y - this._offsetY
 
         // TODO attach as listener instead of using dirty reflection
-        throw new Error('Fix the dirty reflection code!')
-        // if (typeof target['on' + e.type] === 'function') {
-        //     // e.g. this.onload
-        //     this['on' + e.type](e)
-        // }
+        // throw new Error('Fix the dirty reflection code!')
+        // @ts-ignore
+        if (this['on' + e.type] != null) {
+            // @ts-ignore
+            this['on' + e.type](e)
+        }
 
         var listeners = this._listeners[e.type]
         if (listeners != null) {
