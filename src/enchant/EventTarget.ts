@@ -25,7 +25,7 @@ export default class EventTarget {
      * @param listener Event listener to be added.
      */
     addEventListener(type: string, listener: (e: Event) => void) {
-        var listeners = this._listeners[type] as Array<Function>
+        var listeners = this._listeners[type]
         if (listeners == null) {
             this._listeners[type] = [listener]
         } else if (listeners.indexOf(listener) === -1) {
