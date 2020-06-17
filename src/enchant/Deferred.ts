@@ -95,6 +95,7 @@ export default class Deferred {
             throw arg
         } else {
             let err = new Error('failed in Deferred')
+            console.log(arg)
             // @ts-ignore
             err.arg = arg
             throw err

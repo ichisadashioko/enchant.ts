@@ -329,7 +329,7 @@ export default class Core extends EventTarget {
     /**
      * The width of the core screen.
      */
-    get width(): number {
+    get width() {
         return this._width
     }
 
@@ -341,7 +341,7 @@ export default class Core extends EventTarget {
     /**
      * The height of the core screen.
      */
-    get height(): number {
+    get height() {
         return this._height
     }
 
@@ -353,7 +353,7 @@ export default class Core extends EventTarget {
     /**
      * The scaling of the core rendering.
      */
-    get scale(): number {
+    get scale() {
         return this._scale
     }
 

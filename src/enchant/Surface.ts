@@ -224,15 +224,20 @@ export default class Surface extends EventTarget {
      */
     static load(src: string, callback?: (e: Event) => void, onerror?: (e: Event) => void): Surface {
         let image = new Image()
-        // TODO improve typescript standard libraries
+
         let surface = Object.create(Surface.prototype, {
-            // @ts-ignore
-            context: null,
-            // @ts-ignore
-            _css: `url(${src})`,
-            // @ts-ignore
-            _element: image,
-        })
+            context: {
+                value: null,
+            },
+            _css: {
+                value: `url(${src})`,
+            },
+            _element: {
+                value: image
+            },
+        }) as Surface
+
+        EventTarget.call(surface)
 
         callback = callback || function () { }
         onerror = onerror || function () { }
