@@ -66,7 +66,39 @@ export default class Map extends Entity {
         })
     }
 
-    loadData() { }
+    /**
+     * Set map data.
+     * 
+     * Sets the tile data, whereas the data (2D array with indices starting from 0) is mapped on the image starting from the upper left corner.
+     * 
+     * When more than one map data array is set, they are displayed in reverse order.
+     * @param data 2D array of tile indices. Multiple designations possible.
+     */
+    loadData(data: number[][][]) {
+        // TODO breaking change
+        this._data = data
+        this._dirty = true
+        this._tight = false
+
+        // TODO understand what does this code do
+        for (let i = 0, len = this._data.length; i < len; i++) {
+            let c = 0
+            let _data = this._data[i]
+
+            for (let y = 0, l = _data.length; y < l; y++) {
+                for (let x = 0, ll = _data[y].length; x < ll; x++) {
+                    if (_data[y][x] >= 0) {
+                        c++
+                    }
+                }
+            }
+
+            if (c / (data.length * _data[0].length) > 0.2) {
+                this._tight = true
+                break
+            }
+        }
+    }
 
     checkTile() { }
 
