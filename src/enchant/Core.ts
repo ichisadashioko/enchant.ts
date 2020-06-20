@@ -103,6 +103,11 @@ export default class Core extends EventTarget {
 
     _touchEventTarget!: Record<number, EventTarget>
 
+    /**
+     * called by EventTarget listeners
+     */
+    onload?: Function
+
     constructor(width?: number, height?: number) {
 
         if (window.document.body == null) {
@@ -492,10 +497,10 @@ export default class Core extends EventTarget {
 
         let onloadTimeSetter = function () {
             that.frame = 0
-            that.removeEventListener('load', onloadTimeSetter)
+            that.removeEventListener(Event.LOAD, onloadTimeSetter)
         }
 
-        this.addEventListener('load', onloadTimeSetter)
+        this.addEventListener(Event.LOAD, onloadTimeSetter)
 
         this.currentTime = getTime()
         this.running = true
