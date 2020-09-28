@@ -11,8 +11,6 @@ export default class EventTarget {
     _offsetY: number
     _listeners: Record<string, Array<(e: Event) => void>>
 
-    frame?: SpriteFrame
-
     constructor() {
         this._offsetX = 0
         this._offsetY = 0

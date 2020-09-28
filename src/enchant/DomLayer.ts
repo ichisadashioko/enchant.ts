@@ -11,8 +11,6 @@ export default class DomLayer extends Group {
     _element: HTMLDivElement
     _touchEventTarget: null | Node
     _domManager: DomManager
-    width: number
-    height: number
     _scene?: Scene
 
     constructor() {

@@ -29,9 +29,6 @@ export default class Scene extends Group {
     _layers: Record<LayerType, CanvasLayer | DomLayer>
     _layerPriority: Array<LayerType>
 
-    _width: number | undefined
-    _height: number | undefined
-
     _backgroundColor: string | null
 
     constructor() {

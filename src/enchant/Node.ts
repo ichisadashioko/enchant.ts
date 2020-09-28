@@ -51,10 +51,8 @@ export default class Node extends EventTarget {
 
     _originX: number | null = null
     _originY: number | null = null
-    _width?: number
-    _height?: number
-    width?: number
-    height?: number
+    _width = 0
+    _height =  0
     _scaleX = 1
     _scaleY = 1
     _rotation = 0
@@ -97,6 +95,24 @@ export default class Node extends EventTarget {
         if (ENV.USE_ANIMATION) {
             this.tl = new Timeline(this)
         }
+    }
+
+    get width() {
+        return this._width
+    }
+
+    set width(value: number) {
+        this._width = value
+        this._dirty = true
+    }
+
+    get height() {
+        return this._height
+    }
+
+    set height(value: number) {
+        this._height = value
+        this._dirty = true
     }
 
     /**

@@ -26,8 +26,6 @@ export default class CanvasLayer extends Group {
     context: CanvasRenderingContext2D
     _dctx: CanvasRenderingContext2D
     _colorManager: DetectColorManager
-    width: number
-    height: number
 
     _scene?: Scene
 
