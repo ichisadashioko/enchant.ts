@@ -1,6 +1,6 @@
-import Core from './Core'
-import BinaryInputManager from './BinaryInputManager'
-import KeyboardInputSource from './KeyboardInputSource'
+import Core from './Core.ts'
+import BinaryInputManager from './BinaryInputManager.ts'
+import KeyboardInputSource from './KeyboardInputSource.ts'
 
 /**
  * Class that manage keyboard input.

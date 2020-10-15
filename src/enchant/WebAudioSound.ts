@@ -1,6 +1,6 @@
-import Core from './Core'
-import Event from './Event'
-import EventTarget from './EventTarget'
+import Core from './Core.ts'
+import Event from './Event.ts'
+import EventTarget from './EventTarget.ts'
 
 /**
  * Sound wrapper class for Web Audio API (supported on some webkit-based browsers)

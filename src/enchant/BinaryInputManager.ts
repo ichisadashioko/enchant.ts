@@ -1,6 +1,6 @@
-import InputManager from './InputManager'
-import BinaryInputSource from './BinaryInputSource'
-import Event from './Event'
+import InputManager from './InputManager.ts'
+import BinaryInputSource from './BinaryInputSource.ts'
+import Event from './Event.ts'
 
 /**
  * Class for managing input.

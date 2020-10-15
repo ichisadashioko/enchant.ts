@@ -1,10 +1,10 @@
-import Core from './Core'
-import InputSource from './InputSource'
-import InputManager from './InputManager'
-import EventTarget from './EventTarget'
-import Timeline from './Timeline'
-import Node from './Node'
-import Action from './Action'
+import Core from './Core.ts'
+import InputSource from './InputSource.ts'
+import InputManager from './InputManager.ts'
+import EventTarget from './EventTarget.ts'
+import Timeline from './Timeline.ts'
+import Node from './Node.ts'
+import Action from './Action.ts'
 
 export default class Event {
 

@@ -1,8 +1,8 @@
-import EventTarget from './EventTarget'
-import Event from './Event'
-import Node from './Node'
-import ParallelAction from './ParallelAction'
-import Action from './Action'
+import EventTarget from './EventTarget.ts'
+import Event from './Event.ts'
+import Node from './Node.ts'
+import ParallelAction from './ParallelAction.ts'
+import Action from './Action.ts'
 
 /**
  * Time-line class.

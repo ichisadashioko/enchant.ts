@@ -1,5 +1,5 @@
-import Core from './Core'
-import Event from './Event'
+import Core from './Core.ts'
+import Event from './Event.ts'
 
 export const getTime = (function () {
     return Date.now()

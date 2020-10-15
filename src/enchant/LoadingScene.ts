@@ -1,5 +1,5 @@
-import Scene from './Scene'
-import Sprite from './Sprite'
+import Scene from './Scene.ts'
+import Sprite from './Sprite.ts'
 
 export default class LoadingScene extends Scene {
     constructor() {

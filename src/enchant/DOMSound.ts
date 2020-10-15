@@ -1,7 +1,7 @@
-import Core from './Core'
-import Event from './Event'
-import EventTarget from './EventTarget'
-import ENV from './Env'
+import Core from './Core.ts'
+import Event from './Event.ts'
+import EventTarget from './EventTarget.ts'
+import ENV from './Env.ts'
 
 /**
  * Class to wrap audio elements.

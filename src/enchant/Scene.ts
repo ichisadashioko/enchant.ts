@@ -1,10 +1,10 @@
-import Core from './Core'
-import Group from './Group'
-import Event from './Event'
-import EventTarget from './EventTarget'
-import CanvasLayer from './CanvasLayer'
-import DomLayer from './DomLayer'
-import { LayerType } from './types'
+import Core from './Core.ts'
+import Group from './Group.ts'
+import Event from './Event.ts'
+import EventTarget from './EventTarget.ts'
+import CanvasLayer from './CanvasLayer.ts'
+import DomLayer from './DomLayer.ts'
+import { LayerType } from './types.ts'
 
 
 /**

@@ -1,9 +1,9 @@
-import Matrix from './Matrix'
-import Entity from './Entity'
-import Node from './Node'
-import DomLayer from './DomLayer'
-import DomManager from './DomManager'
-import Scene from './Scene'
+import Matrix from './Matrix.ts'
+import Entity from './Entity.ts'
+import Node from './Node.ts'
+import DomLayer from './DomLayer.ts'
+import DomManager from './DomManager.ts'
+import Scene from './Scene.ts'
 
 /**
  * TODO Most of the code for DomlessManager are dead code from examples

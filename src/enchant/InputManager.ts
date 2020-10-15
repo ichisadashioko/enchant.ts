@@ -1,6 +1,6 @@
-import EventTarget from './EventTarget'
-import Event from './Event'
-import InputSource from './InputSource'
+import EventTarget from './EventTarget.ts'
+import Event from './Event.ts'
+import InputSource from './InputSource.ts'
 
 /**
  * Class for managing input.

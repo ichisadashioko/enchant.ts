@@ -1,4 +1,4 @@
-import Entity from './Entity'
+import Entity from './Entity.ts'
 
 export default class Label extends Entity {
 

@@ -1,7 +1,7 @@
-import Entity from './Entity'
-import Surface from './Surface'
-import Event from './Event'
-import { SpriteFrame } from './types'
+import Entity from './Entity.ts'
+import Surface from './Surface.ts'
+import Event from './Event.ts'
+import { SpriteFrame } from './types.ts'
 
 /**
  * @example

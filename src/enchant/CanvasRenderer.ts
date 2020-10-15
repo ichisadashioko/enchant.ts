@@ -1,5 +1,5 @@
-import Event from './Event'
-import CanvasLayer from './CanvasLayer'
+import Event from './Event.ts'
+import CanvasLayer from './CanvasLayer.ts'
 
 export default class CanvasRenderer {
 

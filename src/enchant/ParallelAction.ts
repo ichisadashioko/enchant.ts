@@ -1,6 +1,6 @@
-import Action from './Action'
-import { ActionParams } from './types'
-import Event from './Event'
+import Action from './Action.ts'
+import { ActionParams } from './types.ts'
+import Event from './Event.ts'
 
 /**
  * Actions to be executed in parallel. It's possible to have more than one child action.

@@ -1,8 +1,8 @@
-import ActionEventTarget from './ActionEventTarget'
-import { ActionParams } from './types'
-import Event from './Event'
-import Timeline from './Timeline'
-import Node from './Node'
+import ActionEventTarget from './ActionEventTarget.ts'
+import { ActionParams } from './types.ts'
+import Event from './Event.ts'
+import Timeline from './Timeline.ts'
+import Node from './Node.ts'
 
 export default class Action extends ActionEventTarget {
     time: number

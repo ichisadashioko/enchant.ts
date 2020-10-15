@@ -1,4 +1,4 @@
-import InputSource from './InputSource'
+import InputSource from './InputSource.ts'
 
 /**
  * Class that wrap binary input.

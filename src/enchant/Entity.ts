@@ -1,6 +1,6 @@
-import Node from './Node'
-import Core from './Core'
-import Event from './Event'
+import Node from './Node.ts'
+import Core from './Core.ts'
+import Event from './Event.ts'
 
 export default class Entity extends Node {
 

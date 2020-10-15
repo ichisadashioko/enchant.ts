@@ -1,13 +1,13 @@
-import ENV from './Env'
-import EventTarget from './EventTarget'
-import Timeline from './Timeline'
-import Group from './Group'
-import Matrix from './Matrix'
-import Scene from './Scene'
-import CanvasLayer from './CanvasLayer'
-import DomLayer from './DomLayer'
-import DomManager from './DomManager'
-import DomlessManager from './DomlessManager'
+import ENV from './Env.ts'
+import EventTarget from './EventTarget.ts'
+import Timeline from './Timeline.ts'
+import Group from './Group.ts'
+import Matrix from './Matrix.ts'
+import Scene from './Scene.ts'
+import CanvasLayer from './CanvasLayer.ts'
+import DomLayer from './DomLayer.ts'
+import DomManager from './DomManager.ts'
+import DomlessManager from './DomlessManager.ts'
 
 /**
  * Base class for objects in the display tree which is rooted at a Scene.

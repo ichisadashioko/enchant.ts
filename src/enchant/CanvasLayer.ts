@@ -1,12 +1,12 @@
-import Group from './Group'
-import Core from './Core'
-import DetectColorManager from './DetectColorManager'
-import Event from './Event'
-import Node from './Node'
-import Scene from './Scene'
-import DomLayer from './DomLayer'
-import Matrix from './Matrix'
-import CanvasRenderer from './CanvasRenderer'
+import Group from './Group.ts'
+import Core from './Core.ts'
+import DetectColorManager from './DetectColorManager.ts'
+import Event from './Event.ts'
+import Node from './Node.ts'
+import Scene from './Scene.ts'
+import DomLayer from './DomLayer.ts'
+import Matrix from './Matrix.ts'
+import CanvasRenderer from './CanvasRenderer.ts'
 
 /**
  * Class that uses the HTML Canvas for rendering.

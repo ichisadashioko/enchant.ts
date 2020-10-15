@@ -1,4 +1,4 @@
-import Event from './Event'
+import Event from './Event.ts'
 
 export type SpriteFrame = number | null | Array<number | null>
 

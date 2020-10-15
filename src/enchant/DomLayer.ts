@@ -1,10 +1,10 @@
-import Group from './Group'
-import DomManager from './DomManager'
-import Node from './Node'
-import Core from './Core'
-import Scene from './Scene'
-import Event from './Event'
-import DomlessManager from './DomlessManager'
+import Group from './Group.ts'
+import DomManager from './DomManager.ts'
+import Node from './Node.ts'
+import Core from './Core.ts'
+import Scene from './Scene.ts'
+import Event from './Event.ts'
+import DomlessManager from './DomlessManager.ts'
 
 export default class DomLayer extends Group {
 

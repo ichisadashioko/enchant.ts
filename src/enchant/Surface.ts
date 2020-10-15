@@ -1,6 +1,6 @@
-import EventTarget from './EventTarget'
-import Core from './Core'
-import Event from './Event'
+import EventTarget from './EventTarget.ts'
+import Core from './Core.ts'
+import Event from './Event.ts'
 
 /**
  * Class that wraps canvas elements.

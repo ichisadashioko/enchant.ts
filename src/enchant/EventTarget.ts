@@ -1,5 +1,5 @@
-import Event from './Event'
-import { SpriteFrame } from './types'
+import Event from './Event.ts'
+import { SpriteFrame } from './types.ts'
 
 /**
  * A class for implementation of events similar to DOM Events.

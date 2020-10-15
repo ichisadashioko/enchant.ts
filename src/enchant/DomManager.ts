@@ -1,11 +1,11 @@
-import Core from './Core'
-import ENV from './Env'
-import DomlessManager from './DomlessManager'
-import Matrix from './Matrix'
-import Group from './Group'
-import DomLayer from './DomLayer'
-import Node from './Node'
-import Entity from './Entity'
+import Core from './Core.ts'
+import ENV from './Env.ts'
+import DomlessManager from './DomlessManager.ts'
+import Matrix from './Matrix.ts'
+import Group from './Group.ts'
+import DomLayer from './DomLayer.ts'
+import Node from './Node.ts'
+import Entity from './Entity.ts'
 
 type HTMLElementTagName = keyof HTMLElementTagNameMap
 

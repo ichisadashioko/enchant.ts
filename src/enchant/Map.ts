@@ -1,8 +1,8 @@
-import Entity from './Entity'
-import Core from './Core'
-import Surface from './Surface'
-import ENV from './Env'
-import Event from './Event'
+import Entity from './Entity.ts'
+import Core from './Core.ts'
+import Surface from './Surface.ts'
+import ENV from './Env.ts'
+import Event from './Event.ts'
 
 export default class Map extends Entity {
 

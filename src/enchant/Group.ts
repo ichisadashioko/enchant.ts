@@ -1,6 +1,6 @@
-import Node from './Node'
-import Event from './Event'
-import DomlessManager from './DomlessManager'
+import Node from './Node.ts'
+import Event from './Event.ts'
+import DomlessManager from './DomlessManager.ts'
 
 /**
  * A class that can hold multiple `enchant.Node`.

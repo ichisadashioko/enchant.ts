@@ -1,4 +1,4 @@
-import BinaryInputSource from './BinaryInputSource'
+import BinaryInputSource from './BinaryInputSource.ts'
 
 export default class KeyboardInputSource extends BinaryInputSource {
     static _instances: Record<string, KeyboardInputSource> = {}

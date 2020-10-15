@@ -1,5 +1,5 @@
-import EventTarget from './EventTarget'
-import Event from './Event'
+import EventTarget from './EventTarget.ts'
+import Event from './Event.ts'
 /**
  * Class that wrap input.
  */
