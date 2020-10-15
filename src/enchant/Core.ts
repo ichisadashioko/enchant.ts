@@ -14,10 +14,10 @@ import DOMSound from './DOMSound'
 
 /**
  * A class for controlling the core's main loop and scenes.
- * 
- * There can be only one instance at a time. 
- * When the constructor is executed while an instance exists, 
- * the existing instance will be overwritten. 
+ *
+ * There can be only one instance at a time.
+ * When the constructor is executed while an instance exists,
+ * the existing instance will be overwritten.
  * The existing instance can be accessed from `enchant.Core.instance`.
  */
 export default class Core extends EventTarget {
@@ -85,7 +85,7 @@ export default class Core extends EventTarget {
 
     /**
      * Object that saves the current input state for the core.
-     * 
+     *
      * TODO rename to more meaningful name
      */
     input: Record<string, boolean>
@@ -393,23 +393,23 @@ export default class Core extends EventTarget {
 
     /**
      * File preloader.
-     * 
+     *
      * Loads the files specified in the parameters when
      * `enchant.Core.start` is called.
      * When all files are loaded, a `enchant.Event.LOAD`
      * event is dispatched from the Core object. Depending
      * on the type of each file, different objects will be
      * created and stored in `enchant.Core.assets` variable.
-     * 
+     *
      * When an image file is loaded, a `enchant.Surface` is
-     * created. If a sound file is loaded, an `enchant.Sound` 
+     * created. If a sound file is loaded, an `enchant.Sound`
      * object is created. Any other file type will be accessible
      * as a string.
-     * 
+     *
      * In addition, because this `Surface` object is created with
      * `enchant.Surface.load`, it is not possible to manipulate
      * the image directly.
-     * 
+     *
      * @param assets Path of images to be preloaded.
      */
     preload(assets: string | string[]) {
@@ -486,7 +486,7 @@ export default class Core extends EventTarget {
 
     /**
      * Start the core.
-     * 
+     *
      * Sets the framerate of the {@link Core.currentScene} according to
      * the value stored in {@link Core.core.fps}. If there are images to
      * preload, loading will begin and the loading screen will be
@@ -601,7 +601,7 @@ export default class Core extends EventTarget {
 
     /**
      * Start application in debug mode.
-     * 
+     *
      * Core debug mode can be turned on even if the
      * {@link enchant.Core._debug} flag is already set to true.
      */
@@ -667,7 +667,7 @@ export default class Core extends EventTarget {
 
     /**
      * Stops the core.
-     * 
+     *
      * The frame will not be updated, and player input will not be accepted anymore.
      * Core can be restarted using {@link enchant.Core.resume}
      */
@@ -678,7 +678,7 @@ export default class Core extends EventTarget {
 
     /**
      * Stops the core.
-     * 
+     *
      * The frame will not be updated, add player input will not be accepted anymore.
      * Core can be started again using `enchant.Core.resume`.
      */
@@ -698,14 +698,14 @@ export default class Core extends EventTarget {
 
     /**
      * Switches to a new Scene.
-     * 
-     * Scenes are controlled using a stack, 
+     *
+     * Scenes are controlled using a stack,
      * with the top scene on the stack being the one displayed.
-     * 
-     * When `enchant.Core.pushScene` is executed, 
-     * the Scene is placed on top of the stack. 
+     *
+     * When `enchant.Core.pushScene` is executed,
+     * the Scene is placed on top of the stack.
      * Frames will be only updated for the Scene which is on the top of the stack.
-     * 
+     *
      * @param scene The new scene to display.
      */
     pushScene(scene: Scene) {
@@ -722,10 +722,10 @@ export default class Core extends EventTarget {
 
     /**
      * Ends the current Scene and returns to the previous Scene.
-     * 
+     *
      * Scenes are controlled using a stack, with the top scene on the stack being the one displayed.
      * When `enchant.Core.popScene` is executed, the Scene at the top of the stack is removed and returned.
-     * 
+     *
      * @return Removed Scene.
      */
     popScene() {
@@ -742,10 +742,10 @@ export default class Core extends EventTarget {
 
     /**
      * Overwrite the current Scene with a new Scene.
-     * 
+     *
      * Execute `enchant.Core.popScene` and `enchant.Core.pushScene` one
      * after another to replace the current scene with the new scene.
-     * 
+     *
      * @param scene The new scene with which to replace the current scene.
      */
     replaceScene(scene: Scene) {
@@ -755,11 +755,11 @@ export default class Core extends EventTarget {
 
     /**
      * Remove a Scene from the Scene stack.
-     * 
+     *
      * If the scene passed in as a parameter is not the current scene,
      * the stack will be searched for the given scene. If the given
      * scene does not exist anywhere in the stack, this method returns null.
-     * 
+     *
      * @param scene Scene to be removed.
      * @returns The deleted Scene.
      */
@@ -784,10 +784,10 @@ export default class Core extends EventTarget {
 
     /**
      * Bind a key to an enchant.js button.
-     * 
+     *
      * Binds the given key code to the given enchant.js button
      * ('left', 'right', 'up', 'down', 'a', 'b').
-     * 
+     *
      * @param key Key code for the button to be bound.
      * @param button An enchant.js button.
      */
@@ -800,7 +800,7 @@ export default class Core extends EventTarget {
 
     /**
      * Delete the key binding for the given key.
-     * 
+     *
      * @param key Key code whose binding is to be deleted.
      */
     keyunbind(key: number) {
@@ -817,7 +817,7 @@ export default class Core extends EventTarget {
 
     /**
      * Get the core time (not actual) elapsed since {@link enchant.Core.start} was called.
-     * 
+     *
      * @returns Time elapsed (in seconds).
      */
     getElapsedTime() {

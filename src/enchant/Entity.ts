@@ -176,7 +176,7 @@ export default class Entity extends Node {
     /**
      * Performs a collision detection based on whether or not the
      * bounding reactangles are intersecting.
-     * 
+     *
      * @param other An object like Entity, with the properties x, y,
      * width, height, which are used for the collision detection.
      * @returns True, if a collision was detected.
@@ -295,7 +295,7 @@ export default class Entity extends Node {
 
     /**
      * Performs a collision detection based on distance from the Entity's central point.
-     * 
+     *
      * @param other An object like Entity, with properties x, y, width, height,
      * which are used for the collision detection.
      * @param distance The greatest distance to be considered for a collision.

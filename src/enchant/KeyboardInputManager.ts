@@ -23,7 +23,7 @@ export default class KeyboardInputManager extends BinaryInputManager {
 
     /**
      * Call {@link enchant.BinaryInputManager.unbind} with {@link BinaryInputSource} equivalent of key code.
-     * 
+     *
      * @param keyCode key code
      */
     keyunbind(keyCode: number) {

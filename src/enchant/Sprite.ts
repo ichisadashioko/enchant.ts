@@ -44,7 +44,7 @@ export default class Sprite extends Entity {
      * {@link enchant.Sprite.image} image. When a sequence of numbers is provided, the displayed frame
      * will switch automatically. At the end of the array the sequence will restart. By setting
      * a value within the sequence to null, the frame switching is stopped.
-     * 
+     *
      * @example
      * var sprite = new Scrite(32, 32);
      * sprite.frame = [0, 1, 0, 2]

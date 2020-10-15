@@ -4,7 +4,7 @@ import DomlessManager from './DomlessManager'
 
 /**
  * A class that can hold multiple `enchant.Node`.
- * 
+ *
  * @example
  * var stage = new Group()
  * stage.addChild(player)

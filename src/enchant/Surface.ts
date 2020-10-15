@@ -4,10 +4,10 @@ import Event from './Event'
 
 /**
  * Class that wraps canvas elements.
- * 
+ *
  * Can be used to set the `enchant.Sprite` and `enchant.Map` image properties to be displayed.
  * If you wish to access Canvas API use the `enchant.Surface.context` property.
- * 
+ *
  * @example
  * // Creates Sprite that displays a circle.
  * var ball = new Sprite(50, 50)
@@ -155,10 +155,10 @@ export default class Surface extends EventTarget {
 
     /**
      * Draws the content of the given Surface onto this surface.
-     * 
-     * Wraps Canvas API drawImage and if mutiple arguments are given, 
+     *
+     * Wraps Canvas API drawImage and if mutiple arguments are given,
      * these are getting applied to the Canvas drawImage method.
-     * 
+     *
      * @example
      * var src = core.assets['src.gif']
      * var dst = new Surface(100, 100)
@@ -169,7 +169,7 @@ export default class Surface extends EventTarget {
      * // Takes the image content in src starting at (10, 10) with a (width, height) of (40, 40),
      * // scales it and draws it in this surface at (50, 50) with a (width, height) of (30, 30).
      * dst.draw(src, 10, 10, 40, 40, 50, 50, 30, 30)
-     * 
+     *
      * @param image Surface used in drawing.
      */
     draw(image: Surface) {
@@ -196,8 +196,8 @@ export default class Surface extends EventTarget {
 
     /**
      * Creates a data URI scheme from this Surface.
-     * 
-     * @return The data URI schema that identifies this Surface 
+     *
+     * @return The data URI schema that identifies this Surface
      * and can be used to include this Surface into a DOM tree.
      */
     toDataURL() {
@@ -206,18 +206,18 @@ export default class Surface extends EventTarget {
 
     /**
      * Loads an image and creates a Surface object out of it.
-     * 
+     *
      * It is not possible to access properties or methods of the `enchant.Surface.context`,
-     * or to call methods using the Canvas API - like `enchant.Surface.draw`, 
-     * `enchant.Surface.clear`, `enchant.Surface.getPixel`, `enchant.Surface.setPixel` - 
+     * or to call methods using the Canvas API - like `enchant.Surface.draw`,
+     * `enchant.Surface.clear`, `enchant.Surface.getPixel`, `enchant.Surface.setPixel` -
      * of the wrapped image created with this method.
-     * 
-     * However, it is possible to use this surface to draw it to another surface 
+     *
+     * However, it is possible to use this surface to draw it to another surface
      * using the `ehchant.Surface.draw` method.
-     * The resulting surface can then be manipulated (when loading images 
-     * in a cross-origin resource sharing environment, pixel acquisition 
+     * The resulting surface can then be manipulated (when loading images
+     * in a cross-origin resource sharing environment, pixel acquisition
      * and other image manipulation might be limited).
-     * 
+     *
      * @param src The file path of the image to be loaded.
      * @param callback on load callback.
      * @param onerror on error callback.

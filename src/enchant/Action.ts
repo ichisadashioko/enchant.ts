@@ -16,14 +16,14 @@ export default class Action extends ActionEventTarget {
     /**
      * Actions are units that make up the timeline.
      * It is a unit used to specify the action you want to perform.
-     * 
+     *
      * Actions that have been added to the timeline are performed in sequential order.
      * The transition from one action to the next occurs automatically after the number of frames specified by the time parameter have elapsed.
-     * 
+     *
      * An actionstart event is fired when the action has started.
      * An actionend event is fired when the action has stopped.
      * For each frame that elapses, an actiontick event is fired.
-     * 
+     *
      * You can specify a listener for these events to perform specific events when they occur.
      */
     constructor(param: ActionParams) {

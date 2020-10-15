@@ -9,14 +9,14 @@ import { LayerType } from './types'
 
 /**
  * Class that becomes the root of the display object tree.
- * 
- * Child `Entity` objects are distributed to the Scene layer 
+ *
+ * Child `Entity` objects are distributed to the Scene layer
  * according to the drawing method.
- * The DOM of each Scene layer has an `enchant.DOMLayer` 
+ * The DOM of each Scene layer has an `enchant.DOMLayer`
  * and an `enchant.CanvasLayer` and is drawn using the Canvas.
- * 
+ *
  * Scenes are drawn in the order that they are added.
- * 
+ *
  * @example
  * var scene = new Scene()
  * scene.addChild(player)
@@ -36,7 +36,7 @@ export default class Scene extends Group {
 
         let core = Core.instance
 
-        // All nodes (entities, groups, scenes) have reference to 
+        // All nodes (entities, groups, scenes) have reference to
         // the scene that it belongs to.
         this.scene = this
         this._backgroundColor = null

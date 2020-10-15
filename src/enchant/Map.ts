@@ -24,9 +24,9 @@ export default class Map extends Entity {
 
     /**
      * A class to create and display maps from tile set.
-     * 
-     * @param tileWidth 
-     * @param tileHeight 
+     *
+     * @param tileWidth
+     * @param tileHeight
      */
     constructor(tileWidth: number, tileHeight: number) {
         super()
@@ -68,9 +68,9 @@ export default class Map extends Entity {
 
     /**
      * Set map data.
-     * 
+     *
      * Sets the tile data, whereas the data (2D array with indices starting from 0) is mapped on the image starting from the upper left corner.
-     * 
+     *
      * When more than one map data array is set, they are displayed in reverse order.
      * @param data 2D array of tile indices. Multiple designations possible.
      */

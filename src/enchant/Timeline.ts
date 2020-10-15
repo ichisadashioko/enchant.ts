@@ -6,9 +6,9 @@ import Action from './Action'
 
 /**
  * Time-line class.
- * 
+ *
  * Class for managing the action.
- * 
+ *
  * For one node to manipulate the timeline of one must correspond.
  * Time-line class has a method to add a variety of actions to itself,
  * entities can be animated and various operations by using these briefly.
@@ -115,8 +115,8 @@ export default class Timeline extends EventTarget {
     }
 
     /**
-     * 
-     * @param elapsed 
+     *
+     * @param elapsed
      */
     tick(elapsed: number) {
         if (this.queue.length > 0) {

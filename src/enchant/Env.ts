@@ -9,7 +9,7 @@ const KEY_BIND_TABLE: Record<number, ControlKeyType> = {
 
 /**
  * `enchant` environment variables.
- * 
+ *
  * Execution settings can be changed by modifying these before calling new Core().
  */
 export default {
@@ -81,7 +81,7 @@ export default {
     }()),
 
     /**
-     * Determines if for current browser Flash should be used to play 
+     * Determines if for current browser Flash should be used to play
      * sound instead of the native audio class.
      * True, if flash should be used.
      */

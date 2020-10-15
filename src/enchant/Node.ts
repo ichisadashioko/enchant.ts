@@ -11,7 +11,7 @@ import DomlessManager from './DomlessManager'
 
 /**
  * Base class for objects in the display tree which is rooted at a Scene.
- * 
+ *
  * Not to be used directly.
  */
 export default class Node extends EventTarget {
@@ -42,7 +42,7 @@ export default class Node extends EventTarget {
 
     /**
      * set/remove the layer that this node belongs to
-     * 
+     *
      * set/remove by {@link enchant.Scene}, {@link enchant.CanvasScene}, {@link enchant.DOMScene}
      */
     _layer?: CanvasLayer | DomLayer | null

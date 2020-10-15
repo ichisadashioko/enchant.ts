@@ -5,12 +5,12 @@ import ENV from './Env'
 
 /**
  * Class to wrap audio elements.
- * 
+ *
  * Safari, Chrome, Firefox, Opera, and IE all play MP3 files
  * (Firefox and Opera play via Flash). WAVE files can be played on
  * Safari, Chrome, Firefox, and Opera. When the browser is not
  * compatible with the used codec the file will not play.
- * 
+ *
  * Instances are created not via constructor but via `enchant.DOMSound.load`.
  */
 export default class DOMSound extends EventTarget {

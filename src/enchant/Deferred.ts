@@ -1,8 +1,8 @@
 /**
  * See http://cho45.stfuawsc.com/jsdeferred
- * 
+ *
  * @example
- * 
+ *
  * enchant.Deferred.next(function() {
  *   return 42;
  * }).next(function(n) {
@@ -128,8 +128,8 @@ export default class Deferred {
      * ]).next(function(arg){
      *   console.log(arg) // [ 24, 42 ]
      * })
-     * 
-     * @param args 
+     *
+     * @param args
      */
     static parallel(args: Record<string, Deferred>) {
         let q = new Deferred()

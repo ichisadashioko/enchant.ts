@@ -26,7 +26,7 @@ export default class InputManager extends EventTarget {
 
     /**
      * Class for managing input.
-     * 
+     *
      * @param valueStore object that store input state.
      * @param source source that will be added to event object.
      */
