@@ -66,11 +66,11 @@ export default class Scene extends Group {
     }
 
     _dispatchExitframe() {
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom.dispatchEvent(new Event(Event.EXIT_FRAME))
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas.dispatchEvent(new Event(Event.EXIT_FRAME))
         }
     }
@@ -78,11 +78,11 @@ export default class Scene extends Group {
     set x(value: number) {
         this._x = value
 
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom.x = value
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas.x = value
         }
     }
@@ -90,11 +90,11 @@ export default class Scene extends Group {
     set y(value: number) {
         this._y = value
 
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom.y = value
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas.y = value
         }
     }
@@ -102,11 +102,11 @@ export default class Scene extends Group {
     set width(value: number) {
         this._width = value
 
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom.width = value
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas.width = value
         }
     }
@@ -114,11 +114,11 @@ export default class Scene extends Group {
     set height(value: number) {
         this._height = value
 
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom.height = value
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas.height = value
         }
     }
@@ -126,11 +126,11 @@ export default class Scene extends Group {
     set rotation(value: number) {
         this._rotation = value
 
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom.rotation = value
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas.rotation = value
         }
     }
@@ -138,11 +138,11 @@ export default class Scene extends Group {
     set scaleX(value: number) {
         this._scaleX = value
 
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom.scaleX = value
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas.scaleX = value
         }
     }
@@ -150,11 +150,11 @@ export default class Scene extends Group {
     set scaleY(value: number) {
         this._scaleY = value
 
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom.scaleY = value
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas.scaleY = value
         }
     }
@@ -189,11 +189,11 @@ export default class Scene extends Group {
         this.height = e.core.height
         this._element.style.transform = `scale(${e.core.scale})`
 
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom.dispatchEvent(e)
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas.dispatchEvent(e)
         }
     }
@@ -296,11 +296,11 @@ export default class Scene extends Group {
     }
 
     _onenter() {
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom._startRendering()
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas._startRendering()
         }
 
@@ -308,11 +308,11 @@ export default class Scene extends Group {
     }
 
     _onexit() {
-        if (!(this._layers.Dom == null)) {
+        if (this._layers.Dom != null) {
             this._layers.Dom._stopRendering()
         }
 
-        if (!(this._layers.Canvas == null)) {
+        if (this._layers.Canvas != null) {
             this._layers.Canvas._stopRendering()
         }
 
